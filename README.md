@@ -16,6 +16,14 @@
 
 [Figma](https://www.figma.com/design/FYGDQieciMf0a7Af4kzI6O/SeeDocs?node-id=1-4&t=3zk4kfwCNwxk9uiX-1)
 
+### 화면 구성
+
+- Home: 디바이스의 문서 파일 목록을 보여줍니다.
+- Bookmark: 북마크된 파일들이 모여있는 목록.
+- PdfView: PDF 화면
+- TextView: Text 화면
+- ImageView: Image 화면
+
 ## 프로젝트 목표
 
 - PDF 이미지, 텍스트 등을 볼 수 있는 서비스 구현
