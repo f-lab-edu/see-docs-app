@@ -14,7 +14,7 @@
 
 ## Design
 
-[Figma]("https://")
+[Figma](https://www.figma.com/design/FYGDQieciMf0a7Af4kzI6O/SeeDocs?node-id=1-4&t=3zk4kfwCNwxk9uiX-1)
 
 ## 프로젝트 목표
 
