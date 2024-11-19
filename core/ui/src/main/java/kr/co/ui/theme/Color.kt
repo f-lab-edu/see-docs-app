@@ -1,6 +1,7 @@
 package kr.co.ui.theme
 
 import androidx.compose.material3.ColorScheme
+import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.compositionLocalOf
@@ -48,7 +49,7 @@ internal val LightColors = SeeDocsColors(
 )
 
 internal val DarkColors = SeeDocsColors(
-    material = lightColorScheme(),
+    material = darkColorScheme(),
     bg = Gray7,
     text = Gray1,
     highlight = Blue2,
