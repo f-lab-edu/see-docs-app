@@ -3,6 +3,7 @@ package kr.co.main.navigation
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
+import kr.co.navigation.exploreNavGraph
 
 @Composable
 internal fun MainNavHost(
@@ -13,6 +14,8 @@ internal fun MainNavHost(
         navController = navigator.navController,
         startDestination = navigator.startDestination,
     ) {
-
+        exploreNavGraph(
+            padding = padding
+        )
     }
 }
