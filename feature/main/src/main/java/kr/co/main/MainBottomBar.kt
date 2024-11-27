@@ -7,6 +7,7 @@ import androidx.compose.animation.slideIn
 import androidx.compose.animation.slideOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -15,8 +16,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.selection.selectable
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
-import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -33,31 +34,33 @@ internal fun MainBottomBar(
     tabs: List<MainTab>,
     currentTab: MainTab?,
     onTabSelected: (MainTab) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     AnimatedVisibility(
         visible = visible,
         enter = fadeIn() + slideIn { IntOffset(0, it.height) },
         exit = fadeOut() + slideOut { IntOffset(0, it.height) }
     ) {
-        Row(
-            modifier = modifier
-                .fillMaxWidth()
-                .height(56.dp)
-                .background(
-                    color = Theme.colors.bg
-                ),
-        ) {
-            VerticalDivider(
+        Column {
+            HorizontalDivider(
                 thickness = 1.dp,
                 color = Theme.colors.stroke
             )
-            tabs.forEach { tab ->
-                Item(
-                    tab = tab,
-                    selected = tab == currentTab,
-                    onClick = { onTabSelected(tab) }
-                )
+            Row(
+                modifier = modifier
+                    .fillMaxWidth()
+                    .height(56.dp)
+                    .background(
+                        color = Theme.colors.bg
+                    ),
+            ) {
+                tabs.forEach { tab ->
+                    Item(
+                        tab = tab,
+                        selected = tab == currentTab,
+                        onClick = { onTabSelected(tab) }
+                    )
+                }
             }
         }
     }
