@@ -33,6 +33,7 @@ internal fun MainBottomBar(
     tabs: List<MainTab>,
     currentTab: MainTab?,
     onTabSelected: (MainTab) -> Unit,
+    modifier: Modifier = Modifier
 ) {
     AnimatedVisibility(
         visible = visible,
@@ -40,7 +41,7 @@ internal fun MainBottomBar(
         exit = fadeOut() + slideOut { IntOffset(0, it.height) }
     ) {
         Row(
-            modifier = Modifier
+            modifier = modifier
                 .fillMaxWidth()
                 .height(56.dp)
                 .background(

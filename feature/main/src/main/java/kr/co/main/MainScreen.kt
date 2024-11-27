@@ -3,15 +3,20 @@ package kr.co.main
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -48,6 +53,7 @@ private fun MainScreen(
         },
         bottomBar = {
             MainBottomBar(
+                modifier = Modifier.navigationBarsPadding(),
                 visible = navigator.bottomBarVisible(),
                 tabs = MainTab.entries,
                 currentTab = navigator.currentTab(),
@@ -77,39 +83,51 @@ private fun MainTopBar(
     onSearchClick: () -> Unit = {},
     onSettingClick: () -> Unit = {},
 ) {
-    TopAppBar(
-        title = {
-            Text(
-                text = buildAnnotatedString {
-                    append("See")
-                    withStyle(Theme.typography.title1sb.copy(color = Theme.colors.highlight).toSpanStyle()) {
-                        append("Docs")
-                    }
-                },
-                style = Theme.typography.title1sb,
-            )
-        },
-        actions = {
-            Row(
-                modifier = Modifier.padding(end = 16.dp),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(16.dp)
-            ) {
-                Icon(
-                    modifier = Modifier.size(24.dp),
-                    imageVector = SeeDocsIcon.Search,
-                    contentDescription = "파일 검색",
-                    tint = Theme.colors.icon
+    Column {
+        TopAppBar(
+            title = {
+                Text(
+                    text = buildAnnotatedString {
+                        append("See")
+                        withStyle(
+                            Theme.typography.title1sb.copy(color = Theme.colors.highlight)
+                                .toSpanStyle()
+                        ) {
+                            append("Docs")
+                        }
+                    },
+                    style = Theme.typography.title1sb,
                 )
+            },
+            actions = {
+                Row(
+                    modifier = Modifier.padding(end = 16.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(16.dp)
+                ) {
+                    Icon(
+                        modifier = Modifier.size(24.dp),
+                        imageVector = SeeDocsIcon.Search,
+                        contentDescription = "파일 검색",
+                        tint = Theme.colors.icon
+                    )
 
-                Icon(
-                    modifier = Modifier.size(24.dp),
-                    imageVector = SeeDocsIcon.Settings,
-                    contentDescription = "설정",
-                    tint = Theme.colors.icon
-                )
-            }
-        }
+                    Icon(
+                        modifier = Modifier.size(24.dp),
+                        imageVector = SeeDocsIcon.Settings,
+                        contentDescription = "설정",
+                        tint = Theme.colors.icon
+                    )
+                }
+            },
+            colors = TopAppBarDefaults.topAppBarColors(
+                containerColor = Theme.colors.bg
+            )
+        )
+    }
+    HorizontalDivider(
+        thickness = 1.dp,
+        color = Theme.colors.stroke
     )
 }
 
