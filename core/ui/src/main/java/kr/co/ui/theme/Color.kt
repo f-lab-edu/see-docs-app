@@ -50,7 +50,7 @@ internal val LightColors = SeeDocsColors(
 
 internal val DarkColors = SeeDocsColors(
     material = darkColorScheme(),
-    bg = Gray7,
+    bg = Black,
     text = Gray1,
     highlight = Blue2,
     icon = Gray1,
