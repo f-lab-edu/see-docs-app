@@ -1,8 +1,7 @@
-package kr.co.widget
+package kr.co.ui.widget
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -23,7 +22,7 @@ import kr.co.ui.theme.SeeDocsTheme
 import kr.co.ui.theme.Theme
 
 @Composable
-internal fun FileBox(
+fun FileBox(
     name: String,
     onFileClick: () -> Unit = {},
 ) {
