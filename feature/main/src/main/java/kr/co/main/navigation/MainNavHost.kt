@@ -3,6 +3,7 @@ package kr.co.main.navigation
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
+import kr.co.navigation.bookmarkNavGraph
 import kr.co.navigation.exploreNavGraph
 import kr.co.navigation.recentNavGraph
 
@@ -20,6 +21,10 @@ internal fun MainNavHost(
         )
 
         recentNavGraph(
+            padding = padding
+        )
+
+        bookmarkNavGraph(
             padding = padding
         )
     }
