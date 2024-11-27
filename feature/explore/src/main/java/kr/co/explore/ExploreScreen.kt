@@ -26,16 +26,19 @@ import kr.co.widget.FolderBox
 @Composable
 internal fun ExploreRoute(
     padding: PaddingValues,
+    navigateToPdf: () -> Unit = {}
 ) {
 
     ExploreScreen(
         padding = padding,
+        onFileClick = navigateToPdf
     )
 }
 
 @Composable
 private fun ExploreScreen(
     padding: PaddingValues,
+    onFileClick: () -> Unit = {}
 ) {
     Box(
         modifier = Modifier
@@ -93,7 +96,8 @@ private fun ExploreScreen(
                 span = { GridItemSpan(maxLineSpan) }
             ) { file ->
                 FileBox(
-                    name = file
+                    name = file,
+                    onFileClick = onFileClick
                 )
             }
         }

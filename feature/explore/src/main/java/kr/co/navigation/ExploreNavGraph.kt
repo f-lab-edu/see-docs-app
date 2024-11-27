@@ -6,11 +6,13 @@ import androidx.navigation.compose.composable
 import kr.co.explore.ExploreRoute
 
 fun NavGraphBuilder.exploreNavGraph(
-    padding: PaddingValues
+    padding: PaddingValues,
+    navigateToPdf: () -> Unit = {}
 ) {
     composable<MainNavigation.Explore> {
         ExploreRoute(
-            padding = padding
+            padding = padding,
+            navigateToPdf = navigateToPdf
         )
     }
 }
