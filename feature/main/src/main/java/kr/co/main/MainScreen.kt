@@ -99,12 +99,14 @@ private fun MainTopBar(
                     modifier = Modifier.size(24.dp),
                     imageVector = SeeDocsIcon.Search,
                     contentDescription = "파일 검색",
+                    tint = Theme.colors.icon
                 )
 
                 Icon(
                     modifier = Modifier.size(24.dp),
                     imageVector = SeeDocsIcon.Settings,
                     contentDescription = "설정",
+                    tint = Theme.colors.icon
                 )
             }
         }
