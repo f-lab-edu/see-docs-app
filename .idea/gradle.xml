@@ -37,6 +37,7 @@
             <option value="$PROJECT_DIR$/feature/bookmark" />
             <option value="$PROJECT_DIR$/feature/explore" />
             <option value="$PROJECT_DIR$/feature/main" />
+            <option value="$PROJECT_DIR$/feature/pdf" />
             <option value="$PROJECT_DIR$/feature/recent" />
           </set>
         </option>
