@@ -3,6 +3,7 @@ package kr.co.main.navigation
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
+import kr.co.navigation.MainNavigation
 import kr.co.navigation.Route
 import kr.co.navigation.bookmarkNavGraph
 import kr.co.navigation.exploreNavGraph
@@ -20,7 +21,8 @@ internal fun MainNavHost(
     ) {
         exploreNavGraph(
             padding = padding,
-            navigateToPdf = { navigator.navigate(Route.Pdf){null} }
+            navigateToFolder = { navigator.navigate(MainNavigation.Explore(it)) },
+            navigateToPdf = { navigator.navigate(Route.Pdf) }
         )
 
         recentNavGraph(

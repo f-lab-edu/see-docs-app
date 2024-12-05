@@ -22,29 +22,39 @@ import kr.co.ui.theme.SeeDocsTheme
 import kr.co.ui.theme.Theme
 import kr.co.ui.widget.FileBox
 import kr.co.widget.FolderBox
+import java.io.File
 
 @Composable
 internal fun ExploreRoute(
+    path: String,
     padding: PaddingValues,
-    navigateToPdf: () -> Unit = {}
+    navigateToFolder: (String) -> Unit = {},
+    navigateToPdf: () -> Unit = {},
 ) {
+    val files = readPDFOrDirectory(path)
 
     ExploreScreen(
+        path = path.replace("/storage/emulated/0", "내장 저장 공간"),
+        files = files,
         padding = padding,
+        onFolderClick = { folderPath -> navigateToFolder(folderPath) },
         onFileClick = navigateToPdf
     )
 }
 
 @Composable
 private fun ExploreScreen(
+    path: String,
+    files: List<Item> = emptyList(),
     padding: PaddingValues,
+    onFolderClick: (String) -> Unit = {},
     onFileClick: () -> Unit = {}
 ) {
     Box(
         modifier = Modifier
             .fillMaxSize()
             .padding(padding)
-            .background(color = Theme.colors.bg)
+            .background(color = Theme.colors.bg),
     ) {
         LazyVerticalGrid(
             modifier = Modifier
@@ -71,12 +81,13 @@ private fun ExploreScreen(
                     )
                     Text(
                         text = buildAnnotatedString {
-                            append("규상의 S24 >")
+                            append(">${path.split("/").dropLast(1).joinToString(separator = "/")}")
+                            append("/")
                             withStyle(
                                 Theme.typography.caption1r.copy(color = Theme.colors.highlight)
                                     .toSpanStyle()
                             ) {
-                                append("Download")
+                                append(path.split("/").last())
                             }
                         },
                         style = Theme.typography.caption1r,
@@ -85,18 +96,19 @@ private fun ExploreScreen(
                 }
             }
 
-            items(listOf("Download", "Documents", "DCIM")) { folder ->
+            items(files.filter { it.isDirectory }) { folder ->
                 FolderBox(
-                    name = folder
+                    name = folder.name,
+                    onClick = { onFolderClick(folder.path) }
                 )
             }
 
             items(
-                items = listOf("Effective Kotlin", "Android Developer"),
+                items = files.filter { !it.isDirectory },
                 span = { GridItemSpan(maxLineSpan) }
             ) { file ->
                 FileBox(
-                    name = file,
+                    name = file.name,
                     onFileClick = onFileClick
                 )
             }
@@ -104,11 +116,31 @@ private fun ExploreScreen(
     }
 }
 
+private fun readPDFOrDirectory(
+    path: String,
+): List<Item> =
+    File(path).listFiles()?.filter { !it.isHidden && (it.isDirectory || it.extension == "pdf") }?.map {
+        Item(
+            name = it.name,
+            path = it.path,
+            type = it.extension,
+            isDirectory = it.isDirectory
+        )
+    }?: emptyList()
+
+private data class Item(
+    val name: String,
+    val path: String,
+    val type: String,
+    val isDirectory: Boolean,
+)
+
 @Preview
 @Composable
 private fun Preview() {
     SeeDocsTheme {
         ExploreScreen(
+            path = "/storage/emulated/0/Download",
             padding = PaddingValues(),
         )
     }
