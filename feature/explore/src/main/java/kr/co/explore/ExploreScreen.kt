@@ -29,7 +29,7 @@ internal fun ExploreRoute(
     path: String,
     padding: PaddingValues,
     navigateToFolder: (String) -> Unit = {},
-    navigateToPdf: () -> Unit = {},
+    navigateToPdf: (String) -> Unit = {},
 ) {
     val files = readPDFOrDirectory(path)
 
@@ -48,7 +48,7 @@ private fun ExploreScreen(
     files: List<Item> = emptyList(),
     padding: PaddingValues,
     onFolderClick: (String) -> Unit = {},
-    onFileClick: () -> Unit = {}
+    onFileClick: (String) -> Unit = {}
 ) {
     Box(
         modifier = Modifier
@@ -109,7 +109,7 @@ private fun ExploreScreen(
             ) { file ->
                 FileBox(
                     name = file.name,
-                    onFileClick = onFileClick
+                    onFileClick = { onFileClick(file.path) }
                 )
             }
         }
