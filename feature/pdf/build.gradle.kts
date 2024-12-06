@@ -6,3 +6,7 @@ plugins {
 }
 
 setNamespace("feature.pdf")
+
+dependencies {
+    implementation("net.engawapg.lib:zoomable:1.6.2")
+}
