@@ -89,8 +89,8 @@ private fun PdfImage(
     LaunchedEffect(Unit) {
         isLoading = true
         val page = renderer.openPage(pageIndex)
-        Bitmap.createBitmap(page.width, page.height, Bitmap.Config.ARGB_8888).also {
-            page.render(it, null, null, PdfRenderer.Page.RENDER_MODE_FOR_PRINT)
+        Bitmap.createBitmap(page.width * 3, page.height * 3, Bitmap.Config.ARGB_8888).also {
+            page.render(it, null, null, PdfRenderer.Page.RENDER_MODE_FOR_DISPLAY)
             bitmap = it
             page.close()
             isLoading = false
