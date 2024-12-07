@@ -20,6 +20,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
@@ -40,12 +42,14 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
+import androidx.core.text.isDigitsOnly
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kr.co.ui.theme.SeeDocsTheme
 import kr.co.ui.theme.Theme
 import kr.co.ui.widget.SimpleTextField
+import kr.co.ui.widget.TextFieldInputType
 import net.engawapg.lib.zoomable.rememberZoomState
 import net.engawapg.lib.zoomable.zoomable
 import java.io.File
@@ -69,11 +73,15 @@ internal fun PdfRoute(
     }
 
     var isTopBarVisible by remember { mutableStateOf(false) }
+
     var tobBarJob by remember { mutableStateOf<Job?>(null) }
+
+    val listState = rememberLazyListState()
 
     renderer?.let {
         PdfScreen(
             renderer = it,
+            listState = listState,
             isTopBarVisible = isTopBarVisible,
             onTopBarVisibleChange = {
                 tobBarJob?.cancel()
@@ -84,6 +92,11 @@ internal fun PdfRoute(
                     isTopBarVisible = false
                 }
             },
+            onPageIndexChange = { page ->
+                scope.launch {
+                    listState.scrollToItem(page - 1)
+                }
+            },
             popBackStack = popBackStack
         )
     }
@@ -92,8 +105,10 @@ internal fun PdfRoute(
 @Composable
 private fun PdfScreen(
     renderer: PdfRenderer,
+    listState: LazyListState = rememberLazyListState(),
     isTopBarVisible: Boolean = false,
     onTopBarVisibleChange: () -> Unit,
+    onPageIndexChange: (Int) -> Unit = {},
     popBackStack: () -> Unit = {},
 ) {
     Box(
@@ -115,6 +130,7 @@ private fun PdfScreen(
                         }
                     )
                 },
+            state = listState,
             verticalArrangement = Arrangement.spacedBy(4.dp)
         ) {
             items(renderer.pageCount) { page ->
@@ -135,7 +151,9 @@ private fun PdfScreen(
             }
         ) {
             PdfTopBar(
-
+                currentPage = listState.firstVisibleItemIndex + 1,
+                totalPage = renderer.pageCount,
+                onPageIndexChange = onPageIndexChange
             )
         }
     }
@@ -195,7 +213,16 @@ private fun PdfImage(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun PdfTopBar(
+    currentPage: Int = 1,
+    totalPage: Int = 1,
+    onPageIndexChange: (Int) -> Unit = {}
 ) {
+    val (page,onPageChange) = remember { mutableStateOf(currentPage.toString()) }
+
+    LaunchedEffect(currentPage) {
+        onPageChange(currentPage.toString())
+    }
+
     TopAppBar(
         title = {
             Row(
@@ -210,15 +237,19 @@ private fun PdfTopBar(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 SimpleTextField(
-                    modifier = Modifier.width(40.dp),
-                    value = "1",
-                    onValueChange = {},
+                    modifier = Modifier.width(56.dp),
+                    value = page,
+                    onValueChange = {
+                        onPageChange(it)
+                        if(it.isNotEmpty() && it.isDigitsOnly()) onPageIndexChange(it.toInt())
+                    },
+                    inputType = TextFieldInputType.NUMBER
                 )
 
                 Spacer(Modifier.width(4.dp))
 
                 Text(
-                    text = "/34",
+                    text = "/$totalPage",
                     style = Theme.typography.body1sb,
                     color = Theme.colors.text
                 )
