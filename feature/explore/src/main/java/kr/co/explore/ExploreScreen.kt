@@ -18,11 +18,12 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import kr.co.model.FileInfo
 import kr.co.ui.theme.SeeDocsTheme
 import kr.co.ui.theme.Theme
 import kr.co.ui.widget.FileBox
+import kr.co.util.readPDFOrDirectory
 import kr.co.widget.FolderBox
-import java.io.File
 
 @Composable
 internal fun ExploreRoute(
@@ -45,7 +46,7 @@ internal fun ExploreRoute(
 @Composable
 private fun ExploreScreen(
     path: String,
-    files: List<Item> = emptyList(),
+    files: List<FileInfo> = emptyList(),
     padding: PaddingValues,
     onFolderClick: (String) -> Unit = {},
     onFileClick: (String) -> Unit = {}
@@ -115,25 +116,6 @@ private fun ExploreScreen(
         }
     }
 }
-
-private fun readPDFOrDirectory(
-    path: String,
-): List<Item> =
-    File(path).listFiles()?.filter { !it.isHidden && (it.isDirectory || it.extension == "pdf") }?.map {
-        Item(
-            name = it.name,
-            path = it.path,
-            type = it.extension,
-            isDirectory = it.isDirectory
-        )
-    }?: emptyList()
-
-private data class Item(
-    val name: String,
-    val path: String,
-    val type: String,
-    val isDirectory: Boolean,
-)
 
 @Preview
 @Composable
