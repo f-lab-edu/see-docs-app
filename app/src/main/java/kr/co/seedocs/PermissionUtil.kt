@@ -61,7 +61,7 @@ private fun requestStoragePermissionApi30(
     activity.startActivityForResult(intent, MANAGE_EXTERNAL_STORAGE_PERMISSION_REQUEST)
 }
 
-fun requestStoragePermissionApi19(activity: ComponentActivity) {
+private fun requestStoragePermissionApi19(activity: ComponentActivity) {
     val permissions = arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE)
     ActivityCompat.requestPermissions(
         activity,
