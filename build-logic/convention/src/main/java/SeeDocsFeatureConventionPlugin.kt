@@ -16,7 +16,7 @@ class SeeDocsFeatureConventionPlugin : Plugin<Project> {
                 implementations(
                     project(":core:ui"),
                     project(":core:common"),
-                    project(":core:domain"),
+                    project(":core:data"),
                     project(":core:navigation"),
                     project(":core:model"),
                 )
