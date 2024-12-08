@@ -16,8 +16,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import kr.co.seedocs.feature.explore.R
 import kr.co.ui.icon.SeeDocsIcon
 import kr.co.ui.icon.seedocsicon.Folder
 import kr.co.ui.theme.SeeDocsTheme
@@ -48,7 +50,7 @@ internal fun FolderBox(
         ) {
             Icon(
                 imageVector = SeeDocsIcon.Folder,
-                contentDescription = "폴더",
+                contentDescription = stringResource(R.string.feature_explore_folder),
                 tint = Theme.colors.grayText,
             )
 

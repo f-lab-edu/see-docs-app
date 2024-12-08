@@ -8,7 +8,7 @@ import java.io.File
 internal suspend fun readPDFOrDirectory(
     path: String,
 ): List<FileInfo> = withContext(Dispatchers.IO) {
-    File(path).listFiles()?.filter { !it.isHidden && (it.isDirectory || it.extension == "pdf") }
+    File(path).listFiles()?.filter { !it.isHidden && (it.isDirectory || it.extension == PDF) }
         ?.map {
             FileInfo(
                 name = it.name,
@@ -20,3 +20,7 @@ internal suspend fun readPDFOrDirectory(
             )
         } ?: emptyList()
 }
+
+internal const val DEFAULT_STORAGE = "/storage/emulated/0"
+
+private const val PDF = "pdf"
