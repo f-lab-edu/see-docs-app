@@ -13,7 +13,7 @@ internal enum class MainTab(
     Explore(
         icon = SeeDocsIcon.Explore,
         contentDescription = "Explore",
-        route = MainNavigation.Explore,
+        route = MainNavigation.Explore(),
     ),
     Recent(
         icon = SeeDocsIcon.RecentFill,

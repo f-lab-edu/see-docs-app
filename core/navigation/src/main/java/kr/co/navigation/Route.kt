@@ -6,6 +6,9 @@ sealed interface Route {
 
     @Serializable
     data class View(val channel: String) : Route
+
+    @Serializable
+    data object Pdf : Route
 }
 
 sealed interface MainNavigation {
