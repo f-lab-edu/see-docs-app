@@ -19,14 +19,17 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import kr.co.model.FileInfo
+import kr.co.seedocs.feature.explore.R
 import kr.co.ui.theme.SeeDocsTheme
 import kr.co.ui.theme.Theme
 import kr.co.ui.widget.FileBox
+import kr.co.util.DEFAULT_STORAGE
 import kr.co.util.readPDFOrDirectory
 import kr.co.widget.FolderBox
 
@@ -44,7 +47,8 @@ internal fun ExploreRoute(
     }
 
     ExploreScreen(
-        path = path.replace("/storage/emulated/0", "내장 저장 공간"),
+        path = path.replace(DEFAULT_STORAGE,
+            stringResource(R.string.feature_explore_local_storage)),
         files = files,
         padding = padding,
         onFolderClick = { folderPath -> navigateToFolder(folderPath) },
@@ -85,7 +89,7 @@ private fun ExploreScreen(
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     Text(
-                        text = "파일 탐색",
+                        text = stringResource(R.string.feature_explore_file_explore),
                         style = Theme.typography.body1sb,
                         color = Theme.colors.text
                     )
@@ -131,7 +135,7 @@ private fun ExploreScreen(
 private fun Preview() {
     SeeDocsTheme {
         ExploreScreen(
-            path = "/storage/emulated/0/Download",
+            path = DEFAULT_STORAGE,
             padding = PaddingValues(),
         )
     }

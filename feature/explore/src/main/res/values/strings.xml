@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="feature_explore_local_storage">내장 저장 공간</string>
+    <string name="feature_explore_file_explore">파일 탐색</string>
+    <string name="feature_explore_folder">폴더</string>
+</resources>
