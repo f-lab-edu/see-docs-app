@@ -33,7 +33,6 @@ android {
 
 dependencies {
     implementation(projects.core.ui)
-    implementation(projects.core.domain)
     implementation(projects.core.data)
     implementation(projects.core.navigation)
     implementation(projects.feature.main)
