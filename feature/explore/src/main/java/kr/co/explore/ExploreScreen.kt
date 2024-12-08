@@ -13,6 +13,11 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.withStyle
@@ -32,7 +37,11 @@ internal fun ExploreRoute(
     navigateToFolder: (String) -> Unit = {},
     navigateToPdf: (String) -> Unit = {},
 ) {
-    val files = readPDFOrDirectory(path)
+    var files by remember { mutableStateOf<List<FileInfo>>(emptyList()) }
+
+    LaunchedEffect(Unit) {
+        files = readPDFOrDirectory(path)
+    }
 
     ExploreScreen(
         path = path.replace("/storage/emulated/0", "내장 저장 공간"),
