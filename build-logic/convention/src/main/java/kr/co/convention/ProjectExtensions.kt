@@ -2,6 +2,7 @@ package kr.co.convention
 
 import org.gradle.accessors.dm.LibrariesForLibs
 import org.gradle.api.Project
+import org.gradle.kotlin.dsl.apply
 import org.gradle.kotlin.dsl.dependencies
 import org.gradle.kotlin.dsl.the
 
@@ -9,6 +10,9 @@ import org.gradle.kotlin.dsl.the
 internal val Project.libs get() = the<LibrariesForLibs>()
 
 fun Project.App() {
+    project.pluginManager.apply {
+        apply("com.google.devtools.ksp")
+    }
     project.dependencies {
         implementations(
             libs.androidx.core.splashscreen,
@@ -23,6 +27,7 @@ fun Project.App() {
             libs.compose.lifecycle.runtime,
             libs.compose.navigation,
             libs.compose.hilt.navigation,
+            libs.koin.compose,
         )
 
         testImplementations(

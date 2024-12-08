@@ -19,6 +19,7 @@ kotlin = "2.0.20"
 kotlinxCoroutines = "1.9.0"
 kotlinxSerializationJson = "1.7.2"
 
+koin = "4.0.0"
 hilt = "2.52"
 dataStore = "1.1.1"
 coil = "3.0.0-rc01"
@@ -52,6 +53,15 @@ androidx-core-splashscreen = { group = "androidx.core", name = "core-splashscree
 
 kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
 kotlinx-coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "kotlinxCoroutines" }
+
+koin-core = { group = "io.insert-koin", name = "koin-core", version.ref = "koin" }
+koin-compose = { group = "io.insert-koin", name = "koin-androidx-compose", version.ref = "koin" }
+koin-compose-navigation = { group = "io.insert-koin", name = "koin-androidx-compose-navigation", version.ref = "koin" }
+koin-ktor = { group = "io.insert-koin", name = "koin-ktor", version.ref = "koin" }
+koin-logger = { group = "io.insert-koin", name = "koin-logger-slf4j", version.ref = "koin" }
+
+koin-test = { group = "io.insert-koin", name = "koin-test", version.ref = "koin" }
+koin-junit = { group = "io.insert-koin", name = "koin-test-junit4", version.ref = "koin" }
 
 hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
 hilt-compiler = { group = "com.google.dagger", name = "hilt-android-compiler", version.ref = "hilt" }

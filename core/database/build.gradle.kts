@@ -3,7 +3,6 @@ import kr.co.convention.setNamespace
 
 plugins {
     alias(libs.plugins.seedocs.library)
-    alias(libs.plugins.seedocs.hilt)
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.room)
 }
@@ -26,8 +25,6 @@ android {
 
 dependencies {
     implementation(projects.core.common)
-    implementation(projects.core.data)
-    implementation(projects.core.model)
 
     Local()
 }

@@ -1,4 +1,5 @@
 import kr.co.convention.implementations
+import kr.co.convention.libs
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.dependencies
@@ -9,7 +10,6 @@ class SeeDocsFeatureConventionPlugin : Plugin<Project> {
         with(target) {
             pluginManager.apply {
                 apply("seedocs.library")
-                apply("seedocs.hilt")
             }
 
             dependencies {
@@ -19,6 +19,7 @@ class SeeDocsFeatureConventionPlugin : Plugin<Project> {
                     project(":core:data"),
                     project(":core:navigation"),
                     project(":core:model"),
+                    libs.koin.compose
                 )
             }
         }
