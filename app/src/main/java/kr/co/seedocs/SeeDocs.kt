@@ -1,6 +1,7 @@
 package kr.co.seedocs
 
 import android.app.Application
+import kr.co.data.di.repositoryModule
 import kr.co.database.di.databaseModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
@@ -11,6 +12,7 @@ import timber.log.Timber
 private val allModules =
     listOf(
         databaseModule,
+        repositoryModule
     )
 
 class SeeDocs: Application() {
