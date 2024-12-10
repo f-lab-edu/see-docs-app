@@ -1,5 +1,3 @@
 package kr.co.common.util
 
-interface Mapper<LEFT, RIGHT> {
-    fun mapToRight(from: LEFT): RIGHT
-}
+typealias Mapper<T, R> = (T) -> R

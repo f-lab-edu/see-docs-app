@@ -8,7 +8,7 @@ abstract class ResultMapper<LEFT, RIGHT> : Mapper<LEFT,RIGHT> {
 
     fun convert(result: CommonResult<LEFT>): CommonResult<RIGHT> =
         if (result.isSuccess) {
-            CommonResult.success(mapToRight(result.getOrThrow()))
+            CommonResult.success(invoke(result.getOrThrow()))
         } else {
             CommonResult.failure(result.exceptionOrNull()?: CommonException.illegalStateException)
         }
