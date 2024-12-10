@@ -18,5 +18,6 @@ data class RecentFile(
         EXCEL,
         PPTX,
         TXT,
+        IMAGE,
     }
 }
