@@ -13,26 +13,38 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import kr.co.model.BookmarkUiState
 import kr.co.ui.theme.SeeDocsTheme
 import kr.co.ui.theme.Theme
 import kr.co.ui.widget.FileBox
+import org.koin.androidx.compose.koinViewModel
 import java.time.LocalDateTime
 
 @Composable
 internal fun BookmarkRoute(
-    padding: PaddingValues
+    padding: PaddingValues,
+    viewModel: BookmarkViewModel = koinViewModel(),
+    navigateToPdf: (String) -> Unit = {}
 ) {
+    val state by viewModel.uiState.collectAsStateWithLifecycle()
+    
     BookmarkScreen(
-        padding = padding
+        padding = padding,
+        state = state,
+        onFileClick = navigateToPdf
     )
 }
 
 @Composable
 private fun BookmarkScreen(
     padding: PaddingValues,
+    state: BookmarkUiState = BookmarkUiState.EMPTY,
+    onFileClick: (String) -> Unit = {}
 ) {
     Box(
         modifier = Modifier
@@ -56,10 +68,11 @@ private fun BookmarkScreen(
                 )
             }
 
-            items(listOf("Effective Kotlin", "Android Developer")) { file ->
+            items(state.files) { file ->
                 FileBox(
-                    name = file,
-                    dateTime = LocalDateTime.now()
+                    name = file.name,
+                    dateTime = file.createdAt,
+                    onFileClick = { onFileClick(file.path) }
                 )
             }
         }
