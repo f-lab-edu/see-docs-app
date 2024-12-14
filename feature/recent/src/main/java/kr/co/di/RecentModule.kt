@@ -1,9 +1,10 @@
 package kr.co.di
 
-import org.koin.core.module.dsl.viewModelOf
+import kr.co.recent.RecentViewModel
+import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 
 val recentModule =
     module {
-        viewModelOf(::RecentViewModel)
+        viewModel { RecentViewModel(get()) }
     }
