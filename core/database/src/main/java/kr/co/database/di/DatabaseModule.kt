@@ -10,6 +10,7 @@ val databaseModule =
     module {
         single { provideDatabase(get()) }
         single { provideRecentFileDao(get()) }
+        single { provideBookmarkFileDao(get()) }
     }
 
 private fun provideDatabase(
@@ -22,3 +23,7 @@ private fun provideDatabase(
 private fun provideRecentFileDao(
     database: SeeDocsDatabase,
 ) = database.recentFileDao()
+
+private fun provideBookmarkFileDao(
+    database: SeeDocsDatabase,
+) = database.bookmarkFileDao()
