@@ -15,6 +15,8 @@ internal class RecentFileMapper : Mapper<FileInfo, RecentFile> {
                 FileInfo.Type.FOLDER -> RecentFile.Type.PDF
             },
             size = p1.size,
+            createdAt = p1.createdAt,
+            lastModified = p1.lastModified
         )
 
     fun toFileInfo(recentFile: RecentFile): FileInfo =
@@ -25,5 +27,7 @@ internal class RecentFileMapper : Mapper<FileInfo, RecentFile> {
             isDirectory = false,
             isHidden = false,
             size = recentFile.size,
+            createdAt = recentFile.createdAt,
+            lastModified = recentFile.lastModified
         )
 }

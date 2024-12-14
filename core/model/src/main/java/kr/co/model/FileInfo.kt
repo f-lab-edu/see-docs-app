@@ -1,5 +1,7 @@
 package kr.co.model
 
+import java.time.LocalDateTime
+
 data class FileInfo(
     val name: String,
     val path: String,
@@ -7,6 +9,8 @@ data class FileInfo(
     val isDirectory: Boolean,
     val isHidden: Boolean,
     val size: Long,
+    val createdAt: LocalDateTime,
+    val lastModified: LocalDateTime
 ) {
     enum class Type {
         PDF,
@@ -21,6 +25,17 @@ data class FileInfo(
                     "jpg", "jpeg", "png", "gif" -> IMAGE
                     else -> IMAGE
                 }
+
+            val DUMMY = FileInfo(
+                name = "DUMMY",
+                path = "",
+                type = PDF,
+                isDirectory = false,
+                isHidden = false,
+                size = 0,
+                createdAt = LocalDateTime.now(),
+                lastModified = LocalDateTime.now()
+            )
         }
     }
 }
