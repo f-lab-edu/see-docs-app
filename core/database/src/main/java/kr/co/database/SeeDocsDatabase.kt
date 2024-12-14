@@ -5,14 +5,17 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import kr.co.database.converter.EnumConverter
 import kr.co.database.converter.LocalDateTimeConverter
+import kr.co.database.dao.BookmarkFileDao
 import kr.co.database.dao.RecentFileDao
+import kr.co.database.model.BookmarkFile
 import kr.co.database.model.RecentFile
 
 @Database(
     entities = [
-        RecentFile::class
+        RecentFile::class,
+        BookmarkFile::class
     ],
-    version = 1,
+    version = 2,
     exportSchema = true
 )
 
@@ -25,4 +28,6 @@ import kr.co.database.model.RecentFile
 abstract class SeeDocsDatabase : RoomDatabase() {
 
     abstract fun recentFileDao(): RecentFileDao
+
+    abstract fun bookmarkFileDao(): BookmarkFileDao
 }
