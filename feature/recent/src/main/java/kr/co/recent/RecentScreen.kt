@@ -13,25 +13,34 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import kr.co.model.RecentUiState
 import kr.co.ui.theme.SeeDocsTheme
 import kr.co.ui.theme.Theme
 import kr.co.ui.widget.FileBox
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 internal fun RecentRoute(
-    padding: PaddingValues
+    padding: PaddingValues,
+    viewModel: RecentViewModel = koinViewModel()
 ) {
+    val state by viewModel.uiState.collectAsStateWithLifecycle()
+
     RecentScreen(
-        padding = padding
+        padding = padding,
+        state = state
     )
 }
 
 @Composable
 private fun RecentScreen(
     padding: PaddingValues,
+    state: RecentUiState = RecentUiState.EMPTY
 ) {
     Box(
         modifier = Modifier
@@ -55,9 +64,10 @@ private fun RecentScreen(
                 )
             }
 
-            items(listOf("Effective Kotlin", "Android Developer")) { file ->
+            items(state.files) { file ->
                 FileBox(
-                    name = file
+                    name = file.name,
+                    dateTime = file.createdAt
                 )
             }
         }

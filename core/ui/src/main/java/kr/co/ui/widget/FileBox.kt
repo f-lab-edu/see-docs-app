@@ -22,10 +22,13 @@ import kr.co.ui.icon.SeeDocsIcon
 import kr.co.ui.icon.seedocsicon.PDF
 import kr.co.ui.theme.SeeDocsTheme
 import kr.co.ui.theme.Theme
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 @Composable
 fun FileBox(
     name: String,
+    dateTime: LocalDateTime,
     onFileClick: () -> Unit = {},
 ) {
     Row(
@@ -37,7 +40,7 @@ fun FileBox(
                 horizontal = 8.dp
             )
             .semantics { 
-                contentDescription = "$name"
+                contentDescription = name
             },
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(24.dp)
@@ -59,7 +62,7 @@ fun FileBox(
                 color = Theme.colors.text
             )
             Text(
-                text = "2023.01.01",
+                text = dateTime.format(DateTimeFormatter.ofPattern("yyyy.MM.dd")),
                 style = Theme.typography.caption1r,
                 color = Theme.colors.grayText
             )
@@ -71,6 +74,6 @@ fun FileBox(
 @Composable
 private fun Preview() {
     SeeDocsTheme {
-        FileBox("Effective Kotlin")
+        FileBox("Effective Kotlin", LocalDateTime.now())
     }
 }

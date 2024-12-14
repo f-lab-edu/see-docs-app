@@ -123,6 +123,7 @@ private fun ExploreScreen(
             ) { file ->
                 FileBox(
                     name = file.name,
+                    dateTime = file.createdAt,
                     onFileClick = { onFileClick(file.path) }
                 )
             }

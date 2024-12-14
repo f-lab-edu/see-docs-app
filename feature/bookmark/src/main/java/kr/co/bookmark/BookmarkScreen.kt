@@ -19,6 +19,7 @@ import androidx.compose.ui.unit.dp
 import kr.co.ui.theme.SeeDocsTheme
 import kr.co.ui.theme.Theme
 import kr.co.ui.widget.FileBox
+import java.time.LocalDateTime
 
 @Composable
 internal fun BookmarkRoute(
@@ -57,7 +58,8 @@ private fun BookmarkScreen(
 
             items(listOf("Effective Kotlin", "Android Developer")) { file ->
                 FileBox(
-                    name = file
+                    name = file,
+                    dateTime = LocalDateTime.now()
                 )
             }
         }

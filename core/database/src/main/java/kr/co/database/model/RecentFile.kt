@@ -11,6 +11,8 @@ data class RecentFile(
     val type: Type,
     val size: Long,
     val updatedAt: LocalDateTime = LocalDateTime.now(),
+    val createdAt: LocalDateTime,
+    val lastModified: LocalDateTime
 ) {
     enum class Type {
         PDF,
