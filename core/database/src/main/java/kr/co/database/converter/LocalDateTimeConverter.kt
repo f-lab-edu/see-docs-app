@@ -1,10 +1,8 @@
 package kr.co.database.converter
 
-import androidx.room.ProvidedTypeConverter
 import androidx.room.TypeConverter
 import java.time.LocalDateTime
 
-@ProvidedTypeConverter
 internal class LocalDateTimeConverter {
 
     @TypeConverter
