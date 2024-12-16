@@ -13,23 +13,17 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
-    }
-
-    override fun onResume() {
-        super.onResume()
-
-        if (checkStoragePermission(this)) {
-            setContent()
-        } else {
-            requestStoragePermission(this)
-        }
-    }
-
-    private fun setContent() {
         setContent {
             SeeDocsTheme {
                 Main()
             }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        if (!checkStoragePermission(this))
+            requestStoragePermission(this)
     }
 }
