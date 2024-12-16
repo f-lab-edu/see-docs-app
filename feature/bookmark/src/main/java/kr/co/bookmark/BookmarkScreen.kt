@@ -55,6 +55,7 @@ private fun BookmarkScreen(
                 )
             }
 
+            //TODO 로컬에 저장된 북마크 데이터를 불러와 파일목록을 보여줄 예정
             items(listOf("Effective Kotlin", "Android Developer")) { file ->
                 FileBox(
                     name = file
