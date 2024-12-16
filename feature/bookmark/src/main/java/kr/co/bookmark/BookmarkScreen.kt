@@ -14,8 +14,10 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import kr.co.seedocs.feature.bookmark.R
 import kr.co.ui.theme.SeeDocsTheme
 import kr.co.ui.theme.Theme
 import kr.co.ui.widget.FileBox
@@ -49,7 +51,7 @@ private fun BookmarkScreen(
                 Spacer(Modifier.height(32.dp))
 
                 Text(
-                    text = "북마크",
+                    text = stringResource(R.string.feature_bookmark_bookmark),
                     style = Theme.typography.body1sb,
                     color = Theme.colors.text
                 )
