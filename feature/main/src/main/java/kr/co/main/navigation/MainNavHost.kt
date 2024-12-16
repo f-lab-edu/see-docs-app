@@ -20,7 +20,7 @@ internal fun MainNavHost(
     ) {
         exploreNavGraph(
             padding = padding,
-            navigateToPdf = { navigator.navigate(Route.Pdf){null} }
+            navigateToPdf = { navigator.navigate(Route.Pdf) }
         )
 
         recentNavGraph(

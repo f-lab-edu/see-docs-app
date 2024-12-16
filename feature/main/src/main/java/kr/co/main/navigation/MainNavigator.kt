@@ -47,7 +47,7 @@ internal class MainNavigator(
         navController.navigate(T::class, navOptions(builder))
     }
 
-    fun <T : Any> navigate(route: T, builder: NavOptionsBuilder.() -> Unit) {
+    fun <T : Any> navigate(route: T, builder: NavOptionsBuilder.() -> Unit = {}) {
         navController.navigate(route, navOptions(builder))
     }
 
