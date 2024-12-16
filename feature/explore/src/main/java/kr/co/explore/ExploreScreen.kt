@@ -57,13 +57,11 @@ private fun ExploreScreen(
             .background(color = Theme.colors.bg),
     ) {
         LazyVerticalGrid(
-            modifier = Modifier
-                .padding(
-                    top = 32.dp
-                )
-                .padding(
-                    horizontal = 16.dp
-                ),
+            contentPadding = PaddingValues(
+                top = 32.dp,
+                start = 16.dp,
+                end = 16.dp,
+            ),
             columns = GridCells.Fixed(2),
             horizontalArrangement = Arrangement.spacedBy(12.dp),
             verticalArrangement = Arrangement.spacedBy(24.dp)
