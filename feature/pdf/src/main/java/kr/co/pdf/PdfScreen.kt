@@ -27,7 +27,7 @@ private fun PdfScreen(
             .fillMaxSize()
             .background(Theme.colors.bg)
     ) {
-
+        //TODO PDF 화면 렌더링 기능 구현 후 UI 표시
     }
 }
 
