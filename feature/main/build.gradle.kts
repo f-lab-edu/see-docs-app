@@ -11,4 +11,5 @@ dependencies {
     implementation(projects.feature.explore)
     implementation(projects.feature.recent)
     implementation(projects.feature.bookmark)
+    implementation(projects.feature.pdf)
 }

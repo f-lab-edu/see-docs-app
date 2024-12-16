@@ -6,8 +6,10 @@ import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavHostController
 import androidx.navigation.NavOptions
+import androidx.navigation.NavOptionsBuilder
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navOptions
 import kr.co.navigation.MainNavigation
 import kr.co.navigation.Route
 
@@ -41,8 +43,12 @@ internal class MainNavigator(
         currentDestination?.hasRoute(it.route::class) == true
     }
 
-    fun navigate(route: Route, navOptions: NavOptions) {
-        navController.navigate(route, navOptions)
+    inline fun <reified T: Any> navigate(noinline builder: NavOptionsBuilder.() -> Unit = {}) {
+        navController.navigate(T::class, navOptions(builder))
+    }
+
+    fun <T : Any> navigate(route: T, builder: NavOptionsBuilder.() -> Unit = {}) {
+        navController.navigate(route, navOptions(builder))
     }
 
     fun popBackStack() {
