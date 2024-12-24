@@ -23,7 +23,7 @@ class MainActivity : ComponentActivity() {
     override fun onResume() {
         super.onResume()
 
-        if (!checkStoragePermission(this))
-            requestStoragePermission(this)
+        if (!checkStoragePermission())
+            requestStoragePermission()
     }
 }
