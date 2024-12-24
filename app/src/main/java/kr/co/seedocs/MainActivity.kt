@@ -7,7 +7,7 @@ import androidx.activity.enableEdgeToEdge
 import kr.co.main.Main
 import kr.co.ui.theme.SeeDocsTheme
 
-class MainActivity : ComponentActivity() {
+class MainActivity : PermissionActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
