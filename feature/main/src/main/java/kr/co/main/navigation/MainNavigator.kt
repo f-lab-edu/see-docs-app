@@ -20,7 +20,7 @@ internal class MainNavigator(
         @Composable get() = navController
             .currentBackStackEntryAsState().value?.destination
 
-    val startDestination: MainNavigation = MainNavigation.Explore
+    val startDestination: MainNavigation = MainNavigation.Explore()
 
     @Composable
     fun currentTab(): MainTab? =

@@ -55,7 +55,7 @@ internal fun MainBottomBar(
                     ),
             ) {
                 tabs.forEach { tab ->
-                    Item(
+                    BottomItem(
                         tab = tab,
                         selected = tab == currentTab,
                         onClick = { onTabSelected(tab) }
@@ -67,7 +67,7 @@ internal fun MainBottomBar(
 }
 
 @Composable
-private fun RowScope.Item(
+private fun RowScope.BottomItem(
     tab: MainTab,
     selected: Boolean,
     onClick: () -> Unit,
