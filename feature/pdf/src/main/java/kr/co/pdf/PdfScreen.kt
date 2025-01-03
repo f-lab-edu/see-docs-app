@@ -217,7 +217,7 @@ private fun PdfTopBar(
     totalPage: Int = 1,
     onPageIndexChange: (Int) -> Unit = {}
 ) {
-    val (page,onPageChange) = remember { mutableStateOf(currentPage.toString()) }
+    val (page, onPageChange) = remember { mutableStateOf(currentPage.toString()) }
 
     LaunchedEffect(currentPage) {
         onPageChange(currentPage.toString())
