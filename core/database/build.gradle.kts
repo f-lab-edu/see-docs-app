@@ -17,7 +17,7 @@ room {
 }
 
 android {
-    setNamespace("core.local")
+    setNamespace("core.database")
 
     buildFeatures {
         buildConfig = true
@@ -27,6 +27,7 @@ android {
 dependencies {
     implementation(projects.core.common)
     implementation(projects.core.data)
+    implementation(projects.core.model)
 
     Local()
 }

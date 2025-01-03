@@ -22,7 +22,7 @@ internal fun MainNavHost(
         exploreNavGraph(
             padding = padding,
             navigateToFolder = { navigator.navigate(MainNavigation.Explore(it)) },
-            navigateToPdf = { navigator.navigate(Route.Pdf) }
+            navigateToPdf = { navigator.navigate(Route.Pdf(it)) }
         )
 
         recentNavGraph(

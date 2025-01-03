@@ -28,11 +28,10 @@ include(":app")
 
 include(":core:ui")
 include(":core:common")
-include(":core:domain")
 include(":core:navigation")
 include(":core:model")
 include(":core:data")
-include(":core:local")
+include(":core:database")
 
 include(":feature:main")
 include(":feature:explore")
