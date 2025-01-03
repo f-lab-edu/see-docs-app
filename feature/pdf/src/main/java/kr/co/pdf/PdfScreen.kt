@@ -59,7 +59,7 @@ internal fun PdfRoute(
     path: String,
     popBackStack: () -> Unit = {},
 ) {
-    val uri = Uri.fromFile(File(path))
+    val uri = remember { Uri.fromFile(File(path)) }
 
     val context = LocalContext.current
 
