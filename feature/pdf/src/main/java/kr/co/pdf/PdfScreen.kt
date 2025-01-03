@@ -258,14 +258,6 @@ private fun PdfTopBar(
     )
 }
 
-@Preview
-@Composable
-private fun Preview() {
-    SeeDocsTheme {
-//        PdfScreen()
-    }
-}
-
 private const val SCALE_UP = 3
 
 @Preview
