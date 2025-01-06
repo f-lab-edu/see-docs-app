@@ -11,7 +11,7 @@ import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 
-abstract class PermissionActivity : ComponentActivity() {
+internal class PermissionManager {
 
     internal fun ComponentActivity.checkStoragePermission(): Boolean =
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {

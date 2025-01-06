@@ -7,7 +7,9 @@ import androidx.activity.enableEdgeToEdge
 import kr.co.main.Main
 import kr.co.ui.theme.SeeDocsTheme
 
-class MainActivity : PermissionActivity() {
+class MainActivity : ComponentActivity() {
+
+    private val permissionManager = PermissionManager()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,7 +25,9 @@ class MainActivity : PermissionActivity() {
     override fun onResume() {
         super.onResume()
 
-        if (!checkStoragePermission())
-            requestStoragePermission()
+        permissionManager.run {
+            if (!checkStoragePermission())
+                requestStoragePermission()
+        }
     }
 }
