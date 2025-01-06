@@ -80,7 +80,7 @@ internal fun PdfRoute(
             renderer = it,
             listState = listState,
             isTopBarVisible = tabBarState.topBarVisible,
-            onTopBarVisibleChange = tabBarState::onBodyPress,
+            onPdfBodyPressed = tabBarState::onBodyPress,
             onPageIndexChange = { page ->
                 scope.launch {
                     listState.scrollToItem(page - 1)
@@ -96,7 +96,7 @@ private fun PdfScreen(
     renderer: PdfRenderer,
     listState: LazyListState = rememberLazyListState(),
     isTopBarVisible: Boolean = false,
-    onTopBarVisibleChange: () -> Unit,
+    onPdfBodyPressed: () -> Unit,
     onPageIndexChange: (Int) -> Unit = {},
     popBackStack: () -> Unit = {},
 ) {
@@ -112,10 +112,10 @@ private fun PdfScreen(
                 .pointerInput(null) {
                     detectTapGestures(
                         onTap = {
-                            onTopBarVisibleChange()
+                            onPdfBodyPressed()
                         },
                         onPress = {
-                            onTopBarVisibleChange()
+                            onPdfBodyPressed()
                         }
                     )
                 },
