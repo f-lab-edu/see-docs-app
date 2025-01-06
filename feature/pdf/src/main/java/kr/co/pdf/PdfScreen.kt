@@ -28,11 +28,10 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.asImageBitmap
@@ -43,12 +42,15 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.core.text.isDigitsOnly
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.coroutines.launch
 import kr.co.ui.theme.SeeDocsTheme
 import kr.co.ui.theme.Theme
 import kr.co.ui.util.rememberTopBarState
 import kr.co.ui.widget.SimpleTextField
 import kr.co.ui.widget.TextFieldInputType
+import kr.co.util.PdfToBitmap
+import kr.co.util.rememberPdfState
 import net.engawapg.lib.zoomable.rememberZoomState
 import net.engawapg.lib.zoomable.zoomable
 import java.io.File
@@ -86,7 +88,6 @@ internal fun PdfRoute(
                     listState.scrollToItem(page - 1)
                 }
             },
-            popBackStack = popBackStack
         )
     }
 }
@@ -95,11 +96,13 @@ internal fun PdfRoute(
 private fun PdfScreen(
     renderer: PdfRenderer,
     listState: LazyListState = rememberLazyListState(),
+    pdfState: PdfToBitmap = rememberPdfState(renderer),
     isTopBarVisible: Boolean = false,
     onPdfBodyPressed: () -> Unit,
     onPageIndexChange: (Int) -> Unit = {},
-    popBackStack: () -> Unit = {},
 ) {
+    val bitmaps = pdfState.bitmap.collectAsStateWithLifecycle()
+
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -123,9 +126,12 @@ private fun PdfScreen(
             verticalArrangement = Arrangement.spacedBy(4.dp)
         ) {
             items(renderer.pageCount) { page ->
+                LaunchedEffect(page) {
+                    pdfState.renderPage(page)
+                }
+
                 PdfImage(
-                    renderer = renderer,
-                    pageIndex = page
+                    bitmap = bitmaps.value[page],
                 )
             }
         }
@@ -150,52 +156,31 @@ private fun PdfScreen(
 
 @Composable
 private fun PdfImage(
-    renderer: PdfRenderer,
-    pageIndex: Int,
+    bitmap: Bitmap?,
 ) {
-    var bitmap by remember {
-        mutableStateOf<Bitmap?>(null)
-    }
-    var isLoading by remember { mutableStateOf(true) }
-
-    LaunchedEffect(Unit) {
-        isLoading = true
-        val page = renderer.openPage(pageIndex)
-        Bitmap.createBitmap(page.width * SCALE_UP, page.height * SCALE_UP, Bitmap.Config.ARGB_8888).also {
-            page.render(it, null, null, PdfRenderer.Page.RENDER_MODE_FOR_DISPLAY)
-            bitmap = it
-            page.close()
-            isLoading = false
-        }
-    }
-
-    if (isLoading) {
-        Box(
+    bitmap?.let {
+        Image(
+            bitmap = it.asImageBitmap(),
+            contentDescription = null,
             modifier = Modifier
                 .fillMaxWidth()
-                .aspectRatio(1f),
-            contentAlignment = Alignment.Center
-        ) {
-            Image(
-                painter = ColorPainter(Theme.colors.grayText),
-                contentDescription = null,
-                modifier = Modifier.fillMaxSize()
-            )
+                .aspectRatio(it.width.toFloat() / it.height.toFloat())
+        )
+    } ?: Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .aspectRatio(1f),
+        contentAlignment = Alignment.Center
+    ) {
+        Image(
+            painter = ColorPainter(Theme.colors.grayText),
+            contentDescription = null,
+            modifier = Modifier.fillMaxSize()
+        )
 
-            CircularProgressIndicator(
-                color = Theme.colors.highlight
-            )
-        }
-    } else {
-        bitmap?.let {
-            Image(
-                bitmap = it.asImageBitmap(),
-                contentDescription = null,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .aspectRatio(it.width.toFloat() / it.height.toFloat())
-            )
-        }
+        CircularProgressIndicator(
+            color = Theme.colors.highlight
+        )
     }
 }
 
@@ -230,7 +215,7 @@ private fun PdfTopBar(
                     value = page,
                     onValueChange = {
                         onPageChange(it)
-                        if(it.isNotEmpty() && it.isDigitsOnly()) onPageIndexChange(it.toInt())
+                        if (it.isNotEmpty() && it.isDigitsOnly()) onPageIndexChange(it.toInt())
                     },
                     inputType = TextFieldInputType.NUMBER
                 )
@@ -246,8 +231,6 @@ private fun PdfTopBar(
         }
     )
 }
-
-private const val SCALE_UP = 3
 
 @Preview
 @Composable
