@@ -215,7 +215,10 @@ private fun PdfTopBar(
                     value = page,
                     onValueChange = {
                         onPageChange(it)
-                        if (it.isNotEmpty() && it.isDigitsOnly()) onPageIndexChange(it.toInt())
+
+                        if (it.isNotEmpty() && it.isDigitsOnly()) {
+                            onPageIndexChange(it.toInt())
+                        }
                     },
                     inputType = TextFieldInputType.NUMBER
                 )
