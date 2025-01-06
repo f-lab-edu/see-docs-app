@@ -43,11 +43,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.core.text.isDigitsOnly
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kr.co.ui.theme.SeeDocsTheme
 import kr.co.ui.theme.Theme
+import kr.co.ui.util.rememberTopBarState
 import kr.co.ui.widget.SimpleTextField
 import kr.co.ui.widget.TextFieldInputType
 import net.engawapg.lib.zoomable.rememberZoomState
@@ -72,9 +71,7 @@ internal fun PdfRoute(
         )?.let { PdfRenderer(it) }
     }
 
-    var isTopBarVisible by remember { mutableStateOf(false) }
-
-    var tobBarJob by remember { mutableStateOf<Job?>(null) }
+    val tabBarState = rememberTopBarState()
 
     val listState = rememberLazyListState()
 
@@ -82,16 +79,8 @@ internal fun PdfRoute(
         PdfScreen(
             renderer = it,
             listState = listState,
-            isTopBarVisible = isTopBarVisible,
-            onTopBarVisibleChange = {
-                tobBarJob?.cancel()
-
-                tobBarJob = scope.launch {
-                    isTopBarVisible = true
-                    delay(3000)
-                    isTopBarVisible = false
-                }
-            },
+            isTopBarVisible = tabBarState.topBarVisible,
+            onTopBarVisibleChange = tabBarState::onBodyPress,
             onPageIndexChange = { page ->
                 scope.launch {
                     listState.scrollToItem(page - 1)
