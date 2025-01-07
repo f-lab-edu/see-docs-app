@@ -30,8 +30,7 @@ internal class PdfToBitmap(
 
         val page = renderer.openPage(pageIndex)
 
-        val bitmap =
-            Bitmap.createBitmap(
+        val bitmap = Bitmap.createBitmap(
                 page.width * SCALE_UP,
                 page.height * SCALE_UP,
                 Bitmap.Config.ARGB_8888
