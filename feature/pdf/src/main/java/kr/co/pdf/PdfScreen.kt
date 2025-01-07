@@ -59,7 +59,6 @@ import java.io.File
 internal fun PdfRoute(
     path: String,
     viewModel: PdfViewModel = koinViewModel(),
-    popBackStack: () -> Unit = {},
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
@@ -76,20 +75,18 @@ internal fun PdfRoute(
         )?.let { viewModel.handleIntent(UiIntent.Init(PdfRenderer(it))) }
     }
 
-
-
     val listState = rememberLazyListState()
 
-        PdfScreen(
-            uiState = uiState,
-            listState = listState,
-            handleIntent = viewModel::handleIntent,
-            onPageIndexChange = { page ->
-                scope.launch {
-                    listState.scrollToItem(page - 1)
-                }
-            },
-        )
+    PdfScreen(
+        uiState = uiState,
+        listState = listState,
+        handleIntent = viewModel::handleIntent,
+        onPageIndexChange = { page ->
+            scope.launch {
+                listState.scrollToItem(page - 1)
+            }
+        },
+    )
 
 }
 

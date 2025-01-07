@@ -33,8 +33,6 @@ internal fun MainNavHost(
             padding = padding
         )
 
-        pdfNavGraph(
-            popBackStack = navigator::popBackStack
-        )
+        pdfNavGraph()
     }
 }
