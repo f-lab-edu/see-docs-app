@@ -28,7 +28,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -44,65 +44,62 @@ import androidx.compose.ui.unit.dp
 import androidx.core.text.isDigitsOnly
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.coroutines.launch
+import kr.co.pdf.model.UiIntent
+import kr.co.pdf.model.UiState
 import kr.co.ui.theme.SeeDocsTheme
 import kr.co.ui.theme.Theme
-import kr.co.ui.util.rememberTopBarState
 import kr.co.ui.widget.SimpleTextField
 import kr.co.ui.widget.TextFieldInputType
-import kr.co.util.PdfToBitmap
-import kr.co.util.rememberPdfState
 import net.engawapg.lib.zoomable.rememberZoomState
 import net.engawapg.lib.zoomable.zoomable
+import org.koin.androidx.compose.koinViewModel
 import java.io.File
 
 @Composable
 internal fun PdfRoute(
     path: String,
+    viewModel: PdfViewModel = koinViewModel(),
     popBackStack: () -> Unit = {},
 ) {
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
     val uri = remember { Uri.fromFile(File(path)) }
 
     val context = LocalContext.current
 
     val scope = rememberCoroutineScope()
 
-    val renderer = remember(uri) {
+    LaunchedEffect(path) {
         context.contentResolver.openFileDescriptor(
             uri,
             "r"
-        )?.let { PdfRenderer(it) }
+        )?.let { viewModel.handleIntent(UiIntent.Init(PdfRenderer(it))) }
     }
 
-    val tabBarState = rememberTopBarState()
+
 
     val listState = rememberLazyListState()
 
-    renderer?.let {
         PdfScreen(
-            renderer = it,
+            uiState = uiState,
             listState = listState,
-            isTopBarVisible = tabBarState.topBarVisible,
-            onPdfBodyPressed = tabBarState::onBodyPress,
+            handleIntent = viewModel::handleIntent,
             onPageIndexChange = { page ->
                 scope.launch {
                     listState.scrollToItem(page - 1)
                 }
             },
         )
-    }
+
 }
 
 @Composable
 private fun PdfScreen(
-    renderer: PdfRenderer,
+    uiState: UiState = UiState(),
     listState: LazyListState = rememberLazyListState(),
-    pdfState: PdfToBitmap = rememberPdfState(renderer),
-    isTopBarVisible: Boolean = false,
-    onPdfBodyPressed: () -> Unit,
+    handleIntent: (UiIntent) -> Unit = {},
     onPageIndexChange: (Int) -> Unit = {},
 ) {
-    val bitmaps = pdfState.bitmap.collectAsStateWithLifecycle()
-
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -115,29 +112,29 @@ private fun PdfScreen(
                 .pointerInput(null) {
                     detectTapGestures(
                         onTap = {
-                            onPdfBodyPressed()
+                            handleIntent(UiIntent.ShowTopBar)
                         },
                         onPress = {
-                            onPdfBodyPressed()
+                            handleIntent(UiIntent.ShowTopBar)
                         }
                     )
                 },
             state = listState,
             verticalArrangement = Arrangement.spacedBy(4.dp)
         ) {
-            items(renderer.pageCount) { page ->
+            items(uiState.totalPage) { page ->
                 LaunchedEffect(page) {
-                    pdfState.renderPage(page)
+                    handleIntent(UiIntent.RenderPage(page))
                 }
 
                 PdfImage(
-                    bitmap = bitmaps.value[page],
+                    bitmap = uiState.bitmaps[page],
                 )
             }
         }
 
         AnimatedVisibility(
-            visible = isTopBarVisible,
+            visible = uiState.topBarState.topBarVisible,
             enter = slideIn {
                 IntOffset(0, -it.height)
             },
@@ -147,8 +144,11 @@ private fun PdfScreen(
         ) {
             PdfTopBar(
                 currentPage = listState.firstVisibleItemIndex + 1,
-                totalPage = renderer.pageCount,
-                onPageIndexChange = onPageIndexChange
+                totalPage = uiState.totalPage,
+                onPageIndexChange = {
+                    handleIntent(UiIntent.ChangePage(it))
+                    onPageIndexChange(it)
+                }
             )
         }
     }
