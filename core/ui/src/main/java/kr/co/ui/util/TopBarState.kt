@@ -19,7 +19,7 @@ class TopBarState(
 
     private var currentScope: Job? = null
 
-    fun onBodyPress() {
+    fun show() {
         currentScope?.cancel()
 
         currentScope = scope.launch {

@@ -39,7 +39,7 @@ internal class PdfViewModel : ViewModel() {
     }
 
     private fun showTopBar() {
-        _uiState.value.topBarState.onBodyPress()
+        _uiState.value.topBarState.show()
     }
 
     private fun changePage(page: Int) {
