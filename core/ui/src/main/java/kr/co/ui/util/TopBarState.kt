@@ -17,12 +17,12 @@ class TopBarState(
     var topBarVisible by mutableStateOf(false)
         private set
 
-    private var currentScope: Job? = null
+    private var currentJob: Job? = null
 
     fun show() {
-        currentScope?.cancel()
+        currentJob?.cancel()
 
-        currentScope = scope.launch {
+        currentJob = scope.launch {
             topBarVisible = true
             delay(3000)
             topBarVisible = false
