@@ -2,6 +2,7 @@ import kr.co.convention.setNamespace
 
 plugins {
     alias(libs.plugins.seedocs.library)
+    alias(libs.plugins.seedocs.hilt)
 }
 
 android {

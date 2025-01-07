@@ -9,9 +9,6 @@ import org.gradle.kotlin.dsl.the
 internal val Project.libs get() = the<LibrariesForLibs>()
 
 fun Project.App() {
-    project.pluginManager.apply {
-        apply("com.google.devtools.ksp")
-    }
     project.dependencies {
         implementations(
             libs.androidx.core.splashscreen,
@@ -25,7 +22,7 @@ fun Project.App() {
             libs.compose.activity,
             libs.compose.lifecycle.runtime,
             libs.compose.navigation,
-            libs.koin.compose,
+            libs.compose.hilt.navigation,
         )
 
         testImplementations(
