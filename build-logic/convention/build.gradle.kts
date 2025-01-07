@@ -54,9 +54,5 @@ gradlePlugin {
             id = "seedocs.feature"
             implementationClass = "SeeDocsFeatureConventionPlugin"
         }
-        register("SeeDocsHilt") {
-            id = "seedocs.hilt"
-            implementationClass = "SeeDocsHiltConventionPlugin"
-        }
     }
 }
