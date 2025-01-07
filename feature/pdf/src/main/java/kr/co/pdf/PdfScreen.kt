@@ -28,7 +28,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -82,7 +81,7 @@ internal fun PdfRoute(
             renderer = it,
             listState = listState,
             isTopBarVisible = tabBarState.topBarVisible,
-            onPdfBodyPressed = tabBarState::onBodyPress,
+            onPdfBodyPressed = tabBarState::show,
             onPageIndexChange = { page ->
                 scope.launch {
                     listState.scrollToItem(page - 1)
