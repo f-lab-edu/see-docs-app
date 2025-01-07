@@ -32,6 +32,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.asImageBitmap
@@ -76,6 +77,11 @@ internal fun PdfRoute(
     }
 
     val listState = rememberLazyListState()
+
+    LaunchedEffect(listState) {
+        snapshotFlow { listState.firstVisibleItemIndex }
+            .collect { viewModel.handleIntent(UiIntent.ChangePage(it + 1)) }
+    }
 
     PdfScreen(
         uiState = uiState,
@@ -140,7 +146,7 @@ private fun PdfScreen(
             }
         ) {
             PdfTopBar(
-                currentPage = listState.firstVisibleItemIndex + 1,
+                currentPage = uiState.currentPage,
                 totalPage = uiState.totalPage,
                 onPageIndexChange = {
                     handleIntent(UiIntent.ChangePage(it))
