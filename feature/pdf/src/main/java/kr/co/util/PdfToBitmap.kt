@@ -41,7 +41,6 @@ internal class PdfToBitmap(
                 page.close()
             }
 
-
         _bitmap.update { it + (pageIndex to bitmap) }
     }
 
