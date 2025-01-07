@@ -1,17 +1,31 @@
 package kr.co.seedocs
 
 import android.app.Application
-import dagger.hilt.android.HiltAndroidApp
+import kr.co.main.di.mainModule
+import org.koin.android.ext.koin.androidContext
+import org.koin.android.ext.koin.androidLogger
+import org.koin.core.context.startKoin
+import org.koin.core.logger.Level
 import timber.log.Timber
 
-@HiltAndroidApp
-class SeeDocs: Application() {
+private val allModules =
+    listOf(
+        mainModule,
+    )
+
+class SeeDocs : Application() {
 
     override fun onCreate() {
         super.onCreate()
 
         if (BuildConfig.DEBUG) {
             Timber.plant(Timber.DebugTree())
+        }
+
+        startKoin {
+            androidContext(this@SeeDocs)
+            androidLogger(if (BuildConfig.DEBUG) Level.DEBUG else Level.NONE)
+            modules(allModules)
         }
     }
 }
