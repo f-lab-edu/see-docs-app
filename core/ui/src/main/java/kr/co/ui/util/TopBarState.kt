@@ -8,10 +8,12 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.MainCoroutineDispatcher
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlin.coroutines.ContinuationInterceptor
 
-class TopBarState(
+class TopBarState private constructor(
     private val scope: CoroutineScope
 ) {
     var topBarVisible by mutableStateOf(false)
@@ -28,10 +30,19 @@ class TopBarState(
             topBarVisible = false
         }
     }
+
+    companion object {
+        fun create(scope: CoroutineScope): TopBarState {
+            require(scope.coroutineContext[ContinuationInterceptor] is MainCoroutineDispatcher) {
+                "TopBar state should be created in main thread"
+            }
+            return TopBarState(scope)
+        }
+    }
 }
 
 @Composable
 fun rememberTopBarState(
     scope: CoroutineScope = rememberCoroutineScope()
 ) : TopBarState =
-    remember { TopBarState(scope) }
+    remember { TopBarState.create(scope) }
