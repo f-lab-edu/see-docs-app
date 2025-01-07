@@ -10,7 +10,7 @@ import kr.co.explore.ExploreRoute
 fun NavGraphBuilder.exploreNavGraph(
     padding: PaddingValues,
     navigateToFolder: (String) -> Unit = {},
-    navigateToPdf: () -> Unit = {}
+    navigateToPdf: (String) -> Unit = {}
 ) {
     composable<MainNavigation.Explore> {
         ExploreRoute(

@@ -13,25 +13,35 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import kr.co.model.FileInfo
 import kr.co.ui.theme.SeeDocsTheme
 import kr.co.ui.theme.Theme
 import kr.co.ui.widget.FileBox
+import kr.co.util.readPDFOrDirectory
 import kr.co.widget.FolderBox
-import java.io.File
 
 @Composable
 internal fun ExploreRoute(
     path: String,
     padding: PaddingValues,
     navigateToFolder: (String) -> Unit = {},
-    navigateToPdf: () -> Unit = {},
+    navigateToPdf: (String) -> Unit = {},
 ) {
-    val files = readPDFOrDirectory(path)
+    var files by remember { mutableStateOf<List<FileInfo>>(emptyList()) }
+
+    LaunchedEffect(Unit) {
+        files = readPDFOrDirectory(path)
+    }
 
     ExploreScreen(
         path = path.replace("/storage/emulated/0", "내장 저장 공간"),
@@ -45,10 +55,10 @@ internal fun ExploreRoute(
 @Composable
 private fun ExploreScreen(
     path: String,
-    files: List<Item> = emptyList(),
+    files: List<FileInfo> = emptyList(),
     padding: PaddingValues,
     onFolderClick: (String) -> Unit = {},
-    onFileClick: () -> Unit = {}
+    onFileClick: (String) -> Unit = {}
 ) {
     Box(
         modifier = Modifier
@@ -107,31 +117,12 @@ private fun ExploreScreen(
             ) { file ->
                 FileBox(
                     name = file.name,
-                    onFileClick = onFileClick
+                    onFileClick = { onFileClick(file.path) }
                 )
             }
         }
     }
 }
-
-private fun readPDFOrDirectory(
-    path: String,
-): List<Item> =
-    File(path).listFiles()?.filter { !it.isHidden && (it.isDirectory || it.extension == "pdf") }?.map {
-        Item(
-            name = it.name,
-            path = it.path,
-            type = it.extension,
-            isDirectory = it.isDirectory
-        )
-    }?: emptyList()
-
-private data class Item(
-    val name: String,
-    val path: String,
-    val type: String,
-    val isDirectory: Boolean,
-)
 
 @Preview
 @Composable
