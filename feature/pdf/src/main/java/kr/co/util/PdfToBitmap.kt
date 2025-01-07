@@ -24,7 +24,9 @@ internal class PdfToBitmap(
 
     suspend fun renderPage(pageIndex: Int) {
         mutex.withLock {
-            if (renderingPages.contains(pageIndex)) return
+            if (renderingPages.contains(pageIndex)) {
+                return
+            }
             renderingPages.add(pageIndex)
         }
 
