@@ -19,7 +19,7 @@ kotlin = "2.0.20"
 kotlinxCoroutines = "1.9.0"
 kotlinxSerializationJson = "1.7.2"
 
-hilt = "2.52"
+koin = "4.0.0"
 dataStore = "1.1.1"
 coil = "3.0.0-rc01"
 timber = "5.0.1"
@@ -30,7 +30,6 @@ composeCompiler = "1.5.11"
 composeLifecycle = "2.8.7"
 composeActivity = "1.9.3"
 composeNavigation = "2.8.4"
-composeHiltNavigation = "1.2.0"
 compose-plugin = "1.6.10"
 
 coreKtx = "1.15.0"
@@ -53,8 +52,14 @@ androidx-core-splashscreen = { group = "androidx.core", name = "core-splashscree
 kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
 kotlinx-coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "kotlinxCoroutines" }
 
-hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
-hilt-compiler = { group = "com.google.dagger", name = "hilt-android-compiler", version.ref = "hilt" }
+koin-core = { group = "io.insert-koin", name = "koin-core", version.ref = "koin" }
+koin-compose = { group = "io.insert-koin", name = "koin-androidx-compose", version.ref = "koin" }
+koin-compose-navigation = { group = "io.insert-koin", name = "koin-androidx-compose-navigation", version.ref = "koin" }
+koin-ktor = { group = "io.insert-koin", name = "koin-ktor", version.ref = "koin" }
+koin-logger = { group = "io.insert-koin", name = "koin-logger-slf4j", version.ref = "koin" }
+
+koin-test = { group = "io.insert-koin", name = "koin-test", version.ref = "koin" }
+koin-junit = { group = "io.insert-koin", name = "koin-test-junit4", version.ref = "koin" }
 
 room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
 room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
@@ -80,7 +85,6 @@ compose-foundation-layout = { group = "androidx.compose.foundation", name = "fou
 compose-lifecycle-runtime = { group = "androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "composeLifecycle" }
 compose-activity = { group = "androidx.activity", name = "activity-compose", version.ref = "composeActivity" }
 compose-navigation = { group = "androidx.navigation", name = "navigation-compose", version.ref = "composeNavigation" }
-compose-hilt-navigation = { group = "androidx.hilt", name = "hilt-navigation-compose", version.ref = "composeHiltNavigation" }
 compose-material-iconsExtended = { group = "androidx.compose.material", name = "material-icons-extended" }
 compose-material3 = { group = "androidx.compose.material3", name = "material3" }
 compose-ui = { group = "androidx.compose.ui", name = "ui" }
@@ -123,10 +127,6 @@ coil = [
     "coil-video",
     "coil-svg"
 ]
-hilt = [
-    "hilt-android",
-    "hilt-compiler"
-]
 rooms = [
     "room-ktx",
     "room-runtime"
@@ -137,7 +137,6 @@ composes = [
     "compose-foundation-layout",
     "compose-lifecycle-runtime",
     "compose-navigation",
-    "compose-hilt-navigation",
     "compose-material-iconsExtended",
     "compose-material3",
     "compose-ui",
@@ -155,7 +154,6 @@ kotlin-compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 gms = { id = "com.google.gms.google-services", version.ref = "gmsPlugin" }
 firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "firebaseCrashlyticsPlugin" }
-hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 room = { id = "androidx.room", version.ref = "room" }
 
 seedocs-application = { id = "seedocs.application", version = "unspecified" }
@@ -163,4 +161,3 @@ seedocs-application-compose = { id = "seedocs.application.compose", version = "u
 seedocs-library = { id = "seedocs.library", version = "unspecified" }
 seedocs-library-compose = { id = "seedocs.library.compose", version = "unspecified" }
 seedocs-feature = { id = "seedocs.feature", version = "unspecified" }
-seedocs-hilt = { id = "seedocs.hilt", version = "unspecified" }

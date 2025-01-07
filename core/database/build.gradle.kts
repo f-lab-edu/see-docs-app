@@ -3,7 +3,6 @@ import kr.co.convention.setNamespace
 
 plugins {
     alias(libs.plugins.seedocs.library)
-    alias(libs.plugins.seedocs.hilt)
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.room)
 }
