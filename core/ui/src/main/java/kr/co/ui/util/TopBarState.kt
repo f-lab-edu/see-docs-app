@@ -28,12 +28,6 @@ class TopBarState(
             topBarVisible = false
         }
     }
-
-    companion object {
-        val Initial = TopBarState(
-            scope = CoroutineScope(Job())
-        )
-    }
 }
 
 @Composable

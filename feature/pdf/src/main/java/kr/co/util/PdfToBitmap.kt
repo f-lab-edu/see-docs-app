@@ -24,15 +24,14 @@ internal class PdfToBitmap(
 
     suspend fun renderPage(pageIndex: Int) {
         mutex.withLock {
-            if (renderingPages.contains(pageIndex)) {
-                return
-            }
+            if (renderingPages.contains(pageIndex)) return
             renderingPages.add(pageIndex)
         }
 
         val page = renderer.openPage(pageIndex)
 
-        val bitmap = Bitmap.createBitmap(
+        val bitmap =
+            Bitmap.createBitmap(
                 page.width * SCALE_UP,
                 page.height * SCALE_UP,
                 Bitmap.Config.ARGB_8888
@@ -40,6 +39,7 @@ internal class PdfToBitmap(
                 page.render(it, null, null, PdfRenderer.Page.RENDER_MODE_FOR_DISPLAY)
                 page.close()
             }
+
 
         _bitmap.update { it + (pageIndex to bitmap) }
     }
