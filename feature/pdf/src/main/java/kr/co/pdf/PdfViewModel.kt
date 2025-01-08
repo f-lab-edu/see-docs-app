@@ -1,6 +1,7 @@
 package kr.co.pdf
 
 import android.graphics.pdf.PdfRenderer
+import kotlinx.coroutines.flow.collectLatest
 import kr.co.pdf.model.PdfUiIntent
 import kr.co.pdf.model.PdfUiState
 import kr.co.ui.base.BaseMviViewModel
@@ -32,6 +33,14 @@ internal class PdfViewModel : BaseMviViewModel<PdfUiState, PdfUiIntent>(PdfUiSta
                 topBarState = topBarState
             )
         }
+
+        launch {
+            pdfToBitmap?.bitmap?.collectLatest { bitmaps ->
+                reduce {
+                    copy(bitmaps = bitmaps)
+                }
+            }
+        }
     }
 
     private fun showTopBar() {
@@ -51,12 +60,6 @@ internal class PdfViewModel : BaseMviViewModel<PdfUiState, PdfUiIntent>(PdfUiSta
 
         launch {
             pdfToBitmap?.renderPage(page)
-
-            pdfToBitmap?.bitmap?.collect { bitmaps ->
-                reduce {
-                    copy(bitmaps = bitmaps)
-                }
-            }
         }.invokeOnCompletion {
             reduce {
                 copy(isLoading = false)
