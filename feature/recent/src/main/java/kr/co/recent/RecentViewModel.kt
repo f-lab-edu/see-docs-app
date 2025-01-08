@@ -7,7 +7,6 @@ import kr.co.model.RecentSideEffect
 import kr.co.model.RecentUiIntent
 import kr.co.model.RecentUiState
 import kr.co.ui.base.BaseMviViewModel
-import kr.co.ui.base.NoSideEffect
 
 internal class RecentViewModel(
     private val recentRepository : RecentRepository,
