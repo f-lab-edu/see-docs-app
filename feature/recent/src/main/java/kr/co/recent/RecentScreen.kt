@@ -20,6 +20,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kr.co.model.RecentSideEffect
+import kr.co.model.RecentUiIntent
 import kr.co.model.RecentUiState
 import kr.co.ui.theme.SeeDocsTheme
 import kr.co.ui.theme.Theme
@@ -35,6 +36,8 @@ internal fun RecentRoute(
     val state by viewModel.uiState.collectAsStateWithLifecycle()
 
     LaunchedEffect(Unit) {
+        viewModel.handleIntent(RecentUiIntent.Init)
+
         viewModel.sideEffect.collect {
             when(it) {
                 is RecentSideEffect.NavigateToPdf -> navigateToPdf(it.path)

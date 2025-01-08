@@ -14,21 +14,20 @@ internal class RecentViewModel(
 
     override fun handleIntent(intent: RecentUiIntent) {
         when (intent) {
+            is RecentUiIntent.Init -> init()
             is RecentUiIntent.ClickFile -> { onClickFile(intent.file) }
         }
     }
 
-    init {
-        launch {
-            recentRepository.get()
-                .collectLatest { files ->
-                    reduce {
-                        copy(
-                            files = files
-                        )
-                    }
+    private fun init() = launch {
+        recentRepository.get()
+            .collectLatest { files ->
+                reduce {
+                    copy(
+                        files = files
+                    )
                 }
-        }
+            }
     }
 
     private fun onClickFile(file: FileInfo) = launch {
