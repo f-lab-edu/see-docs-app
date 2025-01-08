@@ -57,7 +57,7 @@ internal class PdfViewModel : BaseMviViewModel<PdfUiState, PdfUiIntent>(PdfUiSta
                     copy(bitmaps = bitmaps)
                 }
             }
-
+        }.invokeOnCompletion {
             update {
                 copy(isLoading = false)
             }
