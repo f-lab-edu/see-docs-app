@@ -15,7 +15,6 @@ internal class RecentViewModel(
 
     override fun handleIntent(intent: RecentUiIntent) {
         when (intent) {
-            is RecentUiIntent.Init -> {}
             is RecentUiIntent.ClickFile -> { onClickFile(intent.file) }
         }
     }
