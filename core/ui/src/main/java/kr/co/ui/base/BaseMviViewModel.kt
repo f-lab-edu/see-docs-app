@@ -27,7 +27,7 @@ abstract class BaseMviViewModel<S : UiState, I : UiIntent>(initialState: S) : Vi
             block()
         }
 
-    protected fun update(
+    protected fun reduce(
         block: S.() -> S
     ) {
         _uiState.update(block)

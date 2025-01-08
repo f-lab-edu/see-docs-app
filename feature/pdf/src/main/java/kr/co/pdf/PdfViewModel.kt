@@ -26,7 +26,7 @@ internal class PdfViewModel : BaseMviViewModel<PdfUiState, PdfUiIntent>(PdfUiSta
     ) {
         pdfToBitmap = PdfToBitmap(renderer)
 
-        update {
+        reduce {
             copy(
                 totalPage = renderer.pageCount,
                 topBarState = topBarState
@@ -39,13 +39,13 @@ internal class PdfViewModel : BaseMviViewModel<PdfUiState, PdfUiIntent>(PdfUiSta
     }
 
     private fun changePage(page: Int) {
-        update {
+        reduce {
             copy(currentPage = page)
         }
     }
 
     private fun renderPage(page: Int) {
-        update {
+        reduce {
             copy(isLoading = true)
         }
 
@@ -53,12 +53,12 @@ internal class PdfViewModel : BaseMviViewModel<PdfUiState, PdfUiIntent>(PdfUiSta
             pdfToBitmap?.renderPage(page)
 
             pdfToBitmap?.bitmap?.collect { bitmaps ->
-                update {
+                reduce {
                     copy(bitmaps = bitmaps)
                 }
             }
         }.invokeOnCompletion {
-            update {
+            reduce {
                 copy(isLoading = false)
             }
         }
