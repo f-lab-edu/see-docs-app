@@ -1,10 +1,12 @@
 package kr.co.model
 
+import kr.co.ui.base.UiState
+
 internal data class RecentUiState(
     val files: List<FileInfo>,
-) {
+): UiState {
     companion object {
-        val EMPTY = RecentUiState(
+        val INIT = RecentUiState(
             files = emptyList(),
         )
     }

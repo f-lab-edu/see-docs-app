@@ -40,7 +40,7 @@ internal fun RecentRoute(
 @Composable
 private fun RecentScreen(
     padding: PaddingValues,
-    state: RecentUiState = RecentUiState.EMPTY
+    state: RecentUiState = RecentUiState.INIT
 ) {
     Box(
         modifier = Modifier
