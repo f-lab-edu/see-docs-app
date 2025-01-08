@@ -45,8 +45,8 @@ import androidx.compose.ui.unit.dp
 import androidx.core.text.isDigitsOnly
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.coroutines.launch
-import kr.co.pdf.model.UiIntent
-import kr.co.pdf.model.UiState
+import kr.co.pdf.model.PdfUiIntent
+import kr.co.pdf.model.PdfUiState
 import kr.co.ui.theme.SeeDocsTheme
 import kr.co.ui.theme.Theme
 import kr.co.ui.util.rememberTopBarState
@@ -78,7 +78,7 @@ internal fun PdfRoute(
             "r"
         )?.let {
             viewModel.handleIntent(
-                UiIntent.Init(
+                PdfUiIntent.Init(
                     PdfRenderer(it),
                     topBarState
                 )
@@ -90,7 +90,7 @@ internal fun PdfRoute(
 
     LaunchedEffect(listState) {
         snapshotFlow { listState.firstVisibleItemIndex }
-            .collect { viewModel.handleIntent(UiIntent.ChangePage(it + 1)) }
+            .collect { viewModel.handleIntent(PdfUiIntent.ChangePage(it + 1)) }
     }
 
     PdfScreen(
@@ -108,9 +108,9 @@ internal fun PdfRoute(
 
 @Composable
 private fun PdfScreen(
-    uiState: UiState = UiState(),
+    uiState: PdfUiState = PdfUiState(),
     listState: LazyListState = rememberLazyListState(),
-    handleIntent: (UiIntent) -> Unit = {},
+    handleIntent: (PdfUiIntent) -> Unit = {},
     onPageIndexChange: (Int) -> Unit = {},
 ) {
     Box(
@@ -125,10 +125,10 @@ private fun PdfScreen(
                 .pointerInput(null) {
                     detectTapGestures(
                         onTap = {
-                            handleIntent(UiIntent.ShowTopBar)
+                            handleIntent(PdfUiIntent.ShowTopBar)
                         },
                         onPress = {
-                            handleIntent(UiIntent.ShowTopBar)
+                            handleIntent(PdfUiIntent.ShowTopBar)
                         }
                     )
                 },
@@ -137,7 +137,7 @@ private fun PdfScreen(
         ) {
             items(uiState.totalPage) { page ->
                 LaunchedEffect(page) {
-                    handleIntent(UiIntent.RenderPage(page))
+                    handleIntent(PdfUiIntent.RenderPage(page))
                 }
 
                 PdfImage(
@@ -159,7 +159,7 @@ private fun PdfScreen(
                 currentPage = uiState.currentPage,
                 totalPage = uiState.totalPage,
                 onPageIndexChange = {
-                    handleIntent(UiIntent.ChangePage(it))
+                    handleIntent(PdfUiIntent.ChangePage(it))
                     onPageIndexChange(it)
                 }
             )

@@ -8,24 +8,24 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import kr.co.pdf.model.UiIntent
-import kr.co.pdf.model.UiState
+import kr.co.pdf.model.PdfUiIntent
+import kr.co.pdf.model.PdfUiState
 import kr.co.ui.util.TopBarState
 import kr.co.util.PdfToBitmap
 
 internal class PdfViewModel : ViewModel() {
 
-    private val _uiState = MutableStateFlow(UiState())
-    val uiState: StateFlow<UiState> = _uiState.asStateFlow()
+    private val _uiState = MutableStateFlow(PdfUiState())
+    val uiState: StateFlow<PdfUiState> = _uiState.asStateFlow()
 
     private var pdfToBitmap: PdfToBitmap? = null
 
-    fun handleIntent(intent: UiIntent) {
+    fun handleIntent(intent: PdfUiIntent) {
         when (intent) {
-            is UiIntent.Init -> init(intent.renderer, intent.topBarState)
-            is UiIntent.ShowTopBar -> showTopBar()
-            is UiIntent.ChangePage -> changePage(intent.page)
-            is UiIntent.RenderPage -> renderPage(intent.page)
+            is PdfUiIntent.Init -> init(intent.renderer, intent.topBarState)
+            is PdfUiIntent.ShowTopBar -> showTopBar()
+            is PdfUiIntent.ChangePage -> changePage(intent.page)
+            is PdfUiIntent.RenderPage -> renderPage(intent.page)
         }
     }
 
