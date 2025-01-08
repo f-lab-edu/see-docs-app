@@ -2,18 +2,21 @@ package kr.co.recent
 
 import kotlinx.coroutines.flow.collectLatest
 import kr.co.data.repository.RecentRepository
+import kr.co.model.FileInfo
+import kr.co.model.RecentSideEffect
 import kr.co.model.RecentUiIntent
 import kr.co.model.RecentUiState
 import kr.co.ui.base.BaseMviViewModel
+import kr.co.ui.base.NoSideEffect
 
 internal class RecentViewModel(
-    recentRepository : RecentRepository,
-) : BaseMviViewModel<RecentUiState, RecentUiIntent>(RecentUiState.INIT) {
+    private val recentRepository : RecentRepository,
+) : BaseMviViewModel<RecentUiState, RecentUiIntent, RecentSideEffect>(RecentUiState.INIT) {
 
     override fun handleIntent(intent: RecentUiIntent) {
         when (intent) {
             is RecentUiIntent.Init -> {}
-            is RecentUiIntent.ClickFile -> {}
+            is RecentUiIntent.ClickFile -> { onClickFile(intent.file) }
         }
     }
 
@@ -28,5 +31,11 @@ internal class RecentViewModel(
                     }
                 }
         }
+    }
+
+    private fun onClickFile(file: FileInfo) = launch {
+        recentRepository.insert(file)
+    }.invokeOnCompletion {
+        postSideEffect(RecentSideEffect.NavigateToPdf(file.path))
     }
 }

@@ -5,10 +5,11 @@ import kotlinx.coroutines.flow.collectLatest
 import kr.co.model.PdfUiIntent
 import kr.co.model.PdfUiState
 import kr.co.ui.base.BaseMviViewModel
+import kr.co.ui.base.NoSideEffect
 import kr.co.ui.util.TopBarState
 import kr.co.util.PdfToBitmap
 
-internal class PdfViewModel : BaseMviViewModel<PdfUiState, PdfUiIntent>(PdfUiState()) {
+internal class PdfViewModel : BaseMviViewModel<PdfUiState, PdfUiIntent, NoSideEffect>(PdfUiState()) {
 
     private var pdfToBitmap: PdfToBitmap? = null
 
