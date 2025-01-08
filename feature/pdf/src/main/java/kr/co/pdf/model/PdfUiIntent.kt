@@ -1,9 +1,10 @@
 package kr.co.pdf.model
 
 import android.graphics.pdf.PdfRenderer
+import kr.co.ui.base.UiIntent
 import kr.co.ui.util.TopBarState
 
-internal sealed class PdfUiIntent {
+internal sealed class PdfUiIntent: UiIntent {
     data class Init(
         val renderer: PdfRenderer,
         val topBarState: TopBarState

@@ -6,3 +6,9 @@ plugins {
 }
 
 setNamespace("core.ui")
+
+android {
+    buildFeatures {
+        buildConfig = true
+    }
+}

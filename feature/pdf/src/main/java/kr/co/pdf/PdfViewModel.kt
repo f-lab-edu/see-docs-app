@@ -1,26 +1,17 @@
 package kr.co.pdf
 
 import android.graphics.pdf.PdfRenderer
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
 import kr.co.pdf.model.PdfUiIntent
 import kr.co.pdf.model.PdfUiState
+import kr.co.ui.base.BaseMviViewModel
 import kr.co.ui.util.TopBarState
 import kr.co.util.PdfToBitmap
 
-internal class PdfViewModel : ViewModel() {
-
-    private val _uiState = MutableStateFlow(PdfUiState())
-    val uiState: StateFlow<PdfUiState> = _uiState.asStateFlow()
+internal class PdfViewModel : BaseMviViewModel<PdfUiState, PdfUiIntent>(PdfUiState()) {
 
     private var pdfToBitmap: PdfToBitmap? = null
 
-    fun handleIntent(intent: PdfUiIntent) {
+    override fun handleIntent(intent: PdfUiIntent) {
         when (intent) {
             is PdfUiIntent.Init -> init(intent.renderer, intent.topBarState)
             is PdfUiIntent.ShowTopBar -> showTopBar()
@@ -35,8 +26,8 @@ internal class PdfViewModel : ViewModel() {
     ) {
         pdfToBitmap = PdfToBitmap(renderer)
 
-        _uiState.update {
-            it.copy(
+        update {
+            copy(
                 totalPage = renderer.pageCount,
                 topBarState = topBarState
             )
@@ -44,31 +35,31 @@ internal class PdfViewModel : ViewModel() {
     }
 
     private fun showTopBar() {
-        _uiState.value.topBarState?.show()
+        uiState.value.topBarState?.show()
     }
 
     private fun changePage(page: Int) {
-        _uiState.update {
-            it.copy(currentPage = page)
+        update {
+            copy(currentPage = page)
         }
     }
 
     private fun renderPage(page: Int) {
-        _uiState.update {
-            it.copy(isLoading = true)
+        update {
+            copy(isLoading = true)
         }
 
-        viewModelScope.launch {
+        launch {
             pdfToBitmap?.renderPage(page)
 
             pdfToBitmap?.bitmap?.collect { bitmaps ->
-                _uiState.update {
-                    it.copy(bitmaps = bitmaps)
+                update {
+                    copy(bitmaps = bitmaps)
                 }
             }
 
-            _uiState.update {
-                it.copy(isLoading = false)
+            update {
+                copy(isLoading = false)
             }
         }
     }
