@@ -6,12 +6,10 @@ import androidx.navigation.toRoute
 import kr.co.pdf.PdfRoute
 
 fun NavGraphBuilder.pdfNavGraph(
-    popBackStack: () -> Unit = {}
 ) {
     composable<Route.Pdf> {
         PdfRoute(
             path = it.toRoute<Route.Pdf>().path,
-            popBackStack = popBackStack
         )
     }
 }

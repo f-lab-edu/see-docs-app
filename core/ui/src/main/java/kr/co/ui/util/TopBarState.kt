@@ -7,6 +7,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.MainCoroutineDispatcher
 import kotlinx.coroutines.delay
@@ -43,6 +44,6 @@ class TopBarState private constructor(
 
 @Composable
 fun rememberTopBarState(
-    scope: CoroutineScope = rememberCoroutineScope()
+    scope: CoroutineScope = rememberCoroutineScope{Dispatchers.Main.immediate}
 ) : TopBarState =
     remember { TopBarState.create(scope) }

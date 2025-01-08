@@ -18,6 +18,7 @@ class SeeDocsLibraryConventionPlugin : Plugin<Project> {
             with(pluginManager) {
                 apply("com.android.library")
                 apply("org.jetbrains.kotlin.android")
+                apply("com.google.devtools.ksp")
             }
 
             extensions.configure<LibraryExtension> {
@@ -31,7 +32,8 @@ class SeeDocsLibraryConventionPlugin : Plugin<Project> {
 
             dependencies {
                 implementations(
-                    libs.timber
+                    libs.timber,
+                    libs.koin.core
                 )
                 testImplementations(
                     kotlin("test")
