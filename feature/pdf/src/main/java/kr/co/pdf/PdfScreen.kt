@@ -49,6 +49,7 @@ import kr.co.pdf.model.UiIntent
 import kr.co.pdf.model.UiState
 import kr.co.ui.theme.SeeDocsTheme
 import kr.co.ui.theme.Theme
+import kr.co.ui.util.rememberTopBarState
 import kr.co.ui.widget.SimpleTextField
 import kr.co.ui.widget.TextFieldInputType
 import net.engawapg.lib.zoomable.rememberZoomState
@@ -69,11 +70,20 @@ internal fun PdfRoute(
 
     val scope = rememberCoroutineScope()
 
+    val topBarState = rememberTopBarState()
+
     LaunchedEffect(path) {
         context.contentResolver.openFileDescriptor(
             uri,
             "r"
-        )?.let { viewModel.handleIntent(UiIntent.Init(PdfRenderer(it))) }
+        )?.let {
+            viewModel.handleIntent(
+                UiIntent.Init(
+                    PdfRenderer(it),
+                    topBarState
+                )
+            )
+        }
     }
 
     val listState = rememberLazyListState()
@@ -137,7 +147,7 @@ private fun PdfScreen(
         }
 
         AnimatedVisibility(
-            visible = uiState.topBarState.topBarVisible,
+            visible = uiState.topBarState?.topBarVisible?: false,
             enter = slideIn {
                 IntOffset(0, -it.height)
             },
