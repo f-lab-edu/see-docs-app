@@ -23,13 +23,11 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kr.co.model.BookmarkSideEffect
 import kr.co.model.BookmarkUiIntent
 import kr.co.model.BookmarkUiState
-import kr.co.model.FileInfo
 import kr.co.seedocs.feature.bookmark.R
 import kr.co.ui.theme.SeeDocsTheme
 import kr.co.ui.theme.Theme
 import kr.co.ui.widget.FileBox
 import org.koin.androidx.compose.koinViewModel
-import java.time.LocalDateTime
 
 @Composable
 internal fun BookmarkRoute(
