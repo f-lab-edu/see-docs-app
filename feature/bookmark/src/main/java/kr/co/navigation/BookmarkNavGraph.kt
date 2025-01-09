@@ -6,11 +6,13 @@ import androidx.navigation.compose.composable
 import kr.co.bookmark.BookmarkRoute
 
 fun NavGraphBuilder.bookmarkNavGraph(
-    padding: PaddingValues
+    padding: PaddingValues,
+    navigateToPdf: (String) -> Unit = {},
 ) {
     composable<MainNavigation.Bookmark> {
         BookmarkRoute(
             padding = padding,
+            navigateToPdf = navigateToPdf
         )
     }
 }
