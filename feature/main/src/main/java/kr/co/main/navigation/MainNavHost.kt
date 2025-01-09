@@ -22,15 +22,17 @@ internal fun MainNavHost(
         exploreNavGraph(
             padding = padding,
             navigateToFolder = { navigator.navigate(MainNavigation.Explore(it)) },
-            navigateToPdf = { navigator.navigate(Route.Pdf(it)) }
+            navigateToPdf = { navigator.navigate(Route.Pdf(it)) },
         )
 
         recentNavGraph(
-            padding = padding
+            padding = padding,
+            navigateToPdf = { navigator.navigate(Route.Pdf(it)) },
         )
 
         bookmarkNavGraph(
-            padding = padding
+            padding = padding,
+            navigateToPdf = { navigator.navigate(Route.Pdf(it)) },
         )
 
         pdfNavGraph()

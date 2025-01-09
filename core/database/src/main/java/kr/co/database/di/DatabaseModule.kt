@@ -5,11 +5,11 @@ import androidx.room.Room
 import kr.co.database.SeeDocsDatabase
 import org.koin.dsl.module
 
-
 val databaseModule =
     module {
         single { provideDatabase(get()) }
         single { provideRecentFileDao(get()) }
+        single { provideBookmarkFileDao(get()) }
     }
 
 private fun provideDatabase(
@@ -22,3 +22,7 @@ private fun provideDatabase(
 private fun provideRecentFileDao(
     database: SeeDocsDatabase,
 ) = database.recentFileDao()
+
+private fun provideBookmarkFileDao(
+    database: SeeDocsDatabase,
+) = database.bookmarkFileDao()

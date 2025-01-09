@@ -16,14 +16,18 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kr.co.model.RecentSideEffect
 import kr.co.model.RecentUiIntent
 import kr.co.model.RecentUiState
+import kr.co.seedocs.feature.recent.R
 import kr.co.ui.theme.SeeDocsTheme
 import kr.co.ui.theme.Theme
+import kr.co.ui.util.LaunchIntentHandler
+import kr.co.ui.util.LaunchSideEffect
 import kr.co.ui.widget.FileBox
 import org.koin.androidx.compose.koinViewModel
 
@@ -35,26 +39,26 @@ internal fun RecentRoute(
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
 
-    LaunchedEffect(Unit) {
-        viewModel.handleIntent(RecentUiIntent.Init)
+    LaunchIntentHandler(RecentUiIntent.Init, viewModel)
 
-        viewModel.sideEffect.collect {
-            when(it) {
-                is RecentSideEffect.NavigateToPdf -> navigateToPdf(it.path)
-            }
+    LaunchSideEffect(viewModel) {
+        when(it) {
+            is RecentSideEffect.NavigateToPdf -> navigateToPdf(it.path)
         }
     }
 
     RecentScreen(
         padding = padding,
-        state = state
+        state = state,
+        handleIntent = viewModel::handleIntent
     )
 }
 
 @Composable
 private fun RecentScreen(
     padding: PaddingValues,
-    state: RecentUiState = RecentUiState.INIT
+    state: RecentUiState = RecentUiState.INIT,
+    handleIntent: (RecentUiIntent) -> Unit = {},
 ) {
     Box(
         modifier = Modifier
@@ -72,7 +76,7 @@ private fun RecentScreen(
                 Spacer(Modifier.height(32.dp))
 
                 Text(
-                    text = "최근 본 파일",
+                    text = stringResource(R.string.feature_recent_recent),
                     style = Theme.typography.body1sb,
                     color = Theme.colors.text
                 )
@@ -81,7 +85,8 @@ private fun RecentScreen(
             items(state.files) { file ->
                 FileBox(
                     name = file.name,
-                    dateTime = file.createdAt
+                    dateTime = file.createdAt,
+                    onFileClick = { handleIntent(RecentUiIntent.ClickFile(file)) }
                 )
             }
         }
