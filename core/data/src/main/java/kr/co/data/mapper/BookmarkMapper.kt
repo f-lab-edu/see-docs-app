@@ -13,7 +13,7 @@ internal class BookmarkMapper : Mapper<FileInfo, BookmarkFile> {
             type = when (from.type) {
                 FileInfo.Type.PDF -> FileType.PDF
                 FileInfo.Type.IMAGE -> FileType.IMAGE
-                FileInfo.Type.FOLDER -> FileType.PDF
+                FileInfo.Type.FOLDER -> FileType.FOLDER
             },
             size = from.size,
             createdAt = from.createdAt,

@@ -7,4 +7,5 @@ enum class FileType {
     PPTX,
     TXT,
     IMAGE,
+    FOLDER,
 }
