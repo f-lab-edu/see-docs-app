@@ -26,6 +26,8 @@ import kr.co.model.RecentUiState
 import kr.co.seedocs.feature.recent.R
 import kr.co.ui.theme.SeeDocsTheme
 import kr.co.ui.theme.Theme
+import kr.co.ui.util.LaunchIntentHandler
+import kr.co.ui.util.LaunchSideEffect
 import kr.co.ui.widget.FileBox
 import org.koin.androidx.compose.koinViewModel
 
@@ -37,13 +39,11 @@ internal fun RecentRoute(
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
 
-    LaunchedEffect(Unit) {
-        viewModel.handleIntent(RecentUiIntent.Init)
+    LaunchIntentHandler(RecentUiIntent.Init, viewModel)
 
-        viewModel.sideEffect.collect {
-            when(it) {
-                is RecentSideEffect.NavigateToPdf -> navigateToPdf(it.path)
-            }
+    LaunchSideEffect(viewModel) {
+        when(it) {
+            is RecentSideEffect.NavigateToPdf -> navigateToPdf(it.path)
         }
     }
 

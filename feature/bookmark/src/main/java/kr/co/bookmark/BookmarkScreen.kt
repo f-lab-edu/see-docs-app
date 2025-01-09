@@ -13,7 +13,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -26,6 +25,8 @@ import kr.co.model.BookmarkUiState
 import kr.co.seedocs.feature.bookmark.R
 import kr.co.ui.theme.SeeDocsTheme
 import kr.co.ui.theme.Theme
+import kr.co.ui.util.LaunchIntentHandler
+import kr.co.ui.util.LaunchSideEffect
 import kr.co.ui.widget.FileBox
 import org.koin.androidx.compose.koinViewModel
 
@@ -37,13 +38,11 @@ internal fun BookmarkRoute(
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
 
-    LaunchedEffect(Unit) {
-        viewModel.handleIntent(BookmarkUiIntent.Init)
+    LaunchIntentHandler(intent = BookmarkUiIntent.Init, viewModel = viewModel)
 
-        viewModel.sideEffect.collect {
-            when(it) {
-                is BookmarkSideEffect.NavigateToPdf -> navigateToPdf(it.path)
-            }
+    LaunchSideEffect(viewModel) {
+        when(it) {
+            is BookmarkSideEffect.NavigateToPdf -> navigateToPdf(it.path)
         }
     }
 
