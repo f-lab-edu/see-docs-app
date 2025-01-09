@@ -16,12 +16,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kr.co.model.RecentSideEffect
 import kr.co.model.RecentUiIntent
 import kr.co.model.RecentUiState
+import kr.co.seedocs.feature.recent.R
 import kr.co.ui.theme.SeeDocsTheme
 import kr.co.ui.theme.Theme
 import kr.co.ui.widget.FileBox
@@ -74,7 +76,7 @@ private fun RecentScreen(
                 Spacer(Modifier.height(32.dp))
 
                 Text(
-                    text = "최근 본 파일",
+                    text = stringResource(R.string.feature_recent_recent),
                     style = Theme.typography.body1sb,
                     color = Theme.colors.text
                 )
