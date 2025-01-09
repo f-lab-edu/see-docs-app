@@ -13,28 +13,51 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import kr.co.model.BookmarkSideEffect
+import kr.co.model.BookmarkUiIntent
+import kr.co.model.BookmarkUiState
 import kr.co.seedocs.feature.bookmark.R
 import kr.co.ui.theme.SeeDocsTheme
 import kr.co.ui.theme.Theme
 import kr.co.ui.widget.FileBox
+import org.koin.androidx.compose.koinViewModel
 import java.time.LocalDateTime
 
 @Composable
 internal fun BookmarkRoute(
-    padding: PaddingValues
+    padding: PaddingValues,
+    viewModel: BookmarkViewModel = koinViewModel(),
+    navigateToPdf: (String) -> Unit = {},
 ) {
+    val state by viewModel.uiState.collectAsStateWithLifecycle()
+
+    LaunchedEffect(Unit) {
+        viewModel.handleIntent(BookmarkUiIntent.Init)
+
+        viewModel.sideEffect.collect {
+            when(it) {
+                is BookmarkSideEffect.NavigateToPdf -> navigateToPdf(it.path)
+            }
+        }
+    }
+
     BookmarkScreen(
-        padding = padding
+        padding = padding,
+        state = state
     )
 }
 
 @Composable
 private fun BookmarkScreen(
     padding: PaddingValues,
+    state: BookmarkUiState = BookmarkUiState.INIT
 ) {
     Box(
         modifier = Modifier
@@ -58,11 +81,10 @@ private fun BookmarkScreen(
                 )
             }
 
-            //TODO 로컬에 저장된 북마크 데이터를 불러와 파일목록을 보여줄 예정
-            items(listOf("Effective Kotlin", "Android Developer")) { file ->
+            items(state.files) { file ->
                 FileBox(
-                    name = file,
-                    dateTime = LocalDateTime.now()
+                    name = file.name,
+                    dateTime = file.createdAt,
                 )
             }
         }

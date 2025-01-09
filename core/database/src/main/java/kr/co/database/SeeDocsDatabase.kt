@@ -5,7 +5,9 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import kr.co.database.converter.EnumConverter
 import kr.co.database.converter.LocalDateTimeConverter
+import kr.co.database.dao.BookmarkFileDao
 import kr.co.database.dao.RecentFileDao
+import kr.co.database.model.BookmarkFile
 import kr.co.database.model.RecentFile
 
 @Database(

@@ -10,7 +10,7 @@ fun NavGraphBuilder.bookmarkNavGraph(
 ) {
     composable<MainNavigation.Bookmark> {
         BookmarkRoute(
-            padding = padding
+            padding = padding,
         )
     }
 }
