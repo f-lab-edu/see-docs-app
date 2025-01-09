@@ -13,51 +13,28 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import kr.co.model.BookmarkSideEffect
-import kr.co.model.BookmarkUiIntent
-import kr.co.model.BookmarkUiState
 import kr.co.seedocs.feature.bookmark.R
 import kr.co.ui.theme.SeeDocsTheme
 import kr.co.ui.theme.Theme
-import kr.co.ui.util.LaunchIntentHandler
-import kr.co.ui.util.LaunchSideEffect
 import kr.co.ui.widget.FileBox
-import org.koin.androidx.compose.koinViewModel
+import java.time.LocalDateTime
 
 @Composable
 internal fun BookmarkRoute(
-    padding: PaddingValues,
-    viewModel: BookmarkViewModel = koinViewModel(),
-    navigateToPdf: (String) -> Unit = {},
+    padding: PaddingValues
 ) {
-    val state by viewModel.uiState.collectAsStateWithLifecycle()
-
-    LaunchIntentHandler(intent = BookmarkUiIntent.Init, viewModel = viewModel)
-
-    LaunchSideEffect(viewModel) {
-        when(it) {
-            is BookmarkSideEffect.NavigateToPdf -> navigateToPdf(it.path)
-        }
-    }
-
     BookmarkScreen(
-        padding = padding,
-        state = state,
-        handleIntent = viewModel::handleIntent
+        padding = padding
     )
 }
 
 @Composable
 private fun BookmarkScreen(
     padding: PaddingValues,
-    state: BookmarkUiState = BookmarkUiState.INIT,
-    handleIntent: (BookmarkUiIntent) -> Unit = {},
 ) {
     Box(
         modifier = Modifier
@@ -81,11 +58,11 @@ private fun BookmarkScreen(
                 )
             }
 
-            items(state.files) { file ->
+            //TODO 로컬에 저장된 북마크 데이터를 불러와 파일목록을 보여줄 예정
+            items(listOf("Effective Kotlin", "Android Developer")) { file ->
                 FileBox(
-                    name = file.name,
-                    dateTime = file.createdAt,
-                    onFileClick = { handleIntent(BookmarkUiIntent.ClickFile(file)) }
+                    name = file,
+                    dateTime = LocalDateTime.now()
                 )
             }
         }

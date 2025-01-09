@@ -6,11 +6,20 @@ import java.time.LocalDateTime
 
 @Entity(tableName = "recent_file")
 data class RecentFile(
-    override val name: String,
-    @PrimaryKey override val path: String,
-    override val type: FileType,
-    override val size: Long,
-    override val updatedAt: LocalDateTime = LocalDateTime.now(),
-    override val createdAt: LocalDateTime,
-    override val lastModified: LocalDateTime
-): LocalFile(name, path, type, size, updatedAt, createdAt, lastModified)
+    val name: String,
+    @PrimaryKey val path: String,
+    val type: Type,
+    val size: Long,
+    val updatedAt: LocalDateTime = LocalDateTime.now(),
+    val createdAt: LocalDateTime,
+    val lastModified: LocalDateTime
+) {
+    enum class Type {
+        PDF,
+        WORD,
+        EXCEL,
+        PPTX,
+        TXT,
+        IMAGE,
+    }
+}

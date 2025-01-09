@@ -6,13 +6,11 @@ import androidx.navigation.compose.composable
 import kr.co.recent.RecentRoute
 
 fun NavGraphBuilder.recentNavGraph(
-    padding: PaddingValues,
-    navigateToPdf: (String) -> Unit = {},
+    padding: PaddingValues
 ) {
     composable<MainNavigation.Recent> {
         RecentRoute(
-            padding = padding,
-            navigateToPdf = navigateToPdf
+            padding = padding
         )
     }
 }

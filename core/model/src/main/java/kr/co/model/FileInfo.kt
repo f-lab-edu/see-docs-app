@@ -1,6 +1,5 @@
 package kr.co.model
 
-import kr.co.model.FileInfo.Type.PDF
 import java.time.LocalDateTime
 
 data class FileInfo(
@@ -18,6 +17,7 @@ data class FileInfo(
         IMAGE,
         FOLDER
         ;
+
         companion object {
             fun from(extension: String): Type =
                 when(extension) {
@@ -25,18 +25,17 @@ data class FileInfo(
                     "jpg", "jpeg", "png", "gif" -> IMAGE
                     else -> IMAGE
                 }
+
+            val DUMMY = FileInfo(
+                name = "DUMMY",
+                path = "",
+                type = PDF,
+                isDirectory = false,
+                isHidden = false,
+                size = 0,
+                createdAt = LocalDateTime.now(),
+                lastModified = LocalDateTime.now()
+            )
         }
-    }
-    companion object {
-        val INIT = FileInfo(
-            name = "DUMMY",
-            path = "",
-            type = PDF,
-            isDirectory = false,
-            isHidden = false,
-            size = 0,
-            createdAt = LocalDateTime.now(),
-            lastModified = LocalDateTime.now()
-        )
     }
 }
