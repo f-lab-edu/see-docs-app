@@ -10,9 +10,10 @@ import kr.co.database.model.RecentFile
 
 @Database(
     entities = [
-        RecentFile::class
+        RecentFile::class,
+        BookmarkFile::class
     ],
-    version = 1,
+    version = 2,
     exportSchema = true
 )
 
@@ -25,4 +26,6 @@ import kr.co.database.model.RecentFile
 abstract class SeeDocsDatabase : RoomDatabase() {
 
     abstract fun recentFileDao(): RecentFileDao
+
+    abstract fun bookmarkFileDao(): BookmarkFileDao
 }
