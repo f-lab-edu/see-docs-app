@@ -8,18 +8,9 @@ import java.time.LocalDateTime
 data class RecentFile(
     val name: String,
     @PrimaryKey val path: String,
-    val type: Type,
+    val type: FileType,
     val size: Long,
     val updatedAt: LocalDateTime = LocalDateTime.now(),
     val createdAt: LocalDateTime,
     val lastModified: LocalDateTime
-) {
-    enum class Type {
-        PDF,
-        WORD,
-        EXCEL,
-        PPTX,
-        TXT,
-        IMAGE,
-    }
-}
+)
