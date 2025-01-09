@@ -23,6 +23,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kr.co.model.BookmarkSideEffect
 import kr.co.model.BookmarkUiIntent
 import kr.co.model.BookmarkUiState
+import kr.co.model.FileInfo
 import kr.co.seedocs.feature.bookmark.R
 import kr.co.ui.theme.SeeDocsTheme
 import kr.co.ui.theme.Theme
@@ -50,14 +51,16 @@ internal fun BookmarkRoute(
 
     BookmarkScreen(
         padding = padding,
-        state = state
+        state = state,
+        handleIntent = viewModel::handleIntent
     )
 }
 
 @Composable
 private fun BookmarkScreen(
     padding: PaddingValues,
-    state: BookmarkUiState = BookmarkUiState.INIT
+    state: BookmarkUiState = BookmarkUiState.INIT,
+    handleIntent: (BookmarkUiIntent) -> Unit = {},
 ) {
     Box(
         modifier = Modifier
@@ -85,6 +88,7 @@ private fun BookmarkScreen(
                 FileBox(
                     name = file.name,
                     dateTime = file.createdAt,
+                    onFileClick = { handleIntent(BookmarkUiIntent.ClickFile(file)) }
                 )
             }
         }

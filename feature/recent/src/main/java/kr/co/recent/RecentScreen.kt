@@ -47,14 +47,16 @@ internal fun RecentRoute(
 
     RecentScreen(
         padding = padding,
-        state = state
+        state = state,
+        handleIntent = viewModel::handleIntent
     )
 }
 
 @Composable
 private fun RecentScreen(
     padding: PaddingValues,
-    state: RecentUiState = RecentUiState.INIT
+    state: RecentUiState = RecentUiState.INIT,
+    handleIntent: (RecentUiIntent) -> Unit = {},
 ) {
     Box(
         modifier = Modifier
@@ -81,7 +83,8 @@ private fun RecentScreen(
             items(state.files) { file ->
                 FileBox(
                     name = file.name,
-                    dateTime = file.createdAt
+                    dateTime = file.createdAt,
+                    onFileClick = { handleIntent(RecentUiIntent.ClickFile(file)) }
                 )
             }
         }
