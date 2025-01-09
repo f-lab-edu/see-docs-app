@@ -21,6 +21,7 @@ import kr.co.seedocs.feature.bookmark.R
 import kr.co.ui.theme.SeeDocsTheme
 import kr.co.ui.theme.Theme
 import kr.co.ui.widget.FileBox
+import java.time.LocalDateTime
 
 @Composable
 internal fun BookmarkRoute(
@@ -60,7 +61,8 @@ private fun BookmarkScreen(
             //TODO 로컬에 저장된 북마크 데이터를 불러와 파일목록을 보여줄 예정
             items(listOf("Effective Kotlin", "Android Developer")) { file ->
                 FileBox(
-                    name = file
+                    name = file,
+                    dateTime = LocalDateTime.now()
                 )
             }
         }

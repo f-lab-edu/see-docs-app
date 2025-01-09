@@ -45,8 +45,8 @@ import androidx.compose.ui.unit.dp
 import androidx.core.text.isDigitsOnly
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.coroutines.launch
-import kr.co.pdf.model.PdfUiIntent
-import kr.co.pdf.model.PdfUiState
+import kr.co.model.PdfUiIntent
+import kr.co.model.PdfUiState
 import kr.co.ui.theme.SeeDocsTheme
 import kr.co.ui.theme.Theme
 import kr.co.ui.util.rememberTopBarState

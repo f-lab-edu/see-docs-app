@@ -11,7 +11,3 @@ android {
         buildConfig = true
     }
 }
-
-dependencies {
-    implementation(libs.kotlinx.coroutines.android)
-}

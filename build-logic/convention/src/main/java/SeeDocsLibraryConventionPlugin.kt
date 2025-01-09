@@ -33,7 +33,8 @@ class SeeDocsLibraryConventionPlugin : Plugin<Project> {
             dependencies {
                 implementations(
                     libs.timber,
-                    libs.koin.core
+                    libs.koin.core,
+                    libs.kotlinx.coroutines.android
                 )
                 testImplementations(
                     kotlin("test")

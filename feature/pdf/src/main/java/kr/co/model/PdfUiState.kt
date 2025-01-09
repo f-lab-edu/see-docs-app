@@ -1,4 +1,4 @@
-package kr.co.pdf.model
+package kr.co.model
 
 import android.graphics.Bitmap
 import kr.co.ui.base.UiState

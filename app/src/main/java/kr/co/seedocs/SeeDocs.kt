@@ -2,6 +2,9 @@ package kr.co.seedocs
 
 import android.app.Application
 import kr.co.main.di.mainModule
+import kr.co.data.di.repositoryModule
+import kr.co.database.di.databaseModule
+import kr.co.main.di.mainModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
@@ -11,9 +14,12 @@ import timber.log.Timber
 private val allModules =
     listOf(
         mainModule,
+        databaseModule,
+        repositoryModule,
+        mainModule,
     )
 
-class SeeDocs : Application() {
+class SeeDocs: Application() {
 
     override fun onCreate() {
         super.onCreate()
