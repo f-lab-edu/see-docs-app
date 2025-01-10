@@ -1,8 +1,10 @@
 package kr.co.explore
 
+import io.mockk.MockKAnnotations
 import io.mockk.Runs
 import io.mockk.coEvery
 import io.mockk.coVerify
+import io.mockk.impl.annotations.MockK
 import io.mockk.just
 import io.mockk.mockk
 import kotlinx.coroutines.flow.first
@@ -28,37 +30,16 @@ class ExploreViewModelTest {
     val coroutineTestRule = CoroutineTestRule()
 
     private lateinit var viewModel: ExploreViewModel
+
+    @MockK
     private lateinit var recentRepository: RecentRepository
+
+    @MockK
     private lateinit var fileManagerImpl: FileManagerImpl
-
-    companion object {
-        val PDF_DUMMY = FileInfo(
-            name = "DUMMY.pdf",
-            path = "",
-            type = PDF,
-            isDirectory = false,
-            isHidden = false,
-            size = 0,
-            createdAt = LocalDateTime.now(),
-            lastModified = LocalDateTime.now()
-        )
-
-        val FOLDER_DUMMY = FileInfo(
-            name = "DUMMY",
-            path = "",
-            type = PDF,
-            isDirectory = true,
-            isHidden = false,
-            size = 0,
-            createdAt = LocalDateTime.now(),
-            lastModified = LocalDateTime.now()
-        )
-    }
 
     @Before
     fun setup() {
-        recentRepository = mockk(relaxed = true)
-        fileManagerImpl = mockk()
+        MockKAnnotations.init(this)
         viewModel = ExploreViewModel(recentRepository,fileManagerImpl)
     }
 
@@ -118,5 +99,29 @@ class ExploreViewModelTest {
             assert(it is ExploreSideEffect.NavigateToFolder)
             assert((it as ExploreSideEffect.NavigateToFolder).path == folder.path)
         }
+    }
+
+    companion object {
+        val PDF_DUMMY = FileInfo(
+            name = "DUMMY.pdf",
+            path = "",
+            type = PDF,
+            isDirectory = false,
+            isHidden = false,
+            size = 0,
+            createdAt = LocalDateTime.now(),
+            lastModified = LocalDateTime.now()
+        )
+
+        val FOLDER_DUMMY = FileInfo(
+            name = "DUMMY",
+            path = "",
+            type = PDF,
+            isDirectory = true,
+            isHidden = false,
+            size = 0,
+            createdAt = LocalDateTime.now(),
+            lastModified = LocalDateTime.now()
+        )
     }
 }
