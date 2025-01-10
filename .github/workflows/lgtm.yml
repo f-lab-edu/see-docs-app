@@ -12,7 +12,7 @@ jobs:
     steps:
       - name: 리뷰에서 LGTM 체크
         run: |
-          if [[ "${{ github.event.review.body }}" == *"LGTM" ]]; then
+          if [[ "${{ github.event.comment.body }}" == *"LGTM" ]]; then
             echo "approve=true" >> $GITHUB_ENV
           else
             echo "approve=false" >> $GITHUB_ENV
@@ -28,4 +28,4 @@ jobs:
               repo: context.repo.repo,
               pull_number: pull_request.number,
             });
-          github-token: ${{ secrets.SECRET_GITHUB }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
