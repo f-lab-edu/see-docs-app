@@ -5,31 +5,31 @@ import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.just
 import io.mockk.mockk
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.test.StandardTestDispatcher
-import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
-import kotlinx.coroutines.test.setMain
 import kr.co.data.repository.RecentRepository
 import kr.co.model.ExploreSideEffect
 import kr.co.model.ExploreUiIntent
 import kr.co.model.FileInfo
 import kr.co.model.FileInfo.Type.PDF
+import kr.co.testing.rule.CoroutineTestRule
 import kr.co.util.FileManagerImpl
 import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
 import java.time.LocalDateTime
 import kotlin.test.assertEquals
 
+
 class ExploreViewModelTest {
+
+    @get: Rule
+    val coroutineTestRule = CoroutineTestRule()
 
     private lateinit var viewModel: ExploreViewModel
     private lateinit var recentRepository: RecentRepository
     private lateinit var fileManagerImpl: FileManagerImpl
-    private val testDispatcher = StandardTestDispatcher()
-    private val testScope = TestScope(testDispatcher)
 
     companion object {
         val PDF_DUMMY = FileInfo(
@@ -57,14 +57,13 @@ class ExploreViewModelTest {
 
     @Before
     fun setup() {
-        Dispatchers.setMain(testDispatcher)
         recentRepository = mockk(relaxed = true)
         fileManagerImpl = mockk()
         viewModel = ExploreViewModel(recentRepository,fileManagerImpl)
     }
 
     @Test
-    fun `Init intent 경로를 통한 파일 초기화`() = testScope.runTest {
+    fun `Init intent 경로를 통한 파일 초기화`() = runTest {
         val path = "/path"
         val folders = listOf(
             FOLDER_DUMMY
@@ -90,7 +89,7 @@ class ExploreViewModelTest {
     }
 
     @Test
-    fun `ClickFile Repository에 insert 후 PDF 화면으로 이동`() = testScope.runTest {
+    fun `ClickFile Repository에 insert 후 PDF 화면으로 이동`() = runTest {
         val file = PDF_DUMMY
 
         coEvery { recentRepository.insert(file) } just Runs
@@ -108,7 +107,7 @@ class ExploreViewModelTest {
     }
 
     @Test
-    fun `ClickFolder Folder 화면으로 이동`() = testScope.runTest {
+    fun `ClickFolder Folder 화면으로 이동`() = runTest {
         val folder = FOLDER_DUMMY
 
         viewModel.handleIntent(ExploreUiIntent.ClickFolder(folder))
