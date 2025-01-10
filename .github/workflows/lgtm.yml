@@ -1,7 +1,7 @@
 name: LGTM 텍스트 입력시 자동 머지
 
 on:
-  pull_request_review:
+  issue_comment:
     types:
       - submitted
 
