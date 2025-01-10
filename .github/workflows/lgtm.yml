@@ -2,8 +2,7 @@ name: LGTM 텍스트 입력시 자동 머지
 
 on:
   issue_comment:
-    types:
-      - created
+    types: [created]
 
 jobs:
   auto-merge:
@@ -12,8 +11,12 @@ jobs:
     steps:
       - name: 리뷰에서 LGTM 체크
         run: |
-          if [[ "${{ github.event.comment.body }}" == *"LGTM" ]]; then
-            echo "approve=true" >> $GITHUB_ENV
+          if [[ "${{ github.event.issue.pull_request.url }}" != "" ]]; then
+            if [[ "${{ github.event.comment.body }}" == *"LGTM"* ]]; then
+              echo "approve=true" >> $GITHUB_ENV
+            else
+              echo "approve=false" >> $GITHUB_ENV
+            fi
           else
             echo "approve=false" >> $GITHUB_ENV
 
