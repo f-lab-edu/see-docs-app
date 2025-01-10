@@ -102,7 +102,11 @@ private fun ExploreScreen(
                             )
                             val pathSegments = relativePath.split("/")
 
-                            if (pathSegments.size <= 1) {
+                            if (pathSegments.isEmpty()) {
+                                return@buildAnnotatedString
+                            }
+
+                            if (pathSegments.size == 1) {
                                 withStyle(
                                     Theme.typography.caption1r.copy(color = Theme.colors.highlight).toSpanStyle()
                                 ) {
