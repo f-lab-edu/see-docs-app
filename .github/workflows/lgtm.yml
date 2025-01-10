@@ -3,7 +3,7 @@ name: LGTM 텍스트 입력시 자동 머지
 on:
   issue_comment:
     types:
-      - submitted
+      - created
 
 jobs:
   auto-merge:
