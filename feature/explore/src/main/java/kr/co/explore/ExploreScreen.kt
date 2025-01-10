@@ -13,25 +13,28 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import kr.co.model.ExploreSideEffect
+import kr.co.model.ExploreUiIntent
+import kr.co.model.ExploreUiState
 import kr.co.model.FileInfo
 import kr.co.seedocs.feature.explore.R
 import kr.co.ui.theme.SeeDocsTheme
 import kr.co.ui.theme.Theme
+import kr.co.ui.util.LaunchIntentHandler
+import kr.co.ui.util.LaunchSideEffect
 import kr.co.ui.widget.FileBox
 import kr.co.util.DEFAULT_STORAGE
-import kr.co.util.readPDFOrDirectory
 import kr.co.widget.FolderBox
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 internal fun ExploreRoute(
@@ -39,30 +42,31 @@ internal fun ExploreRoute(
     padding: PaddingValues,
     navigateToFolder: (String) -> Unit = {},
     navigateToPdf: (String) -> Unit = {},
+    viewModel: ExploreViewModel = koinViewModel(),
 ) {
-    var files by remember { mutableStateOf<List<FileInfo>>(emptyList()) }
+    val state by viewModel.uiState.collectAsStateWithLifecycle()
 
-    LaunchedEffect(Unit) {
-        files = readPDFOrDirectory(path)
+    LaunchIntentHandler(ExploreUiIntent.Init(path), viewModel)
+
+    LaunchSideEffect(viewModel) {
+        when (it) {
+            is ExploreSideEffect.NavigateToPdf -> navigateToPdf(it.path)
+            is ExploreSideEffect.NavigateToFolder -> navigateToFolder(it.path)
+        }
     }
 
     ExploreScreen(
-        path = path.replace(DEFAULT_STORAGE,
-            stringResource(R.string.feature_explore_local_storage)),
-        files = files,
+        state = state,
         padding = padding,
-        onFolderClick = { folderPath -> navigateToFolder(folderPath) },
-        onFileClick = navigateToPdf
+        handleIntent = viewModel::handleIntent,
     )
 }
 
 @Composable
 private fun ExploreScreen(
-    path: String,
-    files: List<FileInfo> = emptyList(),
+    state: ExploreUiState = ExploreUiState.INIT,
     padding: PaddingValues,
-    onFolderClick: (String) -> Unit = {},
-    onFileClick: (String) -> Unit = {}
+    handleIntent: (ExploreUiIntent) -> Unit = {},
 ) {
     Box(
         modifier = Modifier
@@ -92,49 +96,70 @@ private fun ExploreScreen(
                         color = Theme.colors.text
                     )
                     Text(
-                        text = buildAnnotatedString {
-                            append(">${path.split("/").dropLast(1).joinToString(separator = "/")}")
-                            append("/")
-                            withStyle(
-                                Theme.typography.caption1r.copy(color = Theme.colors.highlight)
-                                    .toSpanStyle()
-                            ) {
-                                append(path.split("/").last())
-                            }
-                        },
+                        text = buildPath(state.path),
                         style = Theme.typography.caption1r,
                         color = Theme.colors.grayText,
                     )
                 }
             }
 
-            items(files.filter { it.isDirectory }) { folder ->
+            items(state.folders) { folder ->
                 FolderBox(
                     name = folder.name,
-                    onClick = { onFolderClick(folder.path) }
+                    onClick = { handleIntent(ExploreUiIntent.ClickFolder(folder)) }
                 )
             }
 
             items(
-                items = files.filter { !it.isDirectory },
+                items = state.files,
                 span = { GridItemSpan(maxLineSpan) }
             ) { file ->
                 FileBox(
                     name = file.name,
                     dateTime = file.createdAt,
-                    onFileClick = { onFileClick(file.path) }
+                    onFileClick = { handleIntent(ExploreUiIntent.ClickFile(file)) }
                 )
             }
         }
     }
 }
 
+@Composable
+private fun buildPath(path: String): AnnotatedString =
+    buildAnnotatedString {
+        val relativePath = path.replace(
+            DEFAULT_STORAGE,
+            stringResource(R.string.feature_explore_local_storage)
+        )
+        val pathSegments = relativePath.split("/")
+
+        when {
+            pathSegments.isEmpty() -> return@buildAnnotatedString
+            pathSegments.size == 1 -> withStyle(
+                Theme.typography.caption1r.copy(color = Theme.colors.highlight).toSpanStyle()
+            ) {
+                append("> ${pathSegments.first()}")
+            }
+            else -> {
+                append("> ")
+                pathSegments.dropLast(1).forEach { segment ->
+                    append("$segment/")
+                }
+                withStyle(
+                    Theme.typography.caption1r.copy(color = Theme.colors.highlight).toSpanStyle()
+                ) {
+                    append(pathSegments.last())
+                }
+            }
+        }
+    }
+
+
 @Preview
 @Composable
 private fun Preview() {
     SeeDocsTheme {
         ExploreScreen(
-            path = DEFAULT_STORAGE,
             padding = PaddingValues(),
         )
     }
