@@ -26,19 +26,12 @@ internal class ExploreViewModel(
             copy(path = path)
         }
 
-        readPDFOrDirectory(path).map { file ->
-            if (file.isDirectory) {
-                reduce {
-                    copy(
-                        folders = folders + file
-                    )
-                }
-            } else {
-                reduce {
-                    copy(
-                        files = files + file
-                    )
-                }
+        readPDFOrDirectory(path).partition { it.isDirectory }.let { (folders, files) ->
+            reduce {
+                copy(
+                    folders = folders,
+                    files = files,
+                )
             }
         }
     }
