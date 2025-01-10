@@ -6,9 +6,7 @@ import io.mockk.coVerify
 import io.mockk.just
 import io.mockk.mockk
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.single
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.advanceUntilIdle
@@ -18,7 +16,7 @@ import kr.co.data.repository.RecentRepository
 import kr.co.model.ExploreSideEffect
 import kr.co.model.ExploreUiIntent
 import kr.co.model.FileInfo
-import kr.co.util.FileManager
+import kr.co.util.FileManagerImpl
 import org.junit.Before
 import org.junit.Test
 import kotlin.test.assertEquals
@@ -27,7 +25,7 @@ class ExploreViewModelTest {
 
     private lateinit var viewModel: ExploreViewModel
     private lateinit var recentRepository: RecentRepository
-    private lateinit var fileManager: FileManager
+    private lateinit var fileManagerImpl: FileManagerImpl
     private val testDispatcher = StandardTestDispatcher()
     private val testScope = TestScope(testDispatcher)
 
@@ -35,8 +33,8 @@ class ExploreViewModelTest {
     fun setup() {
         Dispatchers.setMain(testDispatcher)
         recentRepository = mockk(relaxed = true)
-        fileManager = mockk()
-        viewModel = ExploreViewModel(recentRepository,fileManager)
+        fileManagerImpl = mockk()
+        viewModel = ExploreViewModel(recentRepository,fileManagerImpl)
     }
 
     @Test
@@ -50,7 +48,7 @@ class ExploreViewModelTest {
             FileInfo.PDF_DUMMY
         )
 
-        coEvery { fileManager.readPDFOrDirectory(path) } returns files + folders
+        coEvery { fileManagerImpl.readPDFOrDirectory(path) } returns files + folders
 
         viewModel.handleIntent(ExploreUiIntent.Init(path))
 

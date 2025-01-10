@@ -31,7 +31,7 @@ import kr.co.ui.theme.Theme
 import kr.co.ui.util.LaunchIntentHandler
 import kr.co.ui.util.LaunchSideEffect
 import kr.co.ui.widget.FileBox
-import kr.co.util.FileManager.Companion.DEFAULT_STORAGE
+import kr.co.util.FileManagerImpl.Companion.DEFAULT_STORAGE
 import kr.co.widget.FolderBox
 import org.koin.androidx.compose.koinViewModel
 
