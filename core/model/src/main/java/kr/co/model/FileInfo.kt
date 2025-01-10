@@ -38,27 +38,5 @@ data class FileInfo(
             createdAt = LocalDateTime.now(),
             lastModified = LocalDateTime.now()
         )
-
-        val PDF_DUMMY = FileInfo(
-            name = "DUMMY.pdf",
-            path = "",
-            type = PDF,
-            isDirectory = false,
-            isHidden = false,
-            size = 0,
-            createdAt = LocalDateTime.now(),
-            lastModified = LocalDateTime.now()
-        )
-
-        val FOLDER_DUMMY = FileInfo(
-            name = "DUMMY",
-            path = "",
-            type = PDF,
-            isDirectory = true,
-            isHidden = false,
-            size = 0,
-            createdAt = LocalDateTime.now(),
-            lastModified = LocalDateTime.now()
-        )
     }
 }
