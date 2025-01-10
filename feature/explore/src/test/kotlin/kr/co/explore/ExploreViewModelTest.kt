@@ -40,7 +40,7 @@ class ExploreViewModelTest {
     }
 
     @Test
-    fun `Init intent 경로를 통한 파일 초기화`() = runTest {
+    fun `Given a path when Init intent is handled then state is updated`() = runTest {
         val path = "/path"
         val folders = listOf(
             FOLDER_DUMMY
@@ -54,8 +54,6 @@ class ExploreViewModelTest {
 
         viewModel.handleIntent(ExploreUiIntent.Init(path))
 
-        advanceUntilIdle()
-
         viewModel.uiState.test {
             val state = awaitItem()
             assert(state.path == path)
@@ -67,14 +65,12 @@ class ExploreViewModelTest {
     }
 
     @Test
-    fun `ClickFile Repository에 insert 후 PDF 화면으로 이동`() = runTest {
+    fun `Given a file when ClickFile intent is handled then navigate to pdf`() = runTest {
         val file = PDF_DUMMY
 
         recentRepository.insert(file)
 
         viewModel.handleIntent(ExploreUiIntent.ClickFile(file))
-
-        advanceUntilIdle()
 
         recentRepository.insert(file)
 
@@ -87,12 +83,10 @@ class ExploreViewModelTest {
     }
 
     @Test
-    fun `ClickFolder Folder 화면으로 이동`() = runTest {
+    fun `Given a folder when ClickFolder intent is handled then navigate to folder`() = runTest {
         val folder = FOLDER_DUMMY
 
         viewModel.handleIntent(ExploreUiIntent.ClickFolder(folder))
-
-        advanceUntilIdle()
 
         viewModel.sideEffect.test {
             awaitItem().also {
