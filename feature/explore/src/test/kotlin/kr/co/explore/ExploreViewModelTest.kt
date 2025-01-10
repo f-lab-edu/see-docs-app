@@ -1,5 +1,6 @@
 package kr.co.explore
 
+import app.cash.turbine.test
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.impl.annotations.MockK
@@ -49,13 +50,14 @@ class ExploreViewModelTest {
             PDF_DUMMY
         )
 
-        coEvery { fileManagerImpl.readPDFOrDirectory(path) } returns files + folders
+        coEvery { fileManagerImpl.readPDFOrDirectory(path) } returns folders + files
 
         viewModel.handleIntent(ExploreUiIntent.Init(path))
 
         advanceUntilIdle()
 
-        viewModel.uiState.value.let { state ->
+        viewModel.uiState.test {
+            val state = awaitItem()
             assert(state.path == path)
             assertEquals(state.files.size, files.size)
             assertEquals(state.folders.size, folders.size)
@@ -76,9 +78,11 @@ class ExploreViewModelTest {
 
         recentRepository.insert(file)
 
-        viewModel.sideEffect.first().let {
-            assert(it is ExploreSideEffect.NavigateToPdf)
-            assert((it as ExploreSideEffect.NavigateToPdf).path == file.path)
+        viewModel.sideEffect.test {
+            awaitItem().also {
+                assert(it is ExploreSideEffect.NavigateToPdf)
+                assert((it as ExploreSideEffect.NavigateToPdf).path == file.path)
+            }
         }
     }
 
@@ -90,9 +94,11 @@ class ExploreViewModelTest {
 
         advanceUntilIdle()
 
-        viewModel.sideEffect.first().let {
-            assert(it is ExploreSideEffect.NavigateToFolder)
-            assert((it as ExploreSideEffect.NavigateToFolder).path == folder.path)
+        viewModel.sideEffect.test {
+            awaitItem().also {
+                assert(it is ExploreSideEffect.NavigateToFolder)
+                assert((it as ExploreSideEffect.NavigateToFolder).path == folder.path)
+            }
         }
     }
 

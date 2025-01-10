@@ -13,4 +13,5 @@ dependencies {
     api(libs.koin.test)
     api(libs.koin.junit)
     api(projects.core.data)
+    api(libs.turbine)
 }
