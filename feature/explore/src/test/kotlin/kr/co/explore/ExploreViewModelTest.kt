@@ -82,4 +82,18 @@ class ExploreViewModelTest {
             assert((it as ExploreSideEffect.NavigateToPdf).path == file.path)
         }
     }
+
+    @Test
+    fun `ClickFolder Folder 화면으로 이동`() = testScope.runTest {
+        val folder = FileInfo.FOLDER_DUMMY
+
+        viewModel.handleIntent(ExploreUiIntent.ClickFolder(folder))
+
+        advanceUntilIdle()
+
+        viewModel.sideEffect.first().let {
+            assert(it is ExploreSideEffect.NavigateToFolder)
+            assert((it as ExploreSideEffect.NavigateToFolder).path == folder.path)
+        }
+    }
 }
