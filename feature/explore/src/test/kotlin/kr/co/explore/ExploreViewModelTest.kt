@@ -6,7 +6,6 @@ import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.impl.annotations.MockK
 import io.mockk.just
-import io.mockk.mockk
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
@@ -40,7 +39,7 @@ class ExploreViewModelTest {
     @Before
     fun setup() {
         MockKAnnotations.init(this)
-        viewModel = ExploreViewModel(recentRepository,fileManagerImpl)
+        viewModel = ExploreViewModel(recentRepository, fileManagerImpl)
     }
 
     @Test
