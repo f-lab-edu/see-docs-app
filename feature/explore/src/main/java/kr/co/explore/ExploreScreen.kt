@@ -130,7 +130,7 @@ private fun ExploreScreen(
                 }
             }
 
-            items(state.files.filter { it.isDirectory }) { folder ->
+            items(state.folders) { folder ->
                 FolderBox(
                     name = folder.name,
                     onClick = { handleIntent(ExploreUiIntent.ClickFolder(folder)) }
@@ -138,7 +138,7 @@ private fun ExploreScreen(
             }
 
             items(
-                items = state.files.filter { !it.isDirectory },
+                items = state.files,
                 span = { GridItemSpan(maxLineSpan) }
             ) { file ->
                 FileBox(

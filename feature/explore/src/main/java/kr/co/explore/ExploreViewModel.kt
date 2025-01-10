@@ -22,13 +22,23 @@ internal class ExploreViewModel(
     }
 
     private fun init(path: String) = launch {
-        path.debugLog("path")
-        readPDFOrDirectory(path).let {
-            reduce {
-                copy(
-                    path = path,
-                    files = it
-                )
+        reduce {
+            copy(path = path)
+        }
+
+        readPDFOrDirectory(path).map { file ->
+            if (file.isDirectory) {
+                reduce {
+                    copy(
+                        folders = folders + file
+                    )
+                }
+            } else {
+                reduce {
+                    copy(
+                        files = files + file
+                    )
+                }
             }
         }
     }
