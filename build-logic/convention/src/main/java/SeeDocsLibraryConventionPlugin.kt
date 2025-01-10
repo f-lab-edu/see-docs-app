@@ -37,10 +37,13 @@ class SeeDocsLibraryConventionPlugin : Plugin<Project> {
                     libs.kotlinx.coroutines.android
                 )
                 testImplementations(
-                    kotlin("test")
+                    libs.mockk,
+                    libs.kotlinx.coroutines.test,
+                    kotlin("test"),
                 )
                 androidTestImplementations(
-                    kotlin("test")
+                    libs.mockk.android,
+                    kotlin("test"),
                 )
             }
         }
