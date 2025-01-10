@@ -16,6 +16,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
@@ -95,35 +96,7 @@ private fun ExploreScreen(
                         color = Theme.colors.text
                     )
                     Text(
-                        text = buildAnnotatedString {
-                            val relativePath = state.path.replace(
-                                DEFAULT_STORAGE,
-                                stringResource(R.string.feature_explore_local_storage)
-                            )
-                            val pathSegments = relativePath.split("/")
-
-                            if (pathSegments.isEmpty()) {
-                                return@buildAnnotatedString
-                            }
-
-                            if (pathSegments.size == 1) {
-                                withStyle(
-                                    Theme.typography.caption1r.copy(color = Theme.colors.highlight).toSpanStyle()
-                                ) {
-                                    append("> ${pathSegments.first()}")
-                                }
-                            } else {
-                                append("> ")
-                                pathSegments.dropLast(1).forEach { segment ->
-                                    append("$segment/")
-                                }
-                                withStyle(
-                                    Theme.typography.caption1r.copy(color = Theme.colors.highlight).toSpanStyle()
-                                ) {
-                                    append(pathSegments.last())
-                                }
-                            }
-                        },
+                        text = buildPath(state.path),
                         style = Theme.typography.caption1r,
                         color = Theme.colors.grayText,
                     )
@@ -150,6 +123,37 @@ private fun ExploreScreen(
         }
     }
 }
+
+@Composable
+private fun buildPath(path: String): AnnotatedString =
+    buildAnnotatedString {
+        val relativePath = path.replace(
+            DEFAULT_STORAGE,
+            stringResource(R.string.feature_explore_local_storage)
+        )
+        val pathSegments = relativePath.split("/")
+
+        when {
+            pathSegments.isEmpty() -> return@buildAnnotatedString
+            pathSegments.size == 1 -> withStyle(
+                Theme.typography.caption1r.copy(color = Theme.colors.highlight).toSpanStyle()
+            ) {
+                append("> ${pathSegments.first()}")
+            }
+            else -> {
+                append("> ")
+                pathSegments.dropLast(1).forEach { segment ->
+                    append("$segment/")
+                }
+                withStyle(
+                    Theme.typography.caption1r.copy(color = Theme.colors.highlight).toSpanStyle()
+                ) {
+                    append(pathSegments.last())
+                }
+            }
+        }
+    }
+
 
 @Preview
 @Composable
