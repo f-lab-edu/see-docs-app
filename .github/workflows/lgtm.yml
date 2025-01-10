@@ -1,0 +1,31 @@
+name: LGTM 텍스트 입력시 자동 머지
+
+on:
+  pull_request_review:
+    types:
+      - submitted
+
+jobs:
+  auto-merge:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 리뷰에서 LGTM 체크
+        run: |
+          if [[ "${{ github.event.review.body }}" == *"LGTM" ]]; then
+            echo "approve=true" >> $GITHUB_ENV
+          else
+            echo "approve=false" >> $GITHUB_ENV
+
+      - name: Merge
+        if: env.approve == 'true'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const { pull_request } = context.payload;
+            await github.pulls.merge({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: pull_request.number,
+            });
+          github-token: ${{ secrets.SECRET_GITHUB }}
