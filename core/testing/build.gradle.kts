@@ -12,4 +12,5 @@ dependencies {
     api(libs.mockk.android)
     api(libs.koin.test)
     api(libs.koin.junit)
+    api(projects.core.data)
 }

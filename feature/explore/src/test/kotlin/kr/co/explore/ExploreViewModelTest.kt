@@ -1,19 +1,16 @@
 package kr.co.explore
 
 import io.mockk.MockKAnnotations
-import io.mockk.Runs
 import io.mockk.coEvery
-import io.mockk.coVerify
 import io.mockk.impl.annotations.MockK
-import io.mockk.just
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
-import kr.co.data.repository.RecentRepository
 import kr.co.model.ExploreSideEffect
 import kr.co.model.ExploreUiIntent
 import kr.co.model.FileInfo
 import kr.co.model.FileInfo.Type.PDF
+import kr.co.testing.repository.TestRecentRepository
 import kr.co.testing.rule.CoroutineTestRule
 import kr.co.util.FileManagerImpl
 import org.junit.Before
@@ -30,8 +27,7 @@ class ExploreViewModelTest {
 
     private lateinit var viewModel: ExploreViewModel
 
-    @MockK
-    private lateinit var recentRepository: RecentRepository
+    private val recentRepository = TestRecentRepository()
 
     @MockK
     private lateinit var fileManagerImpl: FileManagerImpl
@@ -72,13 +68,13 @@ class ExploreViewModelTest {
     fun `ClickFile Repository에 insert 후 PDF 화면으로 이동`() = runTest {
         val file = PDF_DUMMY
 
-        coEvery { recentRepository.insert(file) } just Runs
+        recentRepository.insert(file)
 
         viewModel.handleIntent(ExploreUiIntent.ClickFile(file))
 
         advanceUntilIdle()
 
-        coVerify { recentRepository.insert(file) }
+        recentRepository.insert(file)
 
         viewModel.sideEffect.first().let {
             assert(it is ExploreSideEffect.NavigateToPdf)
