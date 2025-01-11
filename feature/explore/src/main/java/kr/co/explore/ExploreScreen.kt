@@ -25,14 +25,13 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kr.co.model.ExploreSideEffect
 import kr.co.model.ExploreUiIntent
 import kr.co.model.ExploreUiState
-import kr.co.model.FileInfo
 import kr.co.seedocs.feature.explore.R
 import kr.co.ui.theme.SeeDocsTheme
 import kr.co.ui.theme.Theme
 import kr.co.ui.util.LaunchIntentHandler
 import kr.co.ui.util.LaunchSideEffect
 import kr.co.ui.widget.FileBox
-import kr.co.util.DEFAULT_STORAGE
+import kr.co.util.FileManagerImpl.Companion.DEFAULT_STORAGE
 import kr.co.widget.FolderBox
 import org.koin.androidx.compose.koinViewModel
 

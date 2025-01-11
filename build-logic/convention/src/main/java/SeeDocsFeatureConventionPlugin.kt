@@ -1,5 +1,6 @@
 import kr.co.convention.implementations
 import kr.co.convention.libs
+import kr.co.convention.testImplementations
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.dependencies
@@ -20,6 +21,10 @@ class SeeDocsFeatureConventionPlugin : Plugin<Project> {
                     project(":core:navigation"),
                     project(":core:model"),
                     libs.koin.compose
+                )
+
+                testImplementations(
+                    project(":core:testing")
                 )
             }
         }
