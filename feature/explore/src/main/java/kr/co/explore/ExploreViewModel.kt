@@ -6,11 +6,11 @@ import kr.co.model.ExploreUiIntent
 import kr.co.model.ExploreUiState
 import kr.co.model.FileInfo
 import kr.co.ui.base.BaseMviViewModel
-import kr.co.util.FileManagerImpl
+import kr.co.util.FileManager
 
 internal class ExploreViewModel(
     private val recentRepository: RecentRepository,
-    private val fileManagerImpl: FileManagerImpl,
+    private val fileManager: FileManager,
 ) :
     BaseMviViewModel<ExploreUiState, ExploreUiIntent, ExploreSideEffect>(ExploreUiState.INIT) {
 
@@ -27,7 +27,7 @@ internal class ExploreViewModel(
             copy(path = path)
         }
 
-        fileManagerImpl.readPDFOrDirectory(path).partition { it.isDirectory }.let { (folders, files) ->
+        fileManager.readPDFOrDirectory(path).partition { it.isDirectory }.let { (folders, files) ->
             reduce {
                 copy(
                     folders = folders,

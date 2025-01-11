@@ -11,7 +11,7 @@ val exploreModule =
         viewModel {
             ExploreViewModel(
                 get(),
-                get<FileManagerImpl>(),
+                get<FileManager>(),
             )
         }
 

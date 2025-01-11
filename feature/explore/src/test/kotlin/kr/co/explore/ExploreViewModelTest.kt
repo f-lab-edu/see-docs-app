@@ -4,8 +4,6 @@ import app.cash.turbine.test
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.impl.annotations.MockK
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import kr.co.model.ExploreSideEffect
 import kr.co.model.ExploreUiIntent
@@ -13,7 +11,7 @@ import kr.co.model.FileInfo
 import kr.co.model.FileInfo.Type.PDF
 import kr.co.testing.repository.TestRecentRepository
 import kr.co.testing.rule.CoroutineTestRule
-import kr.co.util.FileManagerImpl
+import kr.co.util.FileManager
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -31,12 +29,12 @@ class ExploreViewModelTest {
     private val recentRepository = TestRecentRepository()
 
     @MockK
-    private lateinit var fileManagerImpl: FileManagerImpl
+    private lateinit var fileManager: FileManager
 
     @Before
     fun setup() {
         MockKAnnotations.init(this)
-        viewModel = ExploreViewModel(recentRepository, fileManagerImpl)
+        viewModel = ExploreViewModel(recentRepository, fileManager)
     }
 
     @Test
@@ -50,7 +48,7 @@ class ExploreViewModelTest {
             PDF_DUMMY
         )
 
-        coEvery { fileManagerImpl.readPDFOrDirectory(path) } returns folders + files
+        coEvery { fileManager.readPDFOrDirectory(path) } returns folders + files
 
         viewModel.handleIntent(ExploreUiIntent.Init(path))
 
