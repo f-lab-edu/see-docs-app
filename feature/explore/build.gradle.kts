@@ -6,3 +6,6 @@ plugins {
 }
 
 setNamespace("feature.explore")
+dependencies {
+    implementation(libs.firebase.crashlytics.buildtools)
+}
