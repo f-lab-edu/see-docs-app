@@ -1,0 +1,34 @@
+name: Unit Test
+
+on:
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  unit_test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: setup JDK
+        uses: actions/setup-java@v4
+
+        with:
+          distribution: 'corretto'
+          java-version: '22'
+
+      - name: setup Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: gradlew permission
+        run: chmod +x gradlew
+
+      - name: Run unit tests
+        run: ./gradlew testDebugUnitTest --stacktrace
+
+      - name: Test Result
+        uses: EnricoMi/publish-unit-test-result-action@v2
+        with:
+          files: "**/test-results/**/*.xml"
