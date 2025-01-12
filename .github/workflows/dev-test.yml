@@ -1,0 +1,51 @@
+name: Unit Test
+
+on:
+  pull_request:
+    branches: [ "dev" ]
+
+jobs:
+  unit_test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Get changed files
+        id: changed_files
+        run: |
+          git fetch origin dev
+          git diff --name-only origin/dev...HEAD | grep "\.kt$" > kotlin_files.txt || true
+          if [ -s kotlin_files.txt ]; then
+            TEST_CLASSES=$(cat kotlin_files.txt | sed 's|/|.|g' | sed 's|.kt$||')
+            echo "files=$TEST_CLASSES" >> $GITHUB_OUTPUT
+          else
+            echo "files=" >> $GITHUB_OUTPUT
+          fi
+
+      - name: setup JDK
+        if: ${{ steps.changed_files.outputs.files != '' }}
+        uses: actions/setup-java@v4
+
+        with:
+          distribution: 'corretto'
+          java-version: '17'
+
+      - name: setup Android SDK
+        if: ${{ steps.changed_files.outputs.files != '' }}
+        uses: android-actions/setup-android@v3
+
+      - name: gradlew permission
+        if: ${{ steps.changed_files.outputs.files != '' }}
+        run: chmod +x gradlew
+
+      - name: Run unit tests
+        if: ${{ steps.changed_files.outputs.files != '' }}
+        run: ./gradlew testDebugUnitTest --tests "${{ steps.changed_files.outputs.files }}"
+
+      - name: Test Result
+        uses: EnricoMi/publish-unit-test-result-action@v2
+        if: always()
+        with:
+          files: "**/test-results/**/*.xml"
