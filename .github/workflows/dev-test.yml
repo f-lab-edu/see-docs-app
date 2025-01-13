@@ -39,7 +39,7 @@ jobs:
           chmod +x gradlew
           for file in ${ALL_CHANGED_FILES}; do
             echo "수행중인 테스트: $file"
-            ./gradlew testDebugUnitTest --tests "file"
+            ./gradlew testDebugUnitTest --tests file
           done
 
       - name: Test Result
