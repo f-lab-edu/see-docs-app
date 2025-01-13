@@ -17,6 +17,9 @@ jobs:
       - name: Get changed files
         id: changed_files
         uses: tj-actions/changed-files@v45
+        with:
+          files: |
+            **/src/test/kotlin/**
 
       - name: Debug Changed Files
         run: |
@@ -38,7 +41,7 @@ jobs:
       - name: Run unit tests
         if: steps.changed_files.outputs.any_changed == 'true'
         env:
-          ALL_CHANGED_FILES: ${{ steps.changed-files.outputs.all_changed_files }}
+          ALL_CHANGED_FILES: ${{ steps.changed_files.outputs.all_changed_files }}
         run: |
           chmod +x gradlew
           for file in ${ALL_CHANGED_FILES}; do
