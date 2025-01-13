@@ -16,27 +16,13 @@ jobs:
 
       - name: Get changed files
         id: changed_files
-        run: |
-          git fetch origin dev
-          changed_test_files=$(git diff --name-only origin/dev...HEAD \
-            | grep 'src/test/kotlin/.*\.kt$' || true)
-          if [ -z "$changed_test_files" ]; then
-            echo "files=" >> $GITHUB_OUTPUT
-          else
-            test_classes=""
-            for file in $changed_test_files
-            do
-              class_name=$(echo "$file" \
-                | sed 's|^.*src/test/kotlin/||' \
-                | sed 's|/|.|g' \
-                | sed 's|.kt$||')
-              test_classes="$test_classes $class_name"
-            done
-            echo "files=$test_classes" >> $GITHUB_OUTPUT
-          fi
+        uses: tj-actions/changed-files@v45
+        with:
+          files: |
+            src/test/kotlin/**
 
       - name: setup JDK
-        if: ${{ steps.changed_files.outputs.files != '' }}
+        if: steps.changed_files.outputs.any_changed == 'true'
         uses: actions/setup-java@v4
 
         with:
@@ -44,20 +30,16 @@ jobs:
           java-version: '17'
 
       - name: setup Android SDK
-        if: ${{ steps.changed_files.outputs.files != '' }}
+        if: steps.changed_files.outputs.any_changed == 'true'
         uses: android-actions/setup-android@v3
 
-      - name: gradlew permission
-        if: ${{ steps.changed_files.outputs.files != '' }}
-        run: chmod +x gradlew
-
       - name: Run unit tests
-        if: ${{ steps.changed_files.outputs.files != '' }}
+        if: steps.changed_files.outputs.any_changed == 'true'
         run: |
-          for class in ${{ steps.changed_files.outputs.files }}
-          do
-            echo "수행중인 테스트: $class"
-            ./gradlew testDebugUnitTest --tests "$class"
+          chmod +x gradlew
+          for file in ${ALL_CHANGED_FILES}; do
+            echo "수행중인 테스트: $file"
+            ./gradlew testDebugUnitTest --tests "file"
           done
 
       - name: Test Result
