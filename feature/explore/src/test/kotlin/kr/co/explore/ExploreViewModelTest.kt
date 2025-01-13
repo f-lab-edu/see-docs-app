@@ -39,7 +39,7 @@ class ExploreViewModelTest {
 
     @Test
     fun `Given a path when Init intent is handled then state is updated`() = runTest {
-        val path = "/path/test"
+        val path = "/path"
         val folders = listOf(
             FOLDER_DUMMY
         )

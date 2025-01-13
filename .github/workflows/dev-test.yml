@@ -21,7 +21,8 @@ jobs:
       - name: Filter out test files
         id: test_files
         run: |
-          echo "TEST_FILES=$(echo \"${{ steps.changed_files.outputs.all_changed_files }}\" | grep 'src/test/kotlin/')" >> $GITHUB_ENV
+          TEST_FILES=$(echo "${{ steps.changed_files.outputs.all_changed_files }}" | grep 'src/test/kotlin/')
+          echo "TEST_FILES=$TEST_FILES" >> $GITHUB_ENV
           if [ -n "$TEST_FILES" ]; then
             echo "any_changed=true" >> $GITHUB_ENV
           else
@@ -30,11 +31,11 @@ jobs:
 
       - name: Debug Changed Files
         run: |
-          echo "All changed files: ${{ steps.test_files.outputs.TEST_FILES }}"
-          echo "Any files changed: ${{ steps.test_files.outputs.any_changed }}"
+          echo "changed files: ${{ env.TEST_FILES }}"
+          echo "files changed: ${{ env.any_changed }}"
 
       - name: setup JDK
-        if: steps.changed_files.outputs.any_changed == 'true'
+        if: env.any_changed == 'true'
         uses: actions/setup-java@v4
 
         with:
@@ -42,18 +43,18 @@ jobs:
           java-version: '17'
 
       - name: setup Android SDK
-        if: steps.test_files.outputs.any_changed == 'true'
+        if: env.any_changed == 'true'
         uses: android-actions/setup-android@v3
 
       - name: Run unit tests
-        if: steps.test_files.outputs.any_changed == 'true'
+        if: env.any_changed == 'true'
         env:
-          TEST_FILES: ${{ steps.test_files.outputs.TEST_FILES }}
+          TEST_FILES: ${{ env.TEST_FILES }}
         run: |
           chmod +x gradlew
           for file in ${TEST_FILES}; do
             echo "수행중인 테스트: $file"
-            ./gradlew testDebugUnitTest --tests file
+            ./gradlew testDebugUnitTest --tests "$file"
           done
 
       - name: Test Result
