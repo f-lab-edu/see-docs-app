@@ -9,8 +9,6 @@ import kr.co.model.ExploreSideEffect
 import kr.co.model.ExploreUiIntent
 import kr.co.model.FileInfo
 import kr.co.model.FileInfo.Type.PDF
-import kr.co.testing.dummy.FOLDER_DUMMY
-import kr.co.testing.dummy.PDF_DUMMY
 import kr.co.testing.repository.TestRecentRepository
 import kr.co.testing.rule.CoroutineTestRule
 import kr.co.util.FileManager
@@ -94,5 +92,28 @@ class ExploreViewModelTest {
                 assert((it as ExploreSideEffect.NavigateToFolder).path == folder.path)
             }
         }
+    }
+    companion object {
+        val PDF_DUMMY = FileInfo(
+            name = "DUMMY.pdf",
+            path = "",
+            type = PDF,
+            isDirectory = false,
+            isHidden = false,
+            size = 0,
+            createdAt = LocalDateTime.now(),
+            lastModified = LocalDateTime.now()
+        )
+
+        val FOLDER_DUMMY = FileInfo(
+            name = "DUMMY",
+            path = "",
+            type = PDF,
+            isDirectory = true,
+            isHidden = false,
+            size = 0,
+            createdAt = LocalDateTime.now(),
+            lastModified = LocalDateTime.now()
+        )
     }
 }
