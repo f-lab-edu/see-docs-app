@@ -18,12 +18,21 @@ jobs:
         id: changed_files
         run: |
           git fetch origin dev
-          git diff --name-only origin/dev...HEAD | grep "\.kt$" > kotlin_files.txt || true
-          if [ -s kotlin_files.txt ]; then
-            TEST_CLASSES=$(cat kotlin_files.txt | sed 's|/|.|g' | sed 's|.kt$||')
-            echo "files=$TEST_CLASSES" >> $GITHUB_OUTPUT
-          else
+          changed_test_files=$(git diff --name-only origin/dev...HEAD \
+            | grep 'src/test/kotlin/.*\.kt$' || true)
+          if [ -z "$changed_test_files" ]; then
             echo "files=" >> $GITHUB_OUTPUT
+          else
+            test_classes=""
+            for file in $changed_test_files
+            do
+              class_name=$(echo "$file" \
+                | sed 's|^.*src/test/kotlin/||' \
+                | sed 's|/|.|g' \
+                | sed 's|.kt$||')
+              test_classes="$test_classes $class_name"
+            done
+            echo "files=$test_classes" >> $GITHUB_OUTPUT
           fi
 
       - name: setup JDK
@@ -44,7 +53,12 @@ jobs:
 
       - name: Run unit tests
         if: ${{ steps.changed_files.outputs.files != '' }}
-        run: ./gradlew testDebugUnitTest --tests "${{ steps.changed_files.outputs.files }}"
+        run: |
+          for class in ${{ steps.changed_files.outputs.files }}
+          do
+            echo "수행중인 테스트: $cls"
+            ./gradlew testDebugUnitTest --tests "$cls"
+          done
 
       - name: Test Result
         uses: EnricoMi/publish-unit-test-result-action@v2
