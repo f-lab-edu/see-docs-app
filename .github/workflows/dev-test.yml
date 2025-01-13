@@ -14,6 +14,13 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Debug Commit Logs
+          run: |
+            echo "--- Last 100 commits in the repository ---"
+            git log -100 --oneline
+            echo "--- Comparing base and head commits ---"
+            git log $(git merge-base origin/dev HEAD)..HEAD --oneline
+
       - name: Get changed files
         id: changed_files
         uses: tj-actions/changed-files@v45
