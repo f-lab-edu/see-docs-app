@@ -56,8 +56,8 @@ jobs:
         run: |
           for class in ${{ steps.changed_files.outputs.files }}
           do
-            echo "수행중인 테스트: $cls"
-            ./gradlew testDebugUnitTest --tests "$cls"
+            echo "수행중인 테스트: $class"
+            ./gradlew testDebugUnitTest --tests "$class"
           done
 
       - name: Test Result
