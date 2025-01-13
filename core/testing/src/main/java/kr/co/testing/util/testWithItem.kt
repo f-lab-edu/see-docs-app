@@ -7,7 +7,7 @@ import kotlin.time.Duration
 suspend fun <T> Flow<T>.testWithItem(
     timeout: Duration? = null,
     name: String? = null,
-    action: suspend (T) -> Unit,
+    action: suspend T.() -> Unit,
 ) =
     test(timeout, name) {
         awaitItem().also {
