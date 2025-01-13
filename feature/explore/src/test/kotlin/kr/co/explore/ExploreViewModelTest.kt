@@ -77,10 +77,8 @@ internal class ExploreViewModelTest {
         recentRepository.insert(file)
 
         viewModel.sideEffect.testWithItem {
-            asserts(
-                it is ExploreSideEffect.NavigateToPdf,
-                (it as ExploreSideEffect.NavigateToPdf).path == file.path
-            )
+            require(this is ExploreSideEffect.NavigateToPdf)
+            assert(path == file.path)
         }
     }
 
@@ -91,10 +89,8 @@ internal class ExploreViewModelTest {
         viewModel.handleIntent(ExploreUiIntent.ClickFolder(folder))
 
         viewModel.sideEffect.testWithItem {
-            asserts(
-                it is ExploreSideEffect.NavigateToFolder,
-                (it as ExploreSideEffect.NavigateToFolder).path == folder.path
-            )
+            require(this is ExploreSideEffect.NavigateToFolder)
+            assert(path == folder.path)
         }
     }
 
