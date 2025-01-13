@@ -15,7 +15,7 @@ jobs:
           fetch-depth: 0
 
       - name: Debug Commit Logs
-          run: |
+        run: |
             echo "--- Last 100 commits in the repository ---"
             git log -100 --oneline
             echo "--- Comparing base and head commits ---"
