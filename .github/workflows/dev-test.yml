@@ -48,11 +48,11 @@ jobs:
 
       - name: Run unit tests
         if: env.any_changed == 'true'
-        env:
-          TEST_FILES: ${{ env.TEST_FILES }}
         run: |
           chmod +x gradlew
-          ./gradlew clean testDebugUnitTest --tests "$TEST_FILES"
+          for FILE in ${{ env.TEST_FILES }}; do
+            ./gradlew $FILE
+          done
 
       - name: Test Result
         uses: EnricoMi/publish-unit-test-result-action@v2
