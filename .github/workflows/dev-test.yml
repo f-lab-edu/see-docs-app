@@ -52,10 +52,7 @@ jobs:
           TEST_FILES: ${{ env.TEST_FILES }}
         run: |
           chmod +x gradlew
-          for file in ${TEST_FILES}; do
-            echo "수행중인 테스트: $file"
-            ./gradlew testDebugUnitTest --tests "$file"
-          done
+          ./gradlew clean testDebugUnitTest --tests "${TEST_FILES}"
 
       - name: Test Result
         uses: EnricoMi/publish-unit-test-result-action@v2
