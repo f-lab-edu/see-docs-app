@@ -21,8 +21,8 @@ jobs:
       - name: Filter out test files
         id: test_files
         run: |
-          TEST_FILES=$(echo "${{ steps.changed_files.outputs.all_changed_files }}" | grep -E '/src/test/kotlin/.*\.kt$' | sed 's|.*/src/test/kotlin/||' | sed 's/.kt$//')
-          echo "TEST_FILES=$TEST_FILES" >> $GITHUB_ENV
+          TEST_FILES=$(echo "${{ steps.changed_files.outputs.all_changed_files }}" | grep -E '/src/test/kotlin/.*\.kt$' | sed -E 's|([^/]+)/src/test/kotlin/(.*)\.kt$|\1:testDebugUnitTest --tests "\2"|' | sed 's|/|.|g')
+          echo "TEST_FILES=TEST_FILES" >> $GITHUB_ENV
           if [ -n "$TEST_FILES" ]; then
             echo "any_changed=true" >> $GITHUB_ENV
           else
