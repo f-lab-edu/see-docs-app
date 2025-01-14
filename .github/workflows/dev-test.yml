@@ -52,7 +52,7 @@ jobs:
           TEST_FILES: ${{ env.TEST_FILES }}
         run: |
           chmod +x gradlew
-          ./gradlew clean testVariantNameUnitTest --tests "feature/explore/src/test/kotlin/kr/co/explore/ExploreViewModelTest"
+          ./gradlew clean testDebugUnitTest --tests "feature/explore/src/test/kotlin/kr/co/explore/ExploreViewModelTest"
 
       - name: Test Result
         uses: EnricoMi/publish-unit-test-result-action@v2
