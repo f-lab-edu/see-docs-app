@@ -52,7 +52,11 @@ jobs:
             MODULE=$(echo "$FILE" | cut -d':' -f1)
             TASK=$(echo "$FILE" | cut -d':' -f2)
             TEST_CLASS=$(echo "$FILE" | cut -d' ' -f2)
-            ./gradlew :$TASK --tests "$TEST_CLASS"
+            echo "MODULE: $MODULE"
+            echo "TASK: $TASK"
+            echo "TEST_CLASS: $TEST_CLASS"
+            echo "Running: ./gradlew :$MODULE:$TASK:testDebugUnitTest --tests \"$TEST_CLASS\""
+            ./gradlew :$MODULE:$TASK:testDebugUnitTest --tests "$TEST_CLASS"
           done
 
       - name: Test Result
