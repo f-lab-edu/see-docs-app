@@ -52,7 +52,7 @@ jobs:
             MODULE=$(echo "$FILE" | cut -d':' -f1)
             TASK=$(echo "$FILE" | cut -d':' -f2)
             TEST_CLASS=$(echo "$FILE" | cut -d' ' -f2)
-            ./gradlew $MODULE:$TASK --tests "$TEST_CLASS"
+            ./gradlew :$MODULE:$TASK --tests "$TEST_CLASS"
           done
 
       - name: Test Result
