@@ -49,11 +49,11 @@ jobs:
         run: |
           chmod +x gradlew
           for FILE in ${{ env.TEST_FILES }}; do
-            MODULE=$(echo "$FILE" | cut -d' ' -f1)
+            MODULE=$(echo "$FILE" | cut -d' ' -f1 | sed 's|\.|:|g')
             TEST_CLASS=$(echo "$FILE" | cut -d' ' -f2-)
             echo "MODULE: $MODULE"
             echo "TEST_CLASS: $TEST_CLASS"
-            echo "Running: ./gradlew :$MODULE:$TASK:testDebugUnitTest --tests \"$TEST_CLASS\""
+            echo "Running: ./gradlew :$MODULE:testDebugUnitTest --tests \"$TEST_CLASS\""
             ./gradlew :$MODULE:testDebugUnitTest --tests "$TEST_CLASS"
           done
 
