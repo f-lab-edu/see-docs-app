@@ -48,7 +48,7 @@ jobs:
         if: env.any_changed == 'true'
         run: |
           chmod +x gradlew
-          for FILE in ${{ env.TEST_FILES }}; do
+          echo "$TEST_FILES" | while read FILE; do
             MODULE=$(echo "$FILE" | cut -d' ' -f1)
             TEST_CLASS=$(echo "$FILE" | cut -d' ' -f2)
             MODULE=$(echo "$MODULE" | sed 's|\.|:|g')
