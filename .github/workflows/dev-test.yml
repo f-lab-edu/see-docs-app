@@ -50,12 +50,12 @@ jobs:
           chmod +x gradlew
           for FILE in ${{ env.TEST_FILES }}; do
             MODULE=$(echo "$FILE" | cut -d' ' -f1 | sed 's|\.|:|g')
-            TEST_CLASS="kr.co.explore.ExploreViewModelTest"
             MODULE=$MODULE | sed 's|\.|:|g'
+            TEST_CLASS="kr.co.explore.ExploreViewModelTest"
             echo "MODULE: $MODULE"
             echo "TEST_CLASS: $TEST_CLASS"
             echo "Running: ./gradlew :$MODULE:testDebugUnitTest --tests \"$TEST_CLASS\""
-            ./gradlew :$MODULE:testDebugUnitTest --tests "$TEST_CLASS" --scan
+            ./gradlew kr.co:explore:test --tests "kr.co.explore.ExploreViewModelTest"
           done
 
       - name: Test Result
