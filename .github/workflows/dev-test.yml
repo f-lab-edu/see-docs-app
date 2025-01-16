@@ -55,7 +55,7 @@ jobs:
             echo "MODULE: $MODULE"
             echo "TEST_CLASS: $TEST_CLASS"
             echo "Running: ./gradlew :$MODULE:testDebugUnitTest --tests \"$TEST_CLASS\""
-            ./gradlew :$MODULE:testDebugUnitTest --tests "$TEST_CLASS"
+            ./gradlew :$MODULE:testDebugUnitTest --tests "$TEST_CLASS" --scan
           done
 
       - name: Test Result
