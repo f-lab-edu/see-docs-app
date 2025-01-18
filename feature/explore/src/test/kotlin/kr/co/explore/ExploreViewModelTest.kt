@@ -11,6 +11,8 @@ import kr.co.model.ExploreUiIntent
 import kr.co.model.FileInfo
 import kr.co.model.FileInfo.Type.PDF
 import kr.co.testing.rule.CoroutineTestRule
+import kr.co.testing.util.assertsEquals
+import kr.co.testing.util.testWithItem
 import kr.co.util.FileManager
 import org.junit.Before
 import org.junit.Rule
@@ -19,7 +21,7 @@ import java.time.LocalDateTime
 import kotlin.test.assertEquals
 
 
-class ExploreViewModelTest {
+internal class ExploreViewModelTest {
 
     @get: Rule
     val coroutineTestRule = CoroutineTestRule()
@@ -55,11 +57,14 @@ class ExploreViewModelTest {
 
         viewModel.uiState.test {
             val state = awaitItem()
-            assert(state.path == path)
-            assertEquals(state.files.size, files.size)
-            assertEquals(state.folders.size, folders.size)
-            assert(state.folders == folders)
-            assert(state.files == files)
+
+            assertsEquals(
+                state.path to path,
+                state.files to files,
+                state.folders to folders,
+                state.files.size to files.size,
+                state.folders.size to folders.size
+            )
         }
     }
 
@@ -73,11 +78,9 @@ class ExploreViewModelTest {
 
         recentRepository.insert(file)
 
-        viewModel.sideEffect.test {
-            awaitItem().also {
-                assert(it is ExploreSideEffect.NavigateToPdf)
-                assert((it as ExploreSideEffect.NavigateToPdf).path == file.path)
-            }
+        viewModel.sideEffect.testWithItem {
+            assert(this is ExploreSideEffect.NavigateToPdf)
+            assertEquals((this as ExploreSideEffect.NavigateToPdf).path,file.path)
         }
     }
 
@@ -87,11 +90,9 @@ class ExploreViewModelTest {
 
         viewModel.handleIntent(ExploreUiIntent.ClickFolder(folder))
 
-        viewModel.sideEffect.test {
-            awaitItem().also {
-                assert(it is ExploreSideEffect.NavigateToFolder)
-                assert((it as ExploreSideEffect.NavigateToFolder).path == folder.path)
-            }
+        viewModel.sideEffect.testWithItem {
+            assert(this is ExploreSideEffect.NavigateToFolder)
+            assertEquals((this as ExploreSideEffect.NavigateToFolder).path,folder.path)
         }
     }
     companion object {
