@@ -35,6 +35,7 @@ jobs:
           echo "Processed by sed: $TEST_FILES"
 
           # Step 4: Check if any files remain
+          TEST_FILES=$(echo "$TEST_FILES" | tr '\n' ' ')
           echo "TEST_FILES=$TEST_FILES" >> $GITHUB_ENV
           if [ -n "$TEST_FILES" ]; then
             echo "any_changed=true" >> $GITHUB_ENV
