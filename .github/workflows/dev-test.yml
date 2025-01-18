@@ -30,8 +30,8 @@ jobs:
 
           # Step 3: Process paths using sed
           TEST_FILES=$(echo "$TEST_FILES" \
-            | sed -E 's|^(.+)/src/test/(java|kotlin)/(.+)\.(kt|java)$|\1 \3|' \
-            | sed 's|/|.|g' || true)
+            | sed -E 's/^(.+)\/src\/test\/(java|kotlin)\/(.+)\.(kt|java)$/\1 \3/' \
+            | sed 's/\//./g')
           echo "Processed by sed: $TEST_FILES"
 
           # Step 4: Check if any files remain
