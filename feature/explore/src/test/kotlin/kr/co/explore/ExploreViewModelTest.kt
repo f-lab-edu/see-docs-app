@@ -11,13 +11,14 @@ import kr.co.model.FileInfo
 import kr.co.model.FileInfo.Type.PDF
 import kr.co.testing.repository.TestRecentRepository
 import kr.co.testing.rule.CoroutineTestRule
-import kr.co.testing.util.asserts
+import kr.co.testing.util.assertsEquals
 import kr.co.testing.util.testWithItem
 import kr.co.util.FileManager
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import java.time.LocalDateTime
+import kotlin.test.assertEquals
 
 
 internal class ExploreViewModelTest {
@@ -56,12 +57,12 @@ internal class ExploreViewModelTest {
         viewModel.uiState.test {
             val state = awaitItem()
 
-            asserts(
-                state.path == path,
-                state.files == files,
-                state.folders == folders,
-                state.files.size == files.size,
-                state.folders.size == folders.size
+            assertsEquals(
+                state.path to path,
+                state.files to files,
+                state.folders to folders,
+                state.files.size to files.size,
+                state.folders.size to folders.size
             )
         }
     }
@@ -77,8 +78,8 @@ internal class ExploreViewModelTest {
         recentRepository.insert(file)
 
         viewModel.sideEffect.testWithItem {
-            require(this is ExploreSideEffect.NavigateToPdf)
-            assert(path == file.path)
+            assert(this is ExploreSideEffect.NavigateToPdf)
+            assertEquals((this as ExploreSideEffect.NavigateToPdf).path,file.path)
         }
     }
 
@@ -89,8 +90,8 @@ internal class ExploreViewModelTest {
         viewModel.handleIntent(ExploreUiIntent.ClickFolder(folder))
 
         viewModel.sideEffect.testWithItem {
-            require(this is ExploreSideEffect.NavigateToFolder)
-            assert(path == folder.path)
+            assert(this is ExploreSideEffect.NavigateToFolder)
+            assertEquals((this as ExploreSideEffect.NavigateToFolder).path,folder.path)
         }
     }
 
