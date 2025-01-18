@@ -80,7 +80,7 @@ internal class ExploreViewModelTest {
 
         viewModel.sideEffect.testWithItem {
             assert(this is ExploreSideEffect.NavigateToPdf)
-            assertEquals((this as ExploreSideEffect.NavigateToPdf).path,file.path)
+            assertEquals(file.path, (this as ExploreSideEffect.NavigateToPdf).path)
         }
     }
 
@@ -92,7 +92,7 @@ internal class ExploreViewModelTest {
 
         viewModel.sideEffect.testWithItem {
             assert(this is ExploreSideEffect.NavigateToFolder)
-            assertEquals((this as ExploreSideEffect.NavigateToFolder).path,folder.path)
+            assertEquals(folder.path, (this as ExploreSideEffect.NavigateToFolder).path)
         }
     }
     companion object {

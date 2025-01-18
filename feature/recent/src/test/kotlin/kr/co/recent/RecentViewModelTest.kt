@@ -43,7 +43,7 @@ internal class RecentViewModelTest {
         viewModel.handleIntent(RecentUiIntent.Init)
 
         viewModel.uiState.testWithItem {
-            assertEquals(files, dummy)
+            assertEquals(dummy, files)
         }
     }
 
@@ -55,7 +55,7 @@ internal class RecentViewModelTest {
 
         viewModel.sideEffect.testWithItem {
             assert(this is RecentSideEffect.NavigateToPdf)
-            assertEquals((this as RecentSideEffect.NavigateToPdf).path,PDF_DUMMY.path)
+            assertEquals(PDF_DUMMY.path, (this as RecentSideEffect.NavigateToPdf).path)
         }
     }
 

@@ -1,6 +1,5 @@
 package kr.co.bookmark
 
-import app.cash.turbine.test
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.impl.annotations.MockK
@@ -13,6 +12,7 @@ import kr.co.model.BookmarkUiIntent
 import kr.co.model.FileInfo
 import kr.co.model.FileInfo.Type.PDF
 import kr.co.testing.rule.CoroutineTestRule
+import kr.co.testing.util.testWithItem
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -35,7 +35,7 @@ internal class BookmarkViewModelTest {
     @Before
     fun setup() {
         MockKAnnotations.init(this)
-        viewModel = BookmarkViewModel(bookmarkRepository,recentRepository)
+        viewModel = BookmarkViewModel(bookmarkRepository, recentRepository)
     }
 
     @Test
@@ -46,9 +46,8 @@ internal class BookmarkViewModelTest {
 
         viewModel.handleIntent(BookmarkUiIntent.Init)
 
-        viewModel.uiState.test {
-            val state = awaitItem()
-            assertEquals(state.files, dummy)
+        viewModel.uiState.testWithItem {
+            assertEquals(dummy, files)
         }
     }
 
@@ -58,11 +57,9 @@ internal class BookmarkViewModelTest {
 
         viewModel.handleIntent(BookmarkUiIntent.ClickFile(file))
 
-        viewModel.sideEffect.test {
-            awaitItem().also {
-                assert(it is BookmarkSideEffect.NavigateToPdf)
-                assert((it as BookmarkSideEffect.NavigateToPdf).path == file.path)
-            }
+        viewModel.sideEffect.testWithItem {
+            assert(this is BookmarkSideEffect.NavigateToPdf)
+            assertEquals(file.path, (this as BookmarkSideEffect.NavigateToPdf).path)
         }
     }
 
