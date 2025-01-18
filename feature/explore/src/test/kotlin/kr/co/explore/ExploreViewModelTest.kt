@@ -5,11 +5,11 @@ import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.impl.annotations.MockK
 import kotlinx.coroutines.test.runTest
+import kr.co.data.repository.RecentRepository
 import kr.co.model.ExploreSideEffect
 import kr.co.model.ExploreUiIntent
 import kr.co.model.FileInfo
 import kr.co.model.FileInfo.Type.PDF
-import kr.co.testing.repository.TestRecentRepository
 import kr.co.testing.rule.CoroutineTestRule
 import kr.co.util.FileManager
 import org.junit.Before
@@ -26,7 +26,8 @@ class ExploreViewModelTest {
 
     private lateinit var viewModel: ExploreViewModel
 
-    private val recentRepository = TestRecentRepository()
+    @MockK
+    private lateinit var recentRepository: RecentRepository
 
     @MockK
     private lateinit var fileManager: FileManager
@@ -93,7 +94,6 @@ class ExploreViewModelTest {
             }
         }
     }
-
     companion object {
         val PDF_DUMMY = FileInfo(
             name = "DUMMY.pdf",
