@@ -32,3 +32,30 @@ jobs:
         uses: EnricoMi/publish-unit-test-result-action@v2
         with:
           files: "**/test-results/**/*.xml"
+
+  android_test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'corretto'
+          java-version: '17'
+
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+        with:
+          api-level: 26
+          target: 'default'
+          emulator: true
+
+      - name: Start Emulator
+        run: |
+          adb devices
+          adb shell input keyevent 82
+          chmod +x gradlew
+          ./gradlew connectedAndroidTest --scan
