@@ -8,7 +8,7 @@ import org.junit.Ignore
 import java.time.LocalDateTime
 
 @Ignore("test instance")
-internal object TestDummy {
+internal object DummyInstances {
     val PDF_DUMMY = FileInfo(
         name = "DUMMY.pdf",
         path = "",

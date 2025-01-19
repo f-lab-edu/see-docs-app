@@ -1,7 +1,7 @@
 package kr.co.data.mapper
 
 import junit.framework.TestCase.assertEquals
-import kr.co.data.dummy.TestDummy
+import kr.co.data.dummy.DummyInstances
 import kr.co.testing.util.assertsEquals
 import org.junit.Test
 
@@ -13,8 +13,8 @@ internal class MapperTest {
 
     @Test
     fun `Given a file when invoke is called then bookmark file is returned`() {
-        val file = TestDummy.PDF_DUMMY
-        val bookmarkFile = TestDummy.BOOKMARK_DUMMY
+        val file = DummyInstances.PDF_DUMMY
+        val bookmarkFile = DummyInstances.BOOKMARK_DUMMY
 
         val result = bookmarkFileMapper(file)
 
@@ -23,8 +23,8 @@ internal class MapperTest {
 
     @Test
     fun `Given a file when invoke is called then recent file is returned`() {
-        val file = TestDummy.PDF_DUMMY
-        val recentFile = TestDummy.RECENT_DUMMY
+        val file = DummyInstances.PDF_DUMMY
+        val recentFile = DummyInstances.RECENT_DUMMY
 
         val result = recentFileMapper(file)
 
@@ -33,9 +33,9 @@ internal class MapperTest {
 
     @Test
     fun `Given a file when invoke is called then file info is returned`() {
-        val bookmarkFile = TestDummy.BOOKMARK_DUMMY
-        val recentFile = TestDummy.RECENT_DUMMY
-        val file = TestDummy.PDF_DUMMY
+        val bookmarkFile = DummyInstances.BOOKMARK_DUMMY
+        val recentFile = DummyInstances.RECENT_DUMMY
+        val file = DummyInstances.PDF_DUMMY
 
         val result = fileInfoMapper(bookmarkFile)
         val result2 = fileInfoMapper(recentFile)

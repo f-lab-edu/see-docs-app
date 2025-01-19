@@ -8,7 +8,7 @@ import io.mockk.impl.annotations.MockK
 import io.mockk.just
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
-import kr.co.data.dummy.TestDummy
+import kr.co.data.dummy.DummyInstances
 import kr.co.data.mapper.BookmarkFileMapper
 import kr.co.data.mapper.FileInfoMapper
 import kr.co.database.dao.BookmarkFileDao
@@ -38,8 +38,8 @@ internal class BookmarkRepositoryImplTest {
 
     @Test
     fun `Given a file when insert is called then dao insert is called`() = runTest {
-        val file = TestDummy.PDF_DUMMY
-        val bookmarkFile = TestDummy.BOOKMARK_DUMMY
+        val file = DummyInstances.PDF_DUMMY
+        val bookmarkFile = DummyInstances.BOOKMARK_DUMMY
 
         coEvery { toBookmark(file) } returns bookmarkFile
         coEvery { dao.insert(bookmarkFile) } just Runs
@@ -51,11 +51,11 @@ internal class BookmarkRepositoryImplTest {
 
     @Test
     fun `Given a unit when get is called then dao get is called`() = runTest {
-        val bookmarkFiles = listOf(TestDummy.BOOKMARK_DUMMY)
-        val files = listOf(TestDummy.PDF_DUMMY)
+        val bookmarkFiles = listOf(DummyInstances.BOOKMARK_DUMMY)
+        val files = listOf(DummyInstances.PDF_DUMMY)
 
         coEvery { dao.get() } returns flowOf(bookmarkFiles)
-        coEvery { toFileInfo(TestDummy.BOOKMARK_DUMMY) } returns TestDummy.PDF_DUMMY
+        coEvery { toFileInfo(DummyInstances.BOOKMARK_DUMMY) } returns DummyInstances.PDF_DUMMY
 
         repository.get().testWithItem {
             assertEquals(files, this)
@@ -66,8 +66,8 @@ internal class BookmarkRepositoryImplTest {
 
     @Test
     fun `Given a file when delete is called then dao delete is called`() = runTest {
-        val file = TestDummy.PDF_DUMMY
-        val bookmarkFile = TestDummy.BOOKMARK_DUMMY
+        val file = DummyInstances.PDF_DUMMY
+        val bookmarkFile = DummyInstances.BOOKMARK_DUMMY
 
         coEvery { toBookmark(file) } returns bookmarkFile
         coEvery { dao.delete(bookmarkFile) } just Runs
