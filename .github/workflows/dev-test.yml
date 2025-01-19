@@ -100,10 +100,6 @@ jobs:
               echo "No .kt file found in java/kotlin folder. Skipping..."
               continue
             fi
-          
-            if ! grep -q '@Test' "${MODULE_PATH}/src/test\/(java|kotlin)\/${CLASS_PATH}.kt"; then
-              continue
-            fi
 
             echo "Running: ./gradlew :$MODULE:testDebugUnitTest --tests \"$TEST_CLASS\""
             ./gradlew :$MODULE:testDebugUnitTest --tests "$TEST_CLASS" --scan || exit 1
