@@ -4,8 +4,10 @@ import kr.co.database.model.BookmarkFile
 import kr.co.database.model.FileType
 import kr.co.database.model.RecentFile
 import kr.co.model.FileInfo
+import org.junit.Ignore
 import java.time.LocalDateTime
 
+@Ignore("test instance")
 internal object TestDummy {
     val PDF_DUMMY = FileInfo(
         name = "DUMMY.pdf",
