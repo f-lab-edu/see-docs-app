@@ -4,8 +4,10 @@ import io.mockk.MockKAnnotations
 import io.mockk.Runs
 import io.mockk.coEvery
 import io.mockk.coVerify
+import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import io.mockk.just
+import io.mockk.verify
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import kr.co.data.dummy.DummyInstances
@@ -41,7 +43,7 @@ internal class BookmarkRepositoryImplTest {
         val file = DummyInstances.PDF_DUMMY
         val bookmarkFile = DummyInstances.BOOKMARK_DUMMY
 
-        coEvery { toBookmark(file) } returns bookmarkFile
+        every { toBookmark(file) } returns bookmarkFile
         coEvery { dao.insert(bookmarkFile) } just Runs
 
         repository.insert(file)
@@ -61,7 +63,7 @@ internal class BookmarkRepositoryImplTest {
             assertEquals(files, this)
         }
 
-        coVerify { dao.get() }
+        verify { dao.get() }
     }
 
     @Test
@@ -69,7 +71,7 @@ internal class BookmarkRepositoryImplTest {
         val file = DummyInstances.PDF_DUMMY
         val bookmarkFile = DummyInstances.BOOKMARK_DUMMY
 
-        coEvery { toBookmark(file) } returns bookmarkFile
+        every { toBookmark(file) } returns bookmarkFile
         coEvery { dao.delete(bookmarkFile) } just Runs
 
         repository.delete(file)
