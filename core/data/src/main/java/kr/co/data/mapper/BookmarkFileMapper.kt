@@ -5,7 +5,7 @@ import kr.co.database.model.BookmarkFile
 import kr.co.database.model.FileType
 import kr.co.model.FileInfo
 
-internal class BookmarkMapper : Mapper<FileInfo, BookmarkFile> {
+internal class BookmarkFileMapper : Mapper<FileInfo, BookmarkFile> {
     override fun invoke(from: FileInfo): BookmarkFile =
         BookmarkFile(
             name = from.name,
