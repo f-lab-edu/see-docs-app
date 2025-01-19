@@ -55,6 +55,8 @@ internal class BookmarkViewModelTest {
     fun `Given a file when ClickFile intent is handled then navigate to pdf`() = runTest {
         val file = PDF_DUMMY
 
+        coEvery { recentRepository.insert(file) } returns Unit
+
         viewModel.handleIntent(BookmarkUiIntent.ClickFile(file))
 
         viewModel.sideEffect.testWithItem {
