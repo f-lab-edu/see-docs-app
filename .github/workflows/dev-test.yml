@@ -79,7 +79,7 @@ jobs:
             echo "MODULE: $MODULE"
             echo "TEST_CLASS: $TEST_CLASS"
           
-            if ! grep -q '@Test' "${MODULE_PATH}/src/test/java/${CLASS_PATH}.kt"; then
+            if ! grep -q '@Test' "${MODULE_PATH}/src/test/(java|kotlin)/${CLASS_PATH}.kt"; then
               continue
             fi
 
