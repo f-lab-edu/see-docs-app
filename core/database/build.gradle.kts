@@ -21,10 +21,26 @@ android {
     buildFeatures {
         buildConfig = true
     }
+
+    defaultConfig {
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    packaging {
+        resources {
+            excludes.add("META-INF/LICENSE.md")
+            excludes.add("META-INF/LICENSE-notice.md")
+        }
+    }
 }
 
 dependencies {
     implementation(projects.core.common)
 
     Local()
+
+    androidTestImplementation(projects.core.testing)
+    androidTestImplementation(libs.room.test)
+    androidTestImplementation(libs.androidx.runner)
+    androidTestImplementation(libs.androidx.junit)
 }
