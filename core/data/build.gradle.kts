@@ -6,16 +6,6 @@ plugins {
 
 setNamespace("core.data")
 
-afterEvaluate {
-    tasks.named("testDebugUnitTest", Test::class.java).configure {
-        exclude("**/dummy/**")
-    }
-
-    tasks.named("testReleaseUnitTest", Test::class.java).configure {
-        exclude("**/dummy/**")
-    }
-}
-
 dependencies {
     api(projects.core.model)
     implementation(projects.core.common)

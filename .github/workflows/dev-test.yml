@@ -78,6 +78,10 @@ jobs:
 
             echo "MODULE: $MODULE"
             echo "TEST_CLASS: $TEST_CLASS"
+          
+            if ! grep -q '@Test' "${MODULE_PATH}/src/test/java/${CLASS_PATH}.kt"; then
+              continue
+            fi
 
             echo "Running: ./gradlew :$MODULE:testDebugUnitTest --tests \"$TEST_CLASS\""
             ./gradlew :$MODULE:testDebugUnitTest --tests "$TEST_CLASS" --scan || exit 1
