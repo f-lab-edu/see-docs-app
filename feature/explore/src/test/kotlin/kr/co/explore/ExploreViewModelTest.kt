@@ -72,15 +72,13 @@ internal class ExploreViewModelTest {
     fun `Given a file when ClickFile intent is handled then navigate to pdf`() = runTest {
         val file = PDF_DUMMY
 
-        recentRepository.insert(file)
+        coEvery { recentRepository.insert(file) } returns Unit
 
         viewModel.handleIntent(ExploreUiIntent.ClickFile(file))
 
-        recentRepository.insert(file)
-
         viewModel.sideEffect.testWithItem {
             assert(this is ExploreSideEffect.NavigateToPdf)
-            assertEquals((this as ExploreSideEffect.NavigateToPdf).path,file.path)
+            assertEquals(file.path, (this as ExploreSideEffect.NavigateToPdf).path)
         }
     }
 
@@ -92,7 +90,7 @@ internal class ExploreViewModelTest {
 
         viewModel.sideEffect.testWithItem {
             assert(this is ExploreSideEffect.NavigateToFolder)
-            assertEquals((this as ExploreSideEffect.NavigateToFolder).path,folder.path)
+            assertEquals(folder.path, (this as ExploreSideEffect.NavigateToFolder).path)
         }
     }
     companion object {
