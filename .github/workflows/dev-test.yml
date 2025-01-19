@@ -53,7 +53,7 @@ jobs:
           fi
           
           # Check the "any_changed" environment variable
-          echo "files changed: ${{ env.any_changed }}
+          echo "files changed: ${{ env.any_changed }}"
 
       - name: setup JDK
         if: env.any_changed == 'true'
