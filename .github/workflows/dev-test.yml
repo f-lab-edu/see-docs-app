@@ -75,9 +75,31 @@ jobs:
             TEST_CLASS=$(echo "$LINE" | awk '{print $2}')
 
             MODULE=$(echo "$MODULE" | sed 's|\.|:|g')
+  
+            KT_FILE_JAVA="${MODULE_PATH}/src/test/java/${CLASS_PATH}.kt"
+            KT_FILE_KOTLIN="${MODULE_PATH}/src/test/kotlin/${CLASS_PATH}.kt"
 
-            echo "MODULE: $MODULE"
-            echo "TEST_CLASS: $TEST_CLASS"
+            if [ -f "$KT_FILE_JAVA" ]; then
+          
+              if ! grep -q '@Test' "$KT_FILE_JAVA"; then
+                echo "No @Test found in $KT_FILE_JAVA. Skipping..."
+                continue
+              fi
+          
+              SELECTED_FILE="$KT_FILE_JAVA"
+  
+            elif [ -f "$KT_FILE_KOTLIN" ]; then
+          
+              if ! grep -q '@Test' "$KT_FILE_KOTLIN"; then
+                echo "No @Test found in $KT_FILE_KOTLIN. Skipping..."
+                continue
+              fi
+              SELECTED_FILE="$KT_FILE_KOTLIN"
+  
+            else
+              echo "No .kt file found in java/kotlin folder. Skipping..."
+              continue
+            fi
           
             if ! grep -q '@Test' "${MODULE_PATH}/src/test\/(java|kotlin)\/${CLASS_PATH}.kt"; then
               continue
