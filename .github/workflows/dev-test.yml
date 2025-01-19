@@ -71,7 +71,7 @@ jobs:
         if: env.any_changed == 'true'
         run: |
           chmod +x gradlew
-          cat test_files.txt | while IFS='\n' read -r MODULE TEST_CLASS; do
+          cat test_files.txt | while IFS=$'\n' read -r MODULE TEST_CLASS; do
             # Convert MODULE to Gradle format (replace dots with colons)
             MODULE=$(echo "$MODULE" | sed 's|\.|:|g')
 
