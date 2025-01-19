@@ -61,7 +61,7 @@ internal class BookmarkRepositoryImplTest {
         coEvery { toFileInfo(BOOKMARK_DUMMY) } returns PDF_DUMMY
 
         repository.get().testWithItem {
-            assertEquals(this, files)
+            assertEquals(files, this)
         }
 
         coVerify { dao.get() }
