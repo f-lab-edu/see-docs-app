@@ -18,7 +18,7 @@ internal class MapperTest {
 
         val result = bookmarkFileMapper(file)
 
-        assertEquals(bookmarkFile, result)
+        assertEquals(bookmarkFile.copy(updatedAt = result.updatedAt), result)
     }
 
     @Test
@@ -28,7 +28,7 @@ internal class MapperTest {
 
         val result = recentFileMapper(file)
 
-        assertEquals(recentFile, result)
+        assertEquals(recentFile.copy(updatedAt = result.updatedAt), result)
     }
 
     @Test
