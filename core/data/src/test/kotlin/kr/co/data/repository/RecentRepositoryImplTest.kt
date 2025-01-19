@@ -1,66 +1,64 @@
 package kr.co.data.repository
 
 import io.mockk.MockKAnnotations
-import io.mockk.Runs
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
-import io.mockk.just
 import io.mockk.verify
+import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
-import kr.co.data.mapper.BookmarkMapper
 import kr.co.data.mapper.FileInfoMapper
-import kr.co.database.dao.BookmarkFileDao
-import kr.co.database.model.BookmarkFile
+import kr.co.data.mapper.RecentFileMapper
+import kr.co.database.dao.RecentFileDao
 import kr.co.database.model.FileType
+import kr.co.database.model.RecentFile
 import kr.co.model.FileInfo
 import kr.co.testing.util.testWithItem
 import org.junit.Before
 import org.junit.Test
 import java.time.LocalDateTime
-import kotlin.test.assertEquals
 
-internal class BookmarkRepositoryImplTest {
-
-    @MockK
-    private lateinit var dao: BookmarkFileDao
+internal class RecentRepositoryImplTest {
 
     @MockK
-    private lateinit var toBookmark : BookmarkMapper
+    private lateinit var dao: RecentFileDao
 
     @MockK
-    private lateinit var toFileInfo : FileInfoMapper
+    private lateinit var toRecent: RecentFileMapper
 
-    private lateinit var repository: BookmarkRepository
+    @MockK
+    private lateinit var toFileInfo: FileInfoMapper
+
+    private lateinit var repository: RecentRepository
 
     @Before
     fun setup() {
         MockKAnnotations.init(this)
-        repository = BookmarkRepositoryImpl(dao, toBookmark, toFileInfo)
+        repository = RecentRepositoryImpl(dao, toRecent, toFileInfo)
     }
 
     @Test
     fun `Given a file when insert is called then dao insert is called`() = runTest {
         val file = PDF_DUMMY
-        val bookmarkFile = BOOKMARK_DUMMY
+        val recentFile = RECENT_DUMMY
 
-        every { toBookmark(file) } returns bookmarkFile
-        coEvery { dao.insert(bookmarkFile) } just Runs
+        every { toRecent(file) } returns recentFile
+        coEvery { dao.insert(recentFile) } returns Unit
 
         repository.insert(file)
 
-        coVerify { dao.insert(bookmarkFile) }
+        coVerify { dao.insert(recentFile) }
     }
 
     @Test
     fun `Given a unit when get is called then dao get is called`() = runTest {
-        val bookmarkFiles = listOf(BOOKMARK_DUMMY)
+        val recentFiles = listOf(RECENT_DUMMY)
         val files = listOf(PDF_DUMMY)
 
-        every { dao.get() } returns flowOf(bookmarkFiles)
-        every { toFileInfo(BOOKMARK_DUMMY) } returns PDF_DUMMY
+        every { toFileInfo(RECENT_DUMMY) } returns PDF_DUMMY
+        every { dao.get() } returns flowOf(recentFiles)
 
         repository.get().testWithItem {
             assertEquals(files, this)
@@ -72,14 +70,14 @@ internal class BookmarkRepositoryImplTest {
     @Test
     fun `Given a file when delete is called then dao delete is called`() = runTest {
         val file = PDF_DUMMY
-        val bookmarkFile = BOOKMARK_DUMMY
+        val recentFile = RECENT_DUMMY
 
-        every { toBookmark(file) } returns bookmarkFile
-        coEvery { dao.delete(bookmarkFile) } just Runs
+        every { toRecent(file) } returns recentFile
+        coEvery { dao.delete(recentFile) } returns Unit
 
         repository.delete(file)
 
-        coVerify { dao.delete(bookmarkFile) }
+        coVerify { dao.delete(recentFile) }
     }
 
     private companion object {
@@ -94,7 +92,7 @@ internal class BookmarkRepositoryImplTest {
             lastModified = LocalDateTime.of(2024,6,2,2,0)
         )
 
-        val BOOKMARK_DUMMY = BookmarkFile(
+        val RECENT_DUMMY = RecentFile(
             name = "DUMMY.pdf",
             path = "",
             type = FileType.PDF,
