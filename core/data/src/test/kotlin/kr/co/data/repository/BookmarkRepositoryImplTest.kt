@@ -10,16 +10,13 @@ import io.mockk.just
 import io.mockk.verify
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
-import kr.co.data.mapper.BookmarkMapper
+import kr.co.data.dummy.DummyInstances
+import kr.co.data.mapper.BookmarkFileMapper
 import kr.co.data.mapper.FileInfoMapper
 import kr.co.database.dao.BookmarkFileDao
-import kr.co.database.model.BookmarkFile
-import kr.co.database.model.FileType
-import kr.co.model.FileInfo
 import kr.co.testing.util.testWithItem
 import org.junit.Before
 import org.junit.Test
-import java.time.LocalDateTime
 import kotlin.test.assertEquals
 
 internal class BookmarkRepositoryImplTest {
@@ -28,7 +25,7 @@ internal class BookmarkRepositoryImplTest {
     private lateinit var dao: BookmarkFileDao
 
     @MockK
-    private lateinit var toBookmark : BookmarkMapper
+    private lateinit var toBookmark : BookmarkFileMapper
 
     @MockK
     private lateinit var toFileInfo : FileInfoMapper
@@ -43,8 +40,8 @@ internal class BookmarkRepositoryImplTest {
 
     @Test
     fun `Given a file when insert is called then dao insert is called`() = runTest {
-        val file = PDF_DUMMY
-        val bookmarkFile = BOOKMARK_DUMMY
+        val file = DummyInstances.PDF_DUMMY
+        val bookmarkFile = DummyInstances.BOOKMARK_DUMMY
 
         every { toBookmark(file) } returns bookmarkFile
         coEvery { dao.insert(bookmarkFile) } just Runs
@@ -56,11 +53,11 @@ internal class BookmarkRepositoryImplTest {
 
     @Test
     fun `Given a unit when get is called then dao get is called`() = runTest {
-        val bookmarkFiles = listOf(BOOKMARK_DUMMY)
-        val files = listOf(PDF_DUMMY)
+        val bookmarkFiles = listOf(DummyInstances.BOOKMARK_DUMMY)
+        val files = listOf(DummyInstances.PDF_DUMMY)
 
-        every { dao.get() } returns flowOf(bookmarkFiles)
-        every { toFileInfo(BOOKMARK_DUMMY) } returns PDF_DUMMY
+        coEvery { dao.get() } returns flowOf(bookmarkFiles)
+        coEvery { toFileInfo(DummyInstances.BOOKMARK_DUMMY) } returns DummyInstances.PDF_DUMMY
 
         repository.get().testWithItem {
             assertEquals(files, this)
@@ -71,8 +68,8 @@ internal class BookmarkRepositoryImplTest {
 
     @Test
     fun `Given a file when delete is called then dao delete is called`() = runTest {
-        val file = PDF_DUMMY
-        val bookmarkFile = BOOKMARK_DUMMY
+        val file = DummyInstances.PDF_DUMMY
+        val bookmarkFile = DummyInstances.BOOKMARK_DUMMY
 
         every { toBookmark(file) } returns bookmarkFile
         coEvery { dao.delete(bookmarkFile) } just Runs
@@ -80,27 +77,5 @@ internal class BookmarkRepositoryImplTest {
         repository.delete(file)
 
         coVerify { dao.delete(bookmarkFile) }
-    }
-
-    private companion object {
-        val PDF_DUMMY = FileInfo(
-            name = "DUMMY.pdf",
-            path = "",
-            type = FileInfo.Type.PDF,
-            isDirectory = false,
-            isHidden = false,
-            size = 0,
-            createdAt = LocalDateTime.of(2024,6,2,2,0),
-            lastModified = LocalDateTime.of(2024,6,2,2,0)
-        )
-
-        val BOOKMARK_DUMMY = BookmarkFile(
-            name = "DUMMY.pdf",
-            path = "",
-            type = FileType.PDF,
-            size = 0,
-            createdAt = LocalDateTime.of(2024,6,2,2,0),
-            lastModified = LocalDateTime.of(2024,6,2,2,0)
-        )
     }
 }

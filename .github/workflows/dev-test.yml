@@ -1,47 +1,36 @@
 name: Unit Test
-
 on:
   pull_request:
     branches: [ "dev" ]
-
 jobs:
   unit_test:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-
       - name: Get changed files
         id: changed_files
         uses: tj-actions/changed-files@v45
-
       - name: Filter out test files
         id: test_files
         run: |
           echo "Changed files: ${{ steps.changed_files.outputs.all_changed_files }}"
-
           TEST_FILES=$(echo "${{ steps.changed_files.outputs.all_changed_files }}" \
             | tr ' ' '\n' \
             | grep -E '^.+/src/test/(java|kotlin)/.+\.(kt|java)$')
           echo "Filtered by grep: $TEST_FILES"
-
           TEST_FILES=$(echo "$TEST_FILES" \
             | sed -E 's/^(.+)\/src\/test\/(java|kotlin)\/(.+)\.(kt|java)$/\1 \3/' \
             | sed 's/\//./g')
           echo "Processed by sed: $TEST_FILES"
-
           TEST_FILES_SINGLE_LINE=$(echo "$TEST_FILES" | tr '\n' ' ')
           echo "TEST_FILES=$TEST_FILES_SINGLE_LINE" >> $GITHUB_ENV
-
           echo "$TEST_FILES" > test_files.txt
-
           if [ -s test_files.txt ]; then
             echo "any_changed=true" >> $GITHUB_ENV
           else
             echo "any_changed=false" >> $GITHUB_ENV
           fi
-
       - name: Debug Changed Files
         run: |
           if [ -f test_files.txt ]; then
@@ -53,35 +42,63 @@ jobs:
           
           # Check the "any_changed" environment variable
           echo "files changed: ${{ env.any_changed }}"
-
       - name: setup JDK
         if: env.any_changed == 'true'
         uses: actions/setup-java@v4
-
         with:
           distribution: 'corretto'
           java-version: '17'
-
       - name: setup Android SDK
         if: env.any_changed == 'true'
         uses: android-actions/setup-android@v3
-
       - name: Run unit tests
         if: env.any_changed == 'true'
         run: |
           chmod +x gradlew
-          cat test_files.txt | while IFS=$'\n' read -r LINE; do
-            MODULE=$(echo "$LINE" | awk '{print $1}')
-            TEST_CLASS=$(echo "$LINE" | awk '{print $2}')
+          while IFS=$'\n' read -r LINE; do
+          
+            # 1) 원본 변수 추출
+            MODULE_RAW=$(echo "$LINE" | awk '{print $1}')      # 예: "core.data"
+            TEST_CLASS_RAW=$(echo "$LINE" | awk '{print $2}')  # 예: "kr.co.data.dummy.DummyInstances"
+            echo "MODULE_RAW: $MODULE_RAW"
+            echo "TEST_CLASS_RAW: $TEST_CLASS_RAW"
+          
+            # 2) Gradle 태스크용 모듈(예: "core.data" -> "core:data")
+            MODULE_GRADLE=$(echo "$MODULE_RAW" | sed 's|\.|:|g')
+          
+            # 3) 파일 경로용 모듈(예: "core.data" -> "core/data")
+            MODULE_PATH=$(echo "$MODULE_RAW" | sed 's|\.|/|g')
+          
+            #    클래스 경로도 마찬가지
+            CLASS_PATH=$(echo "$TEST_CLASS_RAW" | sed 's|\.|/|g')
+          
+            # 4) 실제로 찾을 .kt 파일 경로
+            KT_FILE_JAVA="${MODULE_PATH}/src/test/java/${CLASS_PATH}.kt"
+            KT_FILE_KOTLIN="${MODULE_PATH}/src/test/kotlin/${CLASS_PATH}.kt"
+            echo "KT_FILE_JAVA: $KT_FILE_JAVA"
+            echo "KT_FILE_KOTLIN: $KT_FILE_KOTLIN"
+            if [ -f "$KT_FILE_JAVA" ]; then
+              if ! grep -q '@Test' "$KT_FILE_JAVA"; then
+                echo "No @Test found in $KT_FILE_JAVA. Skipping..."
+                continue
+              fi
+              SELECTED_FILE="$KT_FILE_JAVA"
+            elif [ -f "$KT_FILE_KOTLIN" ]; then
+              if ! grep -q '@Test' "$KT_FILE_KOTLIN"; then
+                echo "No @Test found in $KT_FILE_KOTLIN. Skipping..."
+                continue
+              fi
+              SELECTED_FILE="$KT_FILE_KOTLIN"
+            else
+              echo "No .kt file found in java/kotlin folder. Skipping..."
+              continue
+            fi
+          
+            # 5) @Test가 있는 파일을 찾았다면 Gradle 실행
+            echo "Running: ./gradlew :$MODULE_GRADLE:testDebugUnitTest --tests \"$TEST_CLASS_RAW\""
+            ./gradlew :"$MODULE_GRADLE":testDebugUnitTest --tests "$TEST_CLASS_RAW" --scan || exit 1
+          done < test_files.txt
 
-            MODULE=$(echo "$MODULE" | sed 's|\.|:|g')
-
-            echo "MODULE: $MODULE"
-            echo "TEST_CLASS: $TEST_CLASS"
-
-            echo "Running: ./gradlew :$MODULE:testDebugUnitTest --tests \"$TEST_CLASS\""
-            ./gradlew :$MODULE:testDebugUnitTest --tests "$TEST_CLASS" --scan || exit 1
-          done
 
       - name: Test Result
         uses: EnricoMi/publish-unit-test-result-action@v2
