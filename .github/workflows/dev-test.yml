@@ -36,7 +36,7 @@ jobs:
 
           echo "$TEST_FILES" > test_files.txt
 
-          if [ -s test_files.txt ]; then
+          if [ -n "$(cat test_files.txt | xargs)" ]; then
             echo "any_changed=true" >> $GITHUB_ENV
           else
             echo "any_changed=false" >> $GITHUB_ENV
@@ -120,7 +120,7 @@ jobs:
 
           echo "$ANDROID_TEST_FILES" > android_test_files.txt
 
-          if [ -s android_test_files.txt ]; then
+          if [ -n "$(cat android_test_files.txt | xargs)" ]; then
             echo "any_changed=true" >> $GITHUB_ENV
           else
             echo "any_changed=false" >> $GITHUB_ENV
@@ -131,13 +131,11 @@ jobs:
         uses: reactivecircus/android-emulator-runner@v2
         with:
           api-level: 26
-          target: google_apis
+          target: default
           arch: x86_64
-          force-avd-creation: true
-          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim
-          script: |
-            chmod +x gradlew
-            ./gradlew :app:connectedDebugAndroidTest
+          profile: Nexus 6
+          script: ./gradlew connectedCheck --stacktrace
+          run: ./gradlew connectedAndroidTest
 #
 #      - name: Setup JDK
 #        if: env.any_changed == 'true'
