@@ -163,8 +163,19 @@ jobs:
           arch: x86_64
           profile: Nexus 6
           script: ./gradlew connectedCheck --stacktrace
-          run: ./gradlew connectedAndroidTest
-#
+          run: |
+            cat android_test_files.txt | while IFS=$'\n' read -r LINE; do
+              MODULE=$(echo "$LINE" | awk '{print $1}')
+              TEST_CLASS=$(echo "$LINE" | awk '{print $2}')
+            
+              MODULE=$(echo "$MODULE" | sed 's|\.|:|g')
+            
+              echo "MODULE: $MODULE"
+              echo "TEST_CLASS: $TEST_CLASS"
+            
+              echo "Running: ./gradlew :$MODULE:connectedAndroidTest --tests \"$TEST_CLASS\""
+              ./gradlew :$MODULE:connectedAndroidTest --tests "$TEST_CLASS" --scan || exit 1
+            done
 
 #
 #      - name: Setup Android SDK
