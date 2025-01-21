@@ -63,3 +63,9 @@ jobs:
           profile: Nexus 6
           script: ./gradlew connectedCheck --stacktrace
           run: ./gradlew connectedAndroidTest
+
+      - name: Publish Instrumentation Test Results
+        uses: EnricoMi/publish-unit-test-result-action@v2
+        with:
+          files: "**/outputs/androidTest-results/connected/*.xml"
+          github_token: ${{ secrets.GITHUB_TOKEN }}

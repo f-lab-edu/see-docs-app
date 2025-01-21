@@ -57,22 +57,17 @@ jobs:
           chmod +x gradlew
           while IFS=$'\n' read -r LINE; do
           
-            # 1) 원본 변수 추출
             MODULE_RAW=$(echo "$LINE" | awk '{print $1}')
             TEST_CLASS_RAW=$(echo "$LINE" | awk '{print $2}')
             echo "MODULE_RAW: $MODULE_RAW"
             echo "TEST_CLASS_RAW: $TEST_CLASS_RAW"
           
-            # 2) Gradle 태스크용 모듈(예: "core.data" -> "core:data")
             MODULE_GRADLE=$(echo "$MODULE_RAW" | sed 's|\.|:|g')
           
-            # 3) 파일 경로용 모듈(예: "core.data" -> "core/data")
             MODULE_PATH=$(echo "$MODULE_RAW" | sed 's|\.|/|g')
           
-            #    클래스 경로도 마찬가지
             CLASS_PATH=$(echo "$TEST_CLASS_RAW" | sed 's|\.|/|g')
           
-            # 4) 실제로 찾을 .kt 파일 경로
             KT_FILE_JAVA="${MODULE_PATH}/src/test/java/${CLASS_PATH}.kt"
             KT_FILE_KOTLIN="${MODULE_PATH}/src/test/kotlin/${CLASS_PATH}.kt"
             echo "KT_FILE_JAVA: $KT_FILE_JAVA"
@@ -94,7 +89,6 @@ jobs:
               continue
             fi
           
-            # 5) @Test가 있는 파일을 찾았다면 Gradle 실행
             echo "Running: ./gradlew :$MODULE_GRADLE:testDebugUnitTest --tests \"$TEST_CLASS_RAW\""
             ./gradlew :"$MODULE_GRADLE":testDebugUnitTest --tests "$TEST_CLASS_RAW" --scan || exit 1
           done < test_files.txt
