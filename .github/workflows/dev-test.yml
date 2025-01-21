@@ -143,6 +143,17 @@ jobs:
             echo "any_changed=false" >> $GITHUB_ENV
           fi
 
+      - name: Setup JDK
+        if: env.any_changed == 'true'
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'corretto'
+          java-version: '17'
+
+      - name: Grant execute permission for gradlew
+        if: env.any_changed == 'true'
+        run: chmod +x gradlew
+
       - name: Run Instrumentation Tests on Emulator
         if: env.any_changed == 'true'
         uses: reactivecircus/android-emulator-runner@v2
@@ -154,12 +165,7 @@ jobs:
           script: ./gradlew connectedCheck --stacktrace
           run: ./gradlew connectedAndroidTest
 #
-#      - name: Setup JDK
-#        if: env.any_changed == 'true'
-#        uses: actions/setup-java@v4
-#        with:
-#          distribution: 'corretto'
-#          java-version: '17'
+
 #
 #      - name: Setup Android SDK
 #        if: env.any_changed == 'true'
