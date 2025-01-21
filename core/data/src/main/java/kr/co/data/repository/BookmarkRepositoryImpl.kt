@@ -2,14 +2,14 @@ package kr.co.data.repository
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import kr.co.data.mapper.BookmarkMapper
+import kr.co.data.mapper.BookmarkFileMapper
 import kr.co.data.mapper.FileInfoMapper
 import kr.co.database.dao.BookmarkFileDao
 import kr.co.model.FileInfo
 
 internal class BookmarkRepositoryImpl(
     private val dao: BookmarkFileDao,
-    private val toBookmark: BookmarkMapper,
+    private val toBookmark: BookmarkFileMapper,
     private val toFileInfo: FileInfoMapper,
 ) : BookmarkRepository {
     override suspend fun insert(bookmarkFile: FileInfo) =
