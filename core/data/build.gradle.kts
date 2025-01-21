@@ -4,9 +4,7 @@ plugins {
     alias(libs.plugins.seedocs.library)
 }
 
-android {
-    setNamespace("core.data")
-}
+setNamespace("core.data")
 
 dependencies {
     api(projects.core.model)
