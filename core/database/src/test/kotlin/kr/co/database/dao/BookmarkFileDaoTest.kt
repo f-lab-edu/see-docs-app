@@ -1,8 +1,7 @@
 package kr.co.database.dao
 
-import android.content.Context
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.room.Room
-import androidx.test.core.app.ApplicationProvider
 import androidx.test.platform.app.InstrumentationRegistry
 import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.test.runTest
@@ -12,6 +11,7 @@ import kr.co.database.model.BookmarkFile
 import kr.co.testing.util.testWithItem
 import org.junit.After
 import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
 import java.io.IOException
 
@@ -20,9 +20,12 @@ internal class BookmarkFileDaoTest {
     private lateinit var database: SeeDocsDatabase
     private lateinit var bookmarkFileDao: BookmarkFileDao
 
+    @get: Rule
+    val instantTaskExecutorRule = InstantTaskExecutorRule()
+
     @Before
     fun setup() {
-        val context = ApplicationProvider.getApplicationContext<Context>()
+        val context = InstrumentationRegistry.getInstrumentation().targetContext
         database = Room.inMemoryDatabaseBuilder(
             context,
             SeeDocsDatabase::class.java

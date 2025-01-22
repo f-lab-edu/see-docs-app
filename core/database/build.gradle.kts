@@ -22,6 +22,12 @@ android {
         buildConfig = true
     }
 
+    testOptions {
+        unitTests {
+            isIncludeAndroidResources = true
+        }
+    }
+
     defaultConfig {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -39,8 +45,8 @@ dependencies {
 
     Local()
 
-    androidTestImplementation(projects.core.testing)
-    androidTestImplementation(libs.room.test)
-    androidTestImplementation(libs.androidx.runner)
-    androidTestImplementation(libs.androidx.junit)
+    testImplementation(libs.robolectric)
+    testImplementation(projects.core.testing)
+    testImplementation(libs.room.test)
+    testImplementation("androidx.arch.core:core-testing:2.1.0")
 }

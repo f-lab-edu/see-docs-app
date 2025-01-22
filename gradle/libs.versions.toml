@@ -6,6 +6,7 @@ firebaseCrashlyticsPlugin = "3.0.2"
 ksp = "2.0.20-1.0.25"
 lifecycleLivedataKtx = "2.8.7"
 navigationFragmentKtx = "2.8.4"
+robolectric = "4.14.1"
 room = "2.6.1"
 appcompat = "1.7.0"
 material = "1.12.0"
@@ -70,6 +71,7 @@ koin-logger = { group = "io.insert-koin", name = "koin-logger-slf4j", version.re
 koin-test = { group = "io.insert-koin", name = "koin-test", version.ref = "koin" }
 koin-junit = { group = "io.insert-koin", name = "koin-test-junit4", version.ref = "koin" }
 
+robolectric = { module = "org.robolectric:robolectric", version.ref = "robolectric" }
 room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
 room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
 room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
