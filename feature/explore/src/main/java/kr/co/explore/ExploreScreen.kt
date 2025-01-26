@@ -62,7 +62,7 @@ internal fun ExploreRoute(
 }
 
 @Composable
-private fun ExploreScreen(
+internal fun ExploreScreen(
     state: ExploreUiState = ExploreUiState.INIT,
     padding: PaddingValues,
     handleIntent: (ExploreUiIntent) -> Unit = {},
