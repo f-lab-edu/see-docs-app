@@ -38,36 +38,29 @@ fun FileBox(
             .padding(
                 vertical = 12.dp,
                 horizontal = 8.dp
-            )
-            .semantics { 
-                contentDescription = name
-            },
+            ),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(24.dp)
     ) {
         Icon(
-            modifier = Modifier.size(32.dp)
-                .clearAndSetSemantics { },
+            modifier = Modifier.size(32.dp),
             imageVector = SeeDocsIcon.PDF,
-            contentDescription = null,
+            contentDescription = "pdf",
             tint = Color.Unspecified
         )
 
         Column(
-            modifier = Modifier
-                .clearAndSetSemantics { },
+            modifier = Modifier,
             verticalArrangement = Arrangement.spacedBy(4.dp)
         ) {
             Text(
-                modifier = Modifier
-                    .clearAndSetSemantics { },
+                modifier = Modifier,
                 text = name,
                 style = Theme.typography.body2sb,
                 color = Theme.colors.text
             )
             Text(
-                modifier = Modifier
-                    .clearAndSetSemantics { },
+                modifier = Modifier,
                 text = dateTime.format(DateTimeFormatter.ofPattern("yyyy.MM.dd")),
                 style = Theme.typography.caption1r,
                 color = Theme.colors.grayText

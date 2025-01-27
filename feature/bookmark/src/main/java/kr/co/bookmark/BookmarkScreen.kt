@@ -54,7 +54,7 @@ internal fun BookmarkRoute(
 }
 
 @Composable
-private fun BookmarkScreen(
+internal fun BookmarkScreen(
     padding: PaddingValues,
     state: BookmarkUiState = BookmarkUiState.INIT,
     handleIntent: (BookmarkUiIntent) -> Unit = {},
