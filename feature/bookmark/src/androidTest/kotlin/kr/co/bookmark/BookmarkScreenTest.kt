@@ -18,11 +18,10 @@ class BookmarkScreenTest {
 
     @get:Rule
     val composeTestRule = createComposeRule()
-    private val uiState: MutableState<BookmarkUiState> =
-        mutableStateOf(BookmarkUiState.INIT)
 
-    private val handleIntent: MutableState<(BookmarkUiIntent) -> Unit> =
-        mutableStateOf({})
+    private val uiState: MutableState<BookmarkUiState> = mutableStateOf(BookmarkUiState.INIT)
+
+    private val handleIntent: MutableState<(BookmarkUiIntent) -> Unit> = mutableStateOf({})
 
     @Before
     fun setUp() {
