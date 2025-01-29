@@ -50,17 +50,14 @@ fun FileBox(
         )
 
         Column(
-            modifier = Modifier,
             verticalArrangement = Arrangement.spacedBy(4.dp)
         ) {
             Text(
-                modifier = Modifier,
                 text = name,
                 style = Theme.typography.body2sb,
                 color = Theme.colors.text
             )
             Text(
-                modifier = Modifier,
                 text = dateTime.format(DateTimeFormatter.ofPattern("yyyy.MM.dd")),
                 style = Theme.typography.caption1r,
                 color = Theme.colors.grayText
