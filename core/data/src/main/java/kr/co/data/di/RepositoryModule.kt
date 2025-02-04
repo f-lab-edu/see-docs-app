@@ -1,6 +1,6 @@
 package kr.co.data.di
 
-import kr.co.data.mapper.BookmarkMapper
+import kr.co.data.mapper.BookmarkFileMapper
 import kr.co.data.mapper.FileInfoMapper
 import kr.co.data.mapper.RecentFileMapper
 import kr.co.data.repository.BookmarkRepository
@@ -13,7 +13,7 @@ val repositoryModule =
     module {
 
         factory { RecentFileMapper() }
-        factory { BookmarkMapper() }
+        factory { BookmarkFileMapper() }
         factory { FileInfoMapper() }
 
         single<RecentRepository> {
@@ -27,7 +27,7 @@ val repositoryModule =
         single<BookmarkRepository> {
             BookmarkRepositoryImpl(
                 dao = get(),
-                toBookmark = get<BookmarkMapper>(),
+                toBookmark = get<BookmarkFileMapper>(),
                 toFileInfo = get<FileInfoMapper>()
             )
         }
