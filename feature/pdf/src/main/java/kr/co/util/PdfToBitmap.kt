@@ -5,11 +5,13 @@ import android.graphics.pdf.PdfRenderer
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.remember
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
+import kotlinx.coroutines.withContext
 
 internal class PdfToBitmap(
     private val renderer: PdfRenderer,
@@ -22,26 +24,30 @@ internal class PdfToBitmap(
 
     private val mutex = Mutex()
 
-    suspend fun renderPage(pageIndex: Int) {
+    suspend fun renderPage(pageIndex: Int) = withContext(Dispatchers.IO) {
         mutex.withLock {
             if (renderingPages.contains(pageIndex)) {
-                return
+                return@withContext
             }
             renderingPages.add(pageIndex)
         }
+        mutex.withLock {
+            val page = renderer.openPage(pageIndex)
 
-        val page = renderer.openPage(pageIndex)
-
-        val bitmap = Bitmap.createBitmap(
-                page.width * SCALE_UP,
-                page.height * SCALE_UP,
-                Bitmap.Config.ARGB_8888
-            ).also {
-                page.render(it, null, null, PdfRenderer.Page.RENDER_MODE_FOR_DISPLAY)
-                page.close()
+            val bitmap = withContext(Dispatchers.Default) {
+                page.use { page ->
+                    Bitmap.createBitmap(
+                        page.width * SCALE_UP,
+                        page.height * SCALE_UP,
+                        Bitmap.Config.ARGB_8888
+                    ).also {
+                        page.render(it, null, null, PdfRenderer.Page.RENDER_MODE_FOR_DISPLAY)
+                    }
+                }
             }
 
-        _bitmap.update { it + (pageIndex to bitmap) }
+            _bitmap.update { it + (pageIndex to bitmap) }
+        }
     }
 
     internal fun close() {
