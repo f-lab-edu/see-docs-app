@@ -20,17 +20,12 @@
 
 - Home: 디바이스의 문서 파일 목록을 보여줍니다.
 - Bookmark: 북마크된 파일들이 모여있는 목록.
+- Recent: 최근 본 파일 목록
 - PdfView: PDF 화면
-- TextView: Text 화면
-- ImageView: Image 화면
 
 ## 프로젝트 목표
 
 - PDF 이미지, 텍스트 등을 볼 수 있는 서비스 구현
-
-## Download
-
-[Releases]("https://") - CI/CD를 통한 배포
 
 ## Tech stack & Open-source libraries
 
@@ -39,20 +34,20 @@
 - Jetpack Libraries:
     - Jetpack compose: Android UI toolkit
     - ViewModel: UI 관련 데이터를 관리하고 수명 주기를 인식하여 구성이 변경되어도 데이터 생존 보장
-    - Hilt: 종속성 주입
 - Architecture:
+    - Repostiory Pattern
     - MVI Architecture (Model-View-Intent)
-    - Clean Architecture
 - Kotlin Serialization
 - Koin
 - Ksp
 - Room
+- Git Hub Actions
 
 ## Architecture
 
-MVI 패턴과 CleanArchitecture를 기반으로 구성
+MVI 패턴과 Repository Pattern으로 구성
 
-![image](https://github.com/user-attachments/assets/5d27ec96-81e3-456a-91bc-4da1d101cb58)
+![image](https://github.com/user-attachments/assets/5197b9d7-ccff-4aba-8089-a7d0f8170b92)
 
 
 ### UI Layer
@@ -79,14 +74,5 @@ MVI 패턴으로 구성
 - 단위 테스트 작성
 - PDF 뷰어 기능
 - 텍스트 뷰어 기능 및 이미지 뷰어 기능
-- PDF 및 텍스트 파일 내에서 키워드 검색 기능 구현 및 검색어 하이라이트 표시
-- GitHub Action을 이용한 테스트, 빌드 CI 구현 및 Git Releases APK 자동 배포, 슬랙 알림 CD
-
-### 심화
 - 대용량 파일 빠르게 처리할 수 있도록 메모리 최적화
-- 다양한 디바이스 상에서 UI 테스트
 - UI 테스트 자동화
-- 북마크를 이용한 이어보기 기능
-- PDF 주석 추가 및 메모 저장 기능
-- 이미지 필터등 수정 기능
-- Firebase Crashlytics 를 이용한 오류 모니터링
